@@ -1,0 +1,402 @@
+[
+  {
+    "id": "Q01",
+    "category": "single-fund-single-field",
+    "question": "What is the expense ratio of Canara Robeco Multi Cap Fund?",
+    "expected_answer_contains": ["1.85", "Canara Robeco", "as on", "2026-05-04", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Hand-verified against tests/golden/canara_robeco_multi_cap.json: expense_ratio = 1.85 as on 2026-05-04."
+  },
+  {
+    "id": "Q02",
+    "category": "single-fund-single-field",
+    "question": "What is the 1Y Sharpe ratio of DSP Multi Asset Allocation Fund?",
+    "expected_answer_contains": ["1.19", "DSP Multi Asset", "as on", "2026-05-04", "verify against your own"],
+    "expected_sql_contains": "sharpe_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Hand-verified against tests/golden/dsp_multi_asset.json: sharpe_1y = 1.19 as on 2026-05-04."
+  },
+  {
+    "id": "Q03",
+    "category": "single-fund-multi-field",
+    "question": "Give me a snapshot of Canara Robeco Multi Cap Fund.",
+    "expected_answer_contains": ["Canara Robeco", "1.85", "4679.32", "6.65", "as on", "2026-05-04", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Hand-verified: expense_ratio=1.85, fund_aum_cr=4679.32, return_1y=6.65 from tests/golden/canara_robeco_multi_cap.json."
+  },
+  {
+    "id": "Q04",
+    "category": "single-fund-multi-field",
+    "question": "Give me a snapshot of Aditya Birla SL Arbitrage Fund - expense ratio, AUM, 1Y return, and 1Y std dev.",
+    "expected_answer_contains": ["Aditya Birla", "1.03", "25064.55", "5.77", "0.27", "as on", "2026-05-04", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Hand-verified against tests/golden/absl_arbitrage.json: expense_ratio=1.03, fund_aum_cr=25064.55, return_1y=5.77, std_dev_1y=0.27."
+  },
+  {
+    "id": "Q05",
+    "category": "cross-fund-ranking",
+    "question": "Rank our 3 recommended funds by 1Y return, highest first.",
+    "expected_answer_contains": ["DSP Multi Asset", "21.99", "Canara Robeco", "6.65", "Aditya Birla", "5.77", "as on", "verify against your own"],
+    "expected_sql_contains": "ORDER BY",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Universe is the 3-fund sample set. 1Y returns from goldens: DSP=21.99 > Canara=6.65 > ABSL=5.77."
+  },
+  {
+    "id": "Q06",
+    "category": "cross-fund-ranking",
+    "question": "Top 5 funds in our recommended list by 1Y Sharpe.",
+    "expected_answer_contains": ["DSP Multi Asset", "1.19", "Canara Robeco", "-0.01", "Aditya Birla", "-5.02", "as on", "verify against your own"],
+    "expected_sql_contains": "sharpe_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Universe constrained to 3-fund sample set in Phase 2. 1Y Sharpe from goldens: DSP=1.19 > Canara=-0.01 > ABSL=-5.02. Phase 5 must answer with all funds available; in pilot universe this is the answer."
+  },
+  {
+    "id": "Q07",
+    "category": "cross-fund-ranking",
+    "question": "Which funds have the lowest expense ratio? Show top 3.",
+    "expected_answer_contains": ["Aditya Birla", "1.03", "DSP Multi Asset", "1.42", "Canara Robeco", "1.85", "as on", "verify against your own"],
+    "expected_sql_contains": "expense_ratio",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Universe = 3-fund sample. Expense ratios ascending: ABSL=1.03, DSP=1.42, Canara=1.85."
+  },
+  {
+    "id": "Q08",
+    "category": "cross-fund-ranking",
+    "question": "Rank our recommended funds by AUM size.",
+    "expected_answer_contains": ["Aditya Birla", "25064.55", "DSP Multi Asset", "8395.71", "Canara Robeco", "4679.32", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_aum_cr",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Universe = 3-fund sample. AUM descending: ABSL=25064.55, DSP=8395.71, Canara=4679.32."
+  },
+  {
+    "id": "Q09",
+    "category": "cross-fund-ranking",
+    "question": "Order our funds by 1Y standard deviation, lowest risk first.",
+    "expected_answer_contains": ["Aditya Birla", "0.27", "DSP Multi Asset", "11.27", "Canara Robeco", "17.66", "as on", "verify against your own"],
+    "expected_sql_contains": "std_dev_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Universe = 3-fund sample. 1Y std dev ascending: ABSL=0.27, DSP=11.27, Canara=17.66."
+  },
+  {
+    "id": "Q10",
+    "category": "cross-fund-ranking",
+    "question": "Rank our funds by 1Y beta from lowest to highest.",
+    "expected_answer_contains": ["DSP Multi Asset", "0.45", "Aditya Birla", "0.83", "Canara Robeco", "0.93", "as on", "verify against your own"],
+    "expected_sql_contains": "beta_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Universe = 3-fund sample. 1Y beta ascending: DSP=0.45, ABSL=0.83, Canara=0.93."
+  },
+  {
+    "id": "Q11",
+    "category": "side-by-side-comparison",
+    "question": "Compare Canara Robeco Multi Cap vs Aditya Birla SL Arbitrage on Sharpe, expense ratio, and 1Y return.",
+    "expected_answer_contains": ["Canara Robeco", "Aditya Birla", "1.85", "1.03", "6.65", "5.77", "-0.01", "-5.02", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Side-by-side: Canara (er=1.85, r1y=6.65, sharpe1y=-0.01) vs ABSL (er=1.03, r1y=5.77, sharpe1y=-5.02). All from goldens."
+  },
+  {
+    "id": "Q12",
+    "category": "side-by-side-comparison",
+    "question": "Compare DSP Multi Asset Allocation vs Canara Robeco Multi Cap on 1Y return, 1Y Sharpe, and AUM.",
+    "expected_answer_contains": ["DSP Multi Asset", "Canara Robeco", "21.99", "6.65", "1.19", "-0.01", "8395.71", "4679.32", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "DSP (r1y=21.99, sharpe1y=1.19, aum=8395.71) vs Canara (r1y=6.65, sharpe1y=-0.01, aum=4679.32)."
+  },
+  {
+    "id": "Q13",
+    "category": "side-by-side-comparison",
+    "question": "Compare all 3 recommended funds side by side on expense ratio, 1Y return, and 1Y Sharpe.",
+    "expected_answer_contains": ["Canara Robeco", "Aditya Birla", "DSP Multi Asset", "1.85", "1.03", "1.42", "6.65", "5.77", "21.99", "-0.01", "-5.02", "1.19", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Three-way comparison across all goldens. All numbers from the JSON sample files."
+  },
+  {
+    "id": "Q14",
+    "category": "side-by-side-comparison",
+    "question": "Compare Canara Robeco Multi Cap and DSP Multi Asset Allocation on large-cap exposure and portfolio P/E.",
+    "expected_answer_contains": ["Canara Robeco", "DSP Multi Asset", "43.36", "21.5", "28.98", "18.73", "as on", "verify against your own"],
+    "expected_sql_contains": "large_cap_pct",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Canara large_cap_pct=43.36, portfolio_pe=28.98. DSP large_cap_pct=21.5, portfolio_pe=18.73."
+  },
+  {
+    "id": "Q15",
+    "category": "shortlist-suggestion",
+    "question": "Suggest 3 funds with low expense ratio and decent 1Y returns from our recommended list.",
+    "expected_answer_contains": ["Aditya Birla", "DSP Multi Asset", "Canara Robeco", "1.03", "1.42", "1.85", "5.77", "21.99", "6.65", "as on", "verify against your own"],
+    "expected_sql_contains": "expense_ratio",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Shortlist from 3-fund universe - present all 3 with expense ratio + 1Y return so RM can compare."
+  },
+  {
+    "id": "Q16",
+    "category": "shortlist-suggestion",
+    "question": "Shortlist 3 funds suitable for a conservative investor with strong downside protection.",
+    "expected_answer_contains": ["Aditya Birla", "0.27", "DSP Multi Asset", "11.27", "as on", "verify against your own"],
+    "expected_sql_contains": "std_dev_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Lowest 1Y std dev candidates: ABSL=0.27 (arbitrage, ideal) then DSP=11.27 (multi-asset). Canara at 17.66 is higher risk and may or may not make the cut."
+  },
+  {
+    "id": "Q17",
+    "category": "shortlist-suggestion",
+    "question": "Suggest 3 funds with the strongest 1Y risk-adjusted returns.",
+    "expected_answer_contains": ["DSP Multi Asset", "1.19", "Canara Robeco", "-0.01", "Aditya Birla", "-5.02", "as on", "verify against your own"],
+    "expected_sql_contains": "sharpe_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Rank by 1Y Sharpe: DSP=1.19 (strongest), Canara=-0.01, ABSL=-5.02. From 3-fund universe."
+  },
+  {
+    "id": "Q18",
+    "category": "shortlist-suggestion",
+    "question": "Suggest 3 funds an HNI could consider for a balanced 3-year allocation.",
+    "expected_answer_contains": ["Canara Robeco", "Aditya Birla", "DSP Multi Asset", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Balanced HNI mix from 3-fund universe - one equity multi-cap (Canara), one arbitrage (ABSL), one multi-asset (DSP). Returns the 3 with their supporting numbers."
+  },
+  {
+    "id": "Q19",
+    "category": "recommendation",
+    "question": "Is Aditya Birla SL Arbitrage Fund a buy right now?",
+    "expected_answer_contains": ["Aditya Birla", "1.03", "5.77", "0.27", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Buy-call answered with data: expense_ratio=1.03 (moderate), return_1y=5.77, std_dev_1y=0.27 (very low). Bot states view with supporting numbers + footer."
+  },
+  {
+    "id": "Q20",
+    "category": "recommendation",
+    "question": "Should I recommend DSP Multi Asset Allocation over Canara Robeco Multi Cap?",
+    "expected_answer_contains": ["DSP Multi Asset", "Canara Robeco", "21.99", "6.65", "1.19", "-0.01", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Bot compares: DSP has higher 1Y return (21.99 vs 6.65) and stronger 1Y Sharpe (1.19 vs -0.01). Does not refuse."
+  },
+  {
+    "id": "Q21",
+    "category": "recommendation",
+    "question": "Between Canara Robeco Multi Cap and DSP Multi Asset, which looks stronger today?",
+    "expected_answer_contains": ["DSP Multi Asset", "Canara Robeco", "21.99", "6.65", "1.19", "-0.01", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "On 1Y data DSP looks stronger (higher return, positive Sharpe). Bot answers with view + footer."
+  },
+  {
+    "id": "Q22",
+    "category": "conditional-client-profile",
+    "question": "For a risk-averse client with a 1-year horizon, which of our recommended funds suits best?",
+    "expected_answer_contains": ["Aditya Birla", "0.27", "5.77", "1.03", "as on", "verify against your own"],
+    "expected_sql_contains": "std_dev_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Risk-averse + short horizon -> ABSL Arbitrage: lowest std_dev_1y=0.27, return_1y=5.77, expense=1.03. Does not refuse on missing client detail."
+  },
+  {
+    "id": "Q23",
+    "category": "conditional-client-profile",
+    "question": "For a client willing to take equity risk for higher returns, which fund would you suggest?",
+    "expected_answer_contains": ["Canara Robeco", "DSP Multi Asset", "6.65", "21.99", "17.66", "11.27", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Equity-tilted candidates from universe: Canara (multi-cap, std_dev=17.66, ret=6.65) and DSP (multi-asset with equity, std_dev=11.27, ret=21.99)."
+  },
+  {
+    "id": "Q24",
+    "category": "conditional-client-profile",
+    "question": "For a client who wants diversification across asset classes, which fund fits?",
+    "expected_answer_contains": ["DSP Multi Asset", "21.99", "1.19", "1.42", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Multi-asset fit: DSP Multi Asset Allocation - composition includes Equity, Debt, Alternate (gold/silver), Others, Cash."
+  },
+  {
+    "id": "Q25",
+    "category": "extrapolation",
+    "question": "What's the expected 1-year return on DSP Multi Asset Allocation if its recent pattern continues?",
+    "expected_answer_contains": ["DSP Multi Asset", "21.99", "as on", "verify against your own"],
+    "expected_sql_contains": "return_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Bot extrapolates from DSP's return_1y=21.99 - if the pattern continued, the bot returns a number anchored on 21.99 with footer."
+  },
+  {
+    "id": "Q26",
+    "category": "extrapolation",
+    "question": "If Canara Robeco Multi Cap's 1Y CAGR pattern continued, what return should I expect?",
+    "expected_answer_contains": ["Canara Robeco", "6.65", "as on", "verify against your own"],
+    "expected_sql_contains": "return_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Canara Robeco return_1y=6.65; fund is <3yrs old so 3Y return is NA. Bot extrapolates using 1Y."
+  },
+  {
+    "id": "Q27",
+    "category": "extrapolation",
+    "question": "Will Aditya Birla SL Arbitrage outperform Canara Robeco Multi Cap next year?",
+    "expected_answer_contains": ["Aditya Birla", "Canara Robeco", "5.77", "6.65", "as on", "verify against your own"],
+    "expected_sql_contains": "return_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Bot extrapolates from 1Y returns: ABSL=5.77, Canara=6.65. Notes uncertainty (different risk profiles) + footer."
+  },
+  {
+    "id": "Q28",
+    "category": "cross-fund-filter",
+    "question": "Show me funds with expense ratio below 1.5%.",
+    "expected_answer_contains": ["Aditya Birla", "1.03", "DSP Multi Asset", "1.42", "as on", "verify against your own"],
+    "expected_sql_contains": "expense_ratio",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Filter expense_ratio<1.5: ABSL=1.03, DSP=1.42 match; Canara=1.85 does not."
+  },
+  {
+    "id": "Q29",
+    "category": "cross-fund-filter",
+    "question": "List funds with 1Y return above 10%.",
+    "expected_answer_contains": ["DSP Multi Asset", "21.99", "as on", "verify against your own"],
+    "expected_sql_contains": "return_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Only DSP (21.99) exceeds 10%. Canara=6.65, ABSL=5.77 are excluded."
+  },
+  {
+    "id": "Q30",
+    "category": "risk-profile",
+    "question": "Which of our recommended funds has the lowest 1Y standard deviation?",
+    "expected_answer_contains": ["Aditya Birla", "0.27", "as on", "verify against your own"],
+    "expected_sql_contains": "std_dev_1y",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "ABSL std_dev_1y=0.27 is the lowest among the 3-fund universe."
+  },
+  {
+    "id": "Q31",
+    "category": "risk-profile",
+    "question": "Which fund has the highest drawdown risk based on the latest data?",
+    "expected_answer_contains": ["Canara Robeco", "-14.58", "as on", "verify against your own"],
+    "expected_sql_contains": "drawdown_pct",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Canara drawdown_pct=-14.58 (largest magnitude). DSP=-9.85. ABSL=NA (arbitrage)."
+  },
+  {
+    "id": "Q32",
+    "category": "holdings-lookup",
+    "question": "Which of our recommended funds hold HDFC Bank?",
+    "expected_answer_contains": ["HDFC Bank", "as on", "verify against your own"],
+    "expected_sql_contains": "holdings",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Generic holdings lookup question - Phase 5 will hit the holdings table. Sample PDFs all include HDFC Bank in top holdings (large-cap banking is a universal exposure)."
+  },
+  {
+    "id": "Q33",
+    "category": "holdings-lookup",
+    "question": "List the top holdings in Canara Robeco Multi Cap Fund.",
+    "expected_answer_contains": ["Canara Robeco", "as on", "verify against your own"],
+    "expected_sql_contains": "holdings",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Phase 5 will return Canara Robeco's top holdings from the holdings table; full_holdings_count=104 per golden. Specific security names depend on Phase 3 parser output."
+  },
+  {
+    "id": "Q34",
+    "category": "sector-tilt",
+    "question": "Which of our recommended funds have more than 25% exposure to Financial Services?",
+    "expected_answer_contains": ["Financial Services", "as on", "verify against your own"],
+    "expected_sql_contains": "sector_weights",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Generic sector-tilt filter on sector_weights table. Phase 5 fills concrete numbers; Phase 2 spec checks the bot consults sector_weights and cites Financial Services."
+  },
+  {
+    "id": "Q35",
+    "category": "sector-tilt",
+    "question": "Show me the top 3 sector exposures for DSP Multi Asset Allocation Fund.",
+    "expected_answer_contains": ["DSP Multi Asset", "as on", "verify against your own"],
+    "expected_sql_contains": "sector_weights",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Sector top-N query against sector_weights for DSP. Concrete sector names depend on Phase 3 parser output."
+  },
+  {
+    "id": "Q36",
+    "category": "fund-manager",
+    "question": "Who manages Canara Robeco Multi Cap Fund? How many managers?",
+    "expected_answer_contains": ["Canara Robeco", "2", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_managers_json",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "fund_managers_count=2 per tests/golden/canara_robeco_multi_cap.json. Specific manager names depend on Phase 3 parser output."
+  },
+  {
+    "id": "Q37",
+    "category": "fund-manager",
+    "question": "How many fund managers does Aditya Birla SL Arbitrage Fund have?",
+    "expected_answer_contains": ["Aditya Birla", "3", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_managers_json",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "fund_managers_count=3 per tests/golden/absl_arbitrage.json."
+  },
+  {
+    "id": "Q38",
+    "category": "refusal",
+    "question": "What is the expense ratio of Mirae Asset Quantum Galaxy Fund?",
+    "expected_answer_contains": ["don't have data", "Mirae"],
+    "expected_sql_contains": null,
+    "must_refuse": true,
+    "expected_refusal_reason": "unknown_scheme",
+    "verification_notes": "Made-up scheme name; lookup_scheme returns nothing -> refusal_reason='unknown_scheme'. No verification footer on refusals."
+  },
+  {
+    "id": "Q39",
+    "category": "refusal",
+    "question": "Show me the expense ratio of Canara Robeco Multi Cap Fund for January 2026.",
+    "expected_answer_contains": ["don't have data"],
+    "expected_sql_contains": null,
+    "must_refuse": true,
+    "expected_refusal_reason": "no_data",
+    "verification_notes": "Only report_month=2026-05 is loaded; January 2026 has no rows -> refusal_reason='no_data'."
+  },
+  {
+    "id": "Q40",
+    "category": "refusal",
+    "question": "What is the LTCG tax rate on equity mutual funds in India this financial year?",
+    "expected_answer_contains": ["Out of scope"],
+    "expected_sql_contains": null,
+    "must_refuse": true,
+    "expected_refusal_reason": "out_of_scope",
+    "verification_notes": "Tax law is explicitly out-of-scope per PLANNING 5.2.1.7 -> refusal_reason='out_of_scope'."
+  }
+]
