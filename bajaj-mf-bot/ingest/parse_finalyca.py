@@ -1100,6 +1100,323 @@ def parse_top_holdings(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapsho
 
 
 # ---------------------------------------------------------------------------
+# Section parser 3.2.7 — portfolio characteristics
+# ---------------------------------------------------------------------------
+#
+# The Portfolio Characteristics block lives in the page-2 left x-band
+# (x ≈ 24–205) directly below Risk Analysis / above Composition. Six rows
+# of "<label> <numeric>" each (Total Securities is INT; the rest REAL):
+#
+#   Total Securities       101.00
+#   Avg Mkt Cap (Cr)       286729.50
+#   Median Mkt Cap (Cr)    51489.40
+#   Portfolio P/E Ratio    28.98
+#   Portfolio P/B Ratio    4.27
+#   Portfolio Dividend Yield 0.39
+#   Modified Duration      0E-9       ← pure equity; arbitrage/hybrid ≠ 0
+
+# Label substring (lower-cased, joined row text) → (attr, is_int).
+_PORTFOLIO_CHAR_LABELS: tuple[tuple[str, str, bool], ...] = (
+    ("total securities", "total_securities", True),
+    ("avg mkt cap", "avg_mkt_cap_cr", False),
+    ("average mkt cap", "avg_mkt_cap_cr", False),
+    ("median mkt cap", "median_mkt_cap_cr", False),
+    ("median market cap", "median_mkt_cap_cr", False),
+    ("portfolio p/e", "portfolio_pe", False),
+    ("p/e ratio", "portfolio_pe", False),
+    ("portfolio p/b", "portfolio_pb", False),
+    ("p/b ratio", "portfolio_pb", False),
+    ("portfolio dividend yield", "portfolio_div_yield", False),
+    ("dividend yield", "portfolio_div_yield", False),
+    ("div yield", "portfolio_div_yield", False),
+    ("modified duration", "modified_duration", False),
+    ("mod duration", "modified_duration", False),
+)
+
+
+def _find_left_band_anchor(
+    words: list[dict], label_lc: str, x_max: float = 205.0,
+) -> Optional[float]:
+    """Return the y of the first occurrence of `label_lc` in the page-2 left band.
+
+    Matches by joining all words on each row (within `_PAGE2_RISK_X`) and
+    checking the lowered text contains `label_lc`. Returns the row's top y,
+    or None if no row matches.
+    """
+    band = [w for w in words if float(w["x0"]) < x_max]
+    rows = _group_rows(band)
+    for row in rows:
+        joined = " ".join(w["text"] for w in row).lower()
+        if label_lc in joined:
+            return _row_y(row)
+    return None
+
+
+def parse_portfolio_characteristics(
+    doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot,
+) -> None:
+    """Populate the 7 Portfolio Characteristics fields on `snap`.
+
+    Page 2 left x-band, between the "Portfolio Characteristics" header and
+    the "Composition" header. Each row is "<label words> <numeric value>"
+    with the value as the last token; `Total Securities` is the only int.
+
+    Pure-equity funds report Modified Duration as `0E-9` — `_to_float`
+    already returns 0.0 for that token, so we don't need special handling
+    here. Per task spec, that is an acceptable value (not a parser failure).
+    """
+    words = _page2_words(pl)
+    if not words:
+        raise ValueError("page 2 has no extractable words (portfolio characteristics)")
+
+    start_y = _find_left_band_anchor(words, "portfolio characteristics")
+    if start_y is None:
+        raise ValueError("Portfolio Characteristics header not found")
+    # End at the Composition header (anchors next block) or fall through.
+    end_y = _find_left_band_anchor(words, "composition") or float("inf")
+    if end_y <= start_y:
+        end_y = float("inf")
+
+    band = _filter_by_x(words, _PAGE2_RISK_X)
+    block_words = [w for w in band if start_y < float(w["top"]) < end_y]
+    rows = _group_rows(block_words)
+
+    matched_any = False
+    for row in rows:
+        tokens = [w["text"] for w in row]
+        if not tokens:
+            continue
+        joined_lc = " ".join(tokens).lower()
+        # Skip the header row itself.
+        if "portfolio characteristics" in joined_lc:
+            continue
+        # The numeric value is the last token; everything before it is the label.
+        last = tokens[-1]
+        if not _NUMERIC_RE.match(last) and last.upper() not in {"NA", "0E-9", "N/A", "-"}:
+            continue
+        label_lc = " ".join(tokens[:-1]).lower().strip()
+        if not label_lc:
+            continue
+        for needle, attr, is_int in _PORTFOLIO_CHAR_LABELS:
+            if needle in label_lc:
+                if getattr(snap, attr) is not None:
+                    continue  # already set — first match wins
+                value = _to_int(last) if is_int else _to_float(last)
+                setattr(snap, attr, value)
+                matched_any = True
+                break
+
+    if not matched_any:
+        raise ValueError("portfolio characteristics: no labels matched")
+
+
+# ---------------------------------------------------------------------------
+# Section parser 3.2.8 — composition
+# ---------------------------------------------------------------------------
+#
+# The Composition block sits between "Composition" and "Drawdown" on page 2,
+# left x-band. Each row is "<asset class> <pct>" with verbatim labels:
+#
+#   Equity   95.93     # equity-only funds: just Equity + Cash
+#   Cash      4.07
+#   Debt     37.20    # arbitrage adds Debt; Derivative may be negative
+#   Derivative -0.41
+#   Alternate 14.28   # multi-asset adds Alternate (Gold/Silver), Others
+#   Others    10.79
+
+# Tokens that look like asset labels we should drop if they sneak in (header).
+_COMPOSITION_HEADER_TOKENS = {"composition", "wts(%)", "wts", "(%)"}
+
+
+def parse_composition(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
+    """Populate `snap.composition_json` with the asset-class breakdown.
+
+    Stores as JSON ({"Equity": 95.93, "Cash": 4.07, ...}). Component
+    labels are captured verbatim (no canonicalization). Negative values
+    are real for arbitrage funds (derivatives margin) and preserved.
+    """
+    words = _page2_words(pl)
+    if not words:
+        raise ValueError("page 2 has no extractable words (composition)")
+
+    start_y = _find_left_band_anchor(words, "composition")
+    if start_y is None:
+        raise ValueError("Composition header not found")
+    end_y = _find_left_band_anchor(words, "drawdown") or float("inf")
+    if end_y <= start_y:
+        end_y = float("inf")
+
+    band = _filter_by_x(words, _PAGE2_RISK_X)
+    block_words = [w for w in band if start_y < float(w["top"]) < end_y]
+    rows = _group_rows(block_words)
+
+    composition: dict[str, float] = {}
+    for row in rows:
+        tokens = [w["text"] for w in row]
+        if not tokens:
+            continue
+        lc_tokens = [t.lower() for t in tokens]
+        # Skip the header row and the "Wts(%)" column header.
+        if all(t in _COMPOSITION_HEADER_TOKENS for t in lc_tokens):
+            continue
+        last = tokens[-1]
+        if not _NUMERIC_RE.match(last):
+            continue
+        value = _to_float(last)
+        if value is None:
+            continue
+        label = " ".join(tokens[:-1]).strip()
+        if not label:
+            continue
+        if label.lower() in _COMPOSITION_HEADER_TOKENS:
+            continue
+        composition[label] = value
+
+    if not composition:
+        raise ValueError("composition: parsed zero rows")
+    snap.composition_json = json.dumps(composition, ensure_ascii=False)
+
+
+# ---------------------------------------------------------------------------
+# Section parser 3.2.9 — drawdown
+# ---------------------------------------------------------------------------
+#
+# Drawdown Analysis is a small 6×2 grid (label | 1Y | 3Y) in the page-2
+# left band. We populate the 1Y column (the 3Y column is often NA for
+# young funds and we don't persist it). Rows:
+#
+#   Draw Down (%)     -14.58   NA
+#   Duration Days      80      NA
+#   Time To Recovery   NA      NA
+#   Peak Date         02 Jan 2026   NA
+#   Valley Date       23 Mar 2026   NA
+#   Recovery Date     NA       NA   ← may be "Not Yet Recovered"
+
+# 1Y column lives at x ≈ 100–175; 3Y at x ≈ 175–205.
+_DRAWDOWN_1Y_X = (95.0, 175.0)
+
+
+def parse_drawdown(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
+    """Populate the 5 Drawdown fields on `snap` (pct, duration, 3 dates).
+
+    Reads only the 1Y column. If a date cell is NA / "Not Yet Recovered" /
+    "-" / empty, leaves the corresponding field as None (not a failure).
+    """
+    words = _page2_words(pl)
+    if not words:
+        raise ValueError("page 2 has no extractable words (drawdown)")
+
+    start_y = _find_left_band_anchor(words, "drawdown")
+    if start_y is None:
+        raise ValueError("Drawdown header not found")
+    # End at the "Increase in Exposure" recent-activity block (always below).
+    end_y = _find_left_band_anchor(words, "increase in exposure") or float("inf")
+    if end_y <= start_y:
+        end_y = float("inf")
+
+    band = _filter_by_x(words, _PAGE2_RISK_X)
+    block_words = [w for w in band if start_y < float(w["top"]) < end_y]
+    rows = _group_rows(block_words)
+
+    for row in rows:
+        # Split row into label tokens (x < 1Y col) and 1Y-col tokens.
+        label_tokens = [w["text"] for w in row if float(w["x0"]) < _DRAWDOWN_1Y_X[0]]
+        v1y_tokens = [w["text"] for w in row
+                      if _DRAWDOWN_1Y_X[0] <= float(w["x0"]) < _DRAWDOWN_1Y_X[1]]
+        if not label_tokens or not v1y_tokens:
+            continue
+        label_lc = " ".join(label_tokens).lower()
+        value_text = " ".join(v1y_tokens).strip()
+        if "draw down" in label_lc and "%" in label_lc:
+            snap.drawdown_pct = _to_float(value_text)
+        elif "duration" in label_lc and "days" in label_lc:
+            snap.drawdown_duration_days = _to_int(value_text)
+        elif "peak date" in label_lc:
+            snap.drawdown_peak_date = _parse_date_flex(value_text)
+        elif "valley date" in label_lc:
+            snap.drawdown_valley_date = _parse_date_flex(value_text)
+        elif "recovery date" in label_lc:
+            # "Not Yet Recovered" / "NA" → None (not a failure).
+            if value_text.upper() in _NA_TOKENS or "not yet" in value_text.lower():
+                snap.drawdown_recovery_date = None
+            else:
+                snap.drawdown_recovery_date = _parse_date_flex(value_text)
+        # "Time To Recovery" row is ignored — not persisted on Snapshot.
+
+
+# ---------------------------------------------------------------------------
+# Section parser 3.2.10 — risk rating
+# ---------------------------------------------------------------------------
+#
+# Risk Rating lives in the middle x-band (≈ 211-300 for label, 274-300 for
+# value) on page 2. Rows are "<rating label> <pct>". Equity-only funds show
+# just {Equity, Unrated, Net Ca & O}; arbitrage/hybrid funds add credit
+# ratings (A1+, AAA, AA+, Sovereign, etc.). We capture every row in the
+# block verbatim into a dict and JSON-dump it.
+
+# Risk-Rating block x-band: label & value share this column (≈ 211-300).
+_RISK_RATING_X = (205.0, 305.0)
+
+# Stop tokens (first token of the row, lower-cased) that signal we've left
+# the risk-rating block and entered Mkt Cap Composition (which uses the
+# same x-band sometimes) or the recent-activity table.
+_RISK_RATING_STOP_FIRST_TOKEN = {
+    "decrease",  # "Decrease in Exposure" header below
+    "increase",
+}
+
+
+def parse_risk_rating(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
+    """Populate `snap.risk_rating_json` with the credit-rating / equity breakdown.
+
+    JSON dict of label → pct. Labels are verbatim from the PDF (so equity
+    funds end up with {"Equity": 95.91, ...}; arbitrage funds add A1+/AAA/
+    etc). If the block is genuinely missing or empty we leave the field
+    as None (caller treats that as acceptable).
+    """
+    words = _page2_words(pl)
+    if not words:
+        return  # acceptable miss
+
+    # Anchor: the "Risk Rating" header in the middle x-band.
+    band = _filter_by_x(words, _RISK_RATING_X)
+    rows = _group_rows(band)
+    start_y: Optional[float] = None
+    for row in rows:
+        joined = " ".join(w["text"] for w in row).lower()
+        if "risk rating" in joined:
+            start_y = _row_y(row)
+            break
+    if start_y is None:
+        return  # acceptable miss
+
+    rating: dict[str, float] = {}
+    for row in rows:
+        ry = _row_y(row)
+        if ry <= start_y:
+            continue
+        tokens = [w["text"] for w in row]
+        if not tokens:
+            continue
+        first_lc = tokens[0].lower()
+        if first_lc in _RISK_RATING_STOP_FIRST_TOKEN:
+            break
+        last = tokens[-1]
+        if not _NUMERIC_RE.match(last):
+            continue
+        value = _to_float(last)
+        if value is None:
+            continue
+        label = " ".join(tokens[:-1]).strip()
+        if not label or label.lower() in {"risk rating", "%"}:
+            continue
+        rating[label] = value
+
+    if rating:
+        snap.risk_rating_json = json.dumps(rating, ensure_ascii=False)
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -1114,7 +1431,11 @@ SECTION_PARSERS: List[
     parse_risk_metrics,
     parse_sector_weights,
     parse_top_holdings,
-    # ... more sections will be added in subsequent tasks (3.2.7 onwards)
+    parse_portfolio_characteristics,
+    parse_composition,
+    parse_drawdown,
+    parse_risk_rating,
+    # ... more sections will be added in subsequent tasks (3.2.11 onwards)
 ]
 
 
