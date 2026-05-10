@@ -65,8 +65,38 @@ class _GroqClient:
         if tools:
             kwargs["tools"] = tools
 
+        # Lazy-import the error class so the mock path stays importable in
+        # environments without the SDK installed.
+        from groq import BadRequestError  # noqa: WPS433
+
         start = time.perf_counter()
-        resp = self._client.chat.completions.create(**kwargs)
+        try:
+            resp = self._client.chat.completions.create(**kwargs)
+        except BadRequestError as exc:
+            # Llama-3.3-70b on Groq sometimes emits `<function=name {json}>`
+            # pseudo-XML markup instead of structured tool_calls; the API
+            # then 400s with `code=tool_use_failed` and stashes the raw
+            # markup in `failed_generation`. We can usually parse that
+            # markup back into a valid tool call and let the loop keep
+            # going. If the markup is malformed beyond recovery, we
+            # re-raise so the caller's last-resort guard handles it.
+            recovered = _recover_tool_call_from_groq_error(exc)
+            if recovered is None:
+                raise
+            latency_ms = int((time.perf_counter() - start) * 1000)
+            logger.warning(
+                "_GroqClient.chat: recovered tool_call from "
+                "tool_use_failed (name=%s)", recovered["name"],
+            )
+            return {
+                "content": "",
+                "tool_calls": [recovered],
+                "tokens_in": 0,
+                "tokens_out": 0,
+                "latency_ms": latency_ms,
+                "model": self._model,
+                "finish_reason": "tool_calls",
+            }
         latency_ms = int((time.perf_counter() - start) * 1000)
 
         choice = resp.choices[0]
@@ -88,6 +118,62 @@ class _GroqClient:
             "model": getattr(resp, "model", self._model),
             "finish_reason": getattr(choice, "finish_reason", "stop"),
         }
+
+
+# Matches Llama-3.3's malformed tool-call markup, e.g.:
+#     <function=query_db {"sql": "SELECT ..."}</function>
+#     <function=query_db{"sql": "..."}</function>
+# The optional space between name and `{` and the optional trailing space
+# before `</function>` are both observed in practice.
+_GROQ_FAILED_TOOL_RE = re.compile(
+    r"<function=(?P<name>[a-zA-Z_][a-zA-Z0-9_]*)\s*(?P<args>\{.*\})\s*</function>",
+    re.DOTALL,
+)
+
+
+def _recover_tool_call_from_groq_error(exc: Any) -> Optional[Dict[str, Any]]:
+    """Try to parse Llama's malformed tool markup out of a Groq 400.
+
+    Returns a normalized tool_call dict on success, ``None`` if the error
+    body doesn't carry a `failed_generation` field or the markup can't
+    be parsed. We deliberately don't raise on parse failure — the caller
+    re-raises the original BadRequestError instead, so the loop's
+    last-resort guard kicks in with a clean refusal message.
+    """
+    body = getattr(exc, "body", None)
+    if not isinstance(body, dict):
+        return None
+    err = body.get("error")
+    if not isinstance(err, dict):
+        return None
+    if err.get("code") != "tool_use_failed":
+        return None
+
+    failed = err.get("failed_generation")
+    if not isinstance(failed, str):
+        return None
+
+    m = _GROQ_FAILED_TOOL_RE.search(failed)
+    if not m:
+        return None
+
+    name = m.group("name")
+    raw_args = m.group("args")
+    try:
+        args = json.loads(raw_args)
+    except (json.JSONDecodeError, TypeError):
+        return None
+    if not isinstance(args, dict):
+        return None
+
+    return {
+        "name": name,
+        "arguments": args,
+        # The provider never assigned an id, so synthesise one. Any
+        # unique-ish string works; the conversation only needs it to
+        # match the assistant turn with the follow-up tool message.
+        "id": f"recovered_{abs(hash(failed)) % 10_000_000}",
+    }
 
 
 def _normalize_tool_calls(raw_tool_calls: Optional[List[Any]]) -> List[Dict[str, Any]]:
