@@ -210,14 +210,14 @@
 
 **Exit criterion:** `SELECT COUNT(*) FROM fund_snapshots WHERE report_month='2026-05'` returns 90. Source URL/circular for the debt funds identified.
 
-### [ ] 4.1 Bulk download
-- [ ] **4.1.1** Write `ingest/download_pdfs.py`: reads `schemes_master.csv`, downloads each URL to `data/pdfs/2026-05/<scheme>.pdf` (URL-decode for filename). Skip if file exists. Log 4xx/5xx to a report.
-- [ ] **4.1.2** Compute SHA256 for each downloaded PDF; store alongside.
+### [x] 4.1 Bulk download
+- [x] **4.1.1** Write `ingest/download_pdfs.py`: reads `schemes_master.csv`, downloads each URL to `data/pdfs/2026-05/<scheme>.pdf` (URL-decode for filename). Skip if file exists. Log 4xx/5xx to a report.
+- [x] **4.1.2** Compute SHA256 for each downloaded PDF; store alongside.
 
-### [ ] 4.2 Bulk parse + ingest
-- [ ] **4.2.1** Write `ingest/ingest_month.py`: CLI takes `--month 2026-05`. For each PDF in that folder: parse, validate invariants, insert.
-- [ ] **4.2.2** On insert conflict (existing row, same `pdf_sha256`): skip with log. On insert conflict (existing row, different `pdf_sha256`): increment `revision`, mark prior `superseded_at = now`.
-- [ ] **4.2.3** Print summary: parsed N, errors in M, schemes with non-empty `parse_errors_json`. Eyeball the flagged schemes manually.
+### [x] 4.2 Bulk parse + ingest
+- [x] **4.2.1** Write `ingest/ingest_month.py`: CLI takes `--month 2026-05`. For each PDF in that folder: parse, validate invariants, insert.
+- [x] **4.2.2** On insert conflict (existing row, same `pdf_sha256`): skip with log. On insert conflict (existing row, different `pdf_sha256`): increment `revision`, mark prior `superseded_at = now`.
+- [x] **4.2.3** Print summary: parsed N, errors in M, schemes with non-empty `parse_errors_json`. Eyeball the flagged schemes manually.
 
 ### [ ] 4.3 Debt-fund circular discovery
 - [ ] **4.3.1** Search the original email thread (`Fwd_ (R)-19 _ "Research Recommended List of MF Schemes" for May Month.eml`) for references to a separate debt circular.
@@ -234,40 +234,40 @@
 
 **Exit criterion:** `pytest tests/test_chatbot.py` shows ≥80% pass rate.
 
-### [ ] 5.1 Tool definitions
-- [ ] **5.1.1** In `retrieval/tools.py`, define 4 tools:
-  - [ ] **5.1.1.1** `query_db(sql: str)` — executes read-only SQL via `db_query.query_db`. Returns up to 100 rows as JSON.
-  - [ ] **5.1.1.2** `lookup_scheme(name_substring: str)` — returns matching schemes from the `schemes` table. The model uses this to canonicalize fuzzy names before SQL.
-  - [ ] **5.1.1.3** `get_schema()` — returns the DDL of all tables, so the model knows the column names. Cache the result; load once at startup.
-  - [ ] **5.1.1.4** `compare_schemes(scheme_names: list[str], metrics: list[str])` — purpose-built side-by-side comparison. Internally fetches the latest snapshot for each scheme, returns a clean tabular dict. More reliable than the model hand-rolling the SQL each time. Default metrics if not specified: `['return_3y', 'sharpe_3y', 'std_dev_3y', 'expense_ratio', 'fund_aum_cr']`.
-- [ ] **5.1.2** Tools are returned in a provider-agnostic format that `LLMClient` translates to Groq's tool-use schema.
+### [x] 5.1 Tool definitions
+- [x] **5.1.1** In `retrieval/tools.py`, define 4 tools:
+  - [x] **5.1.1.1** `query_db(sql: str)` — executes read-only SQL via `db_query.query_db`. Returns up to 100 rows as JSON.
+  - [x] **5.1.1.2** `lookup_scheme(name_substring: str)` — returns matching schemes from the `schemes` table. The model uses this to canonicalize fuzzy names before SQL.
+  - [x] **5.1.1.3** `get_schema()` — returns the DDL of all tables, so the model knows the column names. Cache the result; load once at startup.
+  - [x] **5.1.1.4** `compare_schemes(scheme_names: list[str], metrics: list[str])` — purpose-built side-by-side comparison. Internally fetches the latest snapshot for each scheme, returns a clean tabular dict. More reliable than the model hand-rolling the SQL each time. Default metrics if not specified: `['return_3y', 'sharpe_3y', 'std_dev_3y', 'expense_ratio', 'fund_aum_cr']`.
+- [x] **5.1.2** Tools are returned in a provider-agnostic format that `LLMClient` translates to Groq's tool-use schema.
 
-### [ ] 5.2 System prompt with operating-mode rules
-- [ ] **5.2.1** In `app/prompts.py`, write `SYSTEM_PROMPT` covering:
-  - [ ] **5.2.1.1** Bot identity & operating mode: "You are an internal Bajaj Capital research assistant for Relationship Managers. Help the RM compare, shortlist, extrapolate, and form a view on the funds in our research. You may answer suggestion/recommendation/extrapolation questions directly with the supporting numbers — do not be evasive, do not refuse them. The RM is responsible for verifying your output against their own research before advising clients; that responsibility is communicated via a standard footer on every output that contains a suggestion, recommendation, or extrapolation."
-  - **5.2.1.1.a** **Developer-anonymity rule.** The system prompt must NOT include any name, email, GitHub handle, or other identifier of the developer/maintainer. If the user asks "who built you?", "who made this?", "who's the developer?", or anything in that family, answer: *"I'm an internal Bajaj Capital research tool — I don't have details on who built me."* Treat this as a non-refusal; just a factually empty answer. The bot legitimately doesn't know.
-  - [ ] **5.2.1.2** Workflow: "First call `lookup_scheme` to canonicalize names. For multi-fund comparisons, prefer `compare_schemes`. For everything else, call `query_db` using `get_schema`."
-  - [ ] **5.2.1.3** Shortlist / suggestion rules:
+### [x] 5.2 System prompt with operating-mode rules
+- [x] **5.2.1** In `app/prompts.py`, write `SYSTEM_PROMPT` covering:
+  - [x] **5.2.1.1** Bot identity & operating mode: "You are an internal Bajaj Capital research assistant for Relationship Managers. Help the RM compare, shortlist, extrapolate, and form a view on the funds in our research. You may answer suggestion/recommendation/extrapolation questions directly with the supporting numbers — do not be evasive, do not refuse them. The RM is responsible for verifying your output against their own research before advising clients; that responsibility is communicated via a standard footer on every output that contains a suggestion, recommendation, or extrapolation."
+  - [x] **5.2.1.1.a** **Developer-anonymity rule.** The system prompt must NOT include any name, email, GitHub handle, or other identifier of the developer/maintainer. If the user asks "who built you?", "who made this?", "who's the developer?", or anything in that family, answer: *"I'm an internal Bajaj Capital research tool — I don't have details on who built me."* Treat this as a non-refusal; just a factually empty answer. The bot legitimately doesn't know.
+  - [x] **5.2.1.2** Workflow: "First call `lookup_scheme` to canonicalize names. For multi-fund comparisons, prefer `compare_schemes`. For everything else, call `query_db` using `get_schema`."
+  - [x] **5.2.1.3** Shortlist / suggestion rules:
     - If asked for "best" without a metric → ask one short clarifying question OR pick a sensible default (typically 3Y Sharpe for risk-adjusted return) and disclose the default ("I'm ranking by 3Y Sharpe; tell me if you'd like a different metric").
     - When suggesting a shortlist, return 3-5 candidates with their supporting numbers (Sharpe, expense ratio, trailing returns, AUM, key risk metrics relevant to the criterion). Cite each candidate's source.
-  - [ ] **5.2.1.4** Recommendation / conditional-advice rules:
+  - [x] **5.2.1.4** Recommendation / conditional-advice rules:
     - Buy/sell/hold-style questions ("Is X a buy?", "Should I recommend X over Y?") → answer with the data-driven view: which fund looks stronger on which metrics, what the trade-offs are, and why. Do NOT refuse.
     - Conditional advice ("For a risk-averse client with 5-year horizon, which large-caps suit?") → reason from the stated profile to specific funds, with supporting numbers. Do NOT refuse for missing client details — work with what the RM gave you.
     - Append the **standard verification footer** (see 5.2.1.6) to every answer of this type.
-  - [ ] **5.2.1.5** Extrapolation rules:
+  - [x] **5.2.1.5** Extrapolation rules:
     - "Expected return / will X outperform" questions → extrapolate from historical patterns: "Based on its 3Y CAGR of 15%, if the pattern continued, ~15%." Show the historical metric backing the extrapolation.
     - When useful, show variability too (std dev, range across recent periods) so the RM sees the uncertainty.
     - Append the **standard verification footer**.
-  - [ ] **5.2.1.6** **Universal verification footer** — every non-refusal answer ends with this exact line on a new paragraph (after the citation):
+  - [x] **5.2.1.6** **Universal verification footer** — every non-refusal answer ends with this exact line on a new paragraph (after the citation):
     > *"This is research output — please verify against your own analysis before advising clients."*
     No exceptions for "pure factual" answers. The footer exists because parser bugs, SQL fuzzy matches, or stale snapshots can produce wrong numbers/citations that look authoritative; the RM should be primed to verify every output. Refusals do NOT include the footer (a refusal isn't research output).
-  - [ ] **5.2.1.7** Refusal rules — only refuse in these cases:
+  - [x] **5.2.1.7** Refusal rules — only refuse in these cases:
     - `query_db` returns zero rows → "I don't have data for that question." `refusal_reason='no_data'`.
     - `lookup_scheme` returns nothing → "I don't have data for scheme '<name>'." `refusal_reason='unknown_scheme'`.
     - Question is genuinely outside the research data — tax law, individual stock-level analysis (vs the funds' holdings), macro/economy forecasts → "Out of scope; I only answer questions about the funds in our research." `refusal_reason='out_of_scope'`.
     - **Do NOT refuse**: buy/sell calls, recommendations, "should I", client-conditional advice, extrapolations, "best" questions. Answer them with data + footer.
-  - [ ] **5.2.1.8** Citation rule: every numeric answer ends with `Source: <scheme>, as on <as_of_date>`. For multi-fund answers, list each source. Citation comes BEFORE the verification footer.
-  - [ ] **5.2.1.9** Format rule: numeric answers as numbers, percentages with `%`, dates ISO.
+  - [x] **5.2.1.8** Citation rule: every numeric answer ends with `Source: <scheme>, as on <as_of_date>`. For multi-fund answers, list each source. Citation comes BEFORE the verification footer.
+  - [x] **5.2.1.9** Format rule: numeric answers as numbers, percentages with `%`, dates ISO.
 
 ### [ ] 5.3 Tool-use loop
 - [ ] **5.3.1** In `app/chatbot.py`, replace `ask()` with the loop: send messages, if response has tool_calls execute them and append results, send again, max 6 iterations. Hard-stop with refusal if loop exceeds 6.
