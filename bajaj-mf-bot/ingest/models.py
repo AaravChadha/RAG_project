@@ -189,7 +189,11 @@ class Snapshot:
     source_pdf_path: Optional[str] = None
 
     # Convenience: non-DB scratch space for parser-name tracking, not persisted
+    # to fund_snapshots. `scheme_name` is used by ingest_one for schemes-table
+    # lookup; `sub_category` is parsed from the PDF header and is owned by the
+    # `schemes` table (the ingest layer can write it back there if desired).
     scheme_name: Optional[str] = field(default=None, metadata={"persist": False})
+    sub_category: Optional[str] = field(default=None, metadata={"persist": False})
 
     # ------------------------------------------------------------------
     # Helpers
