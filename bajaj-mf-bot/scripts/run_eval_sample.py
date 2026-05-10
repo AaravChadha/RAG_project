@@ -54,6 +54,15 @@ _UNICODE_SPACE_VARIANTS = (
     " ",  # EM SPACE
 )
 
+_UNICODE_DASH_VARIANTS = (
+    "‐",  # HYPHEN
+    "‑",  # NON-BREAKING HYPHEN
+    "‒",  # FIGURE DASH
+    "–",  # EN DASH (Groq gpt-oss-120b emits this for minus signs)
+    "—",  # EM DASH
+    "−",  # MINUS SIGN
+)
+
 
 def _normalize(s: str) -> str:
     """Lower-case + collapse all Unicode space variants down to a regular ASCII space.
@@ -64,6 +73,8 @@ def _normalize(s: str) -> str:
     """
     for ch in _UNICODE_SPACE_VARIANTS:
         s = s.replace(ch, " ")
+    for ch in _UNICODE_DASH_VARIANTS:
+        s = s.replace(ch, "-")
     return s.lower()
 
 
