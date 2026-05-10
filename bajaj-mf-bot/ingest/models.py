@@ -210,6 +210,22 @@ class Snapshot:
     # (ISO date string — may differ from the snapshot's overall as_of_date).
     top_holdings: Optional[list] = field(default=None, metadata={"persist": False})
 
+    # Normalized periodic returns (monthly + FY + CY) parsed from pages 6-7.
+    # Lives in its own `periodic_returns` table — the ingest layer writes
+    # these rows after the snapshot insert returns a snapshot_id. Format:
+    # list[dict] with keys "period_type" ("monthly"|"fy"|"cy"), "period_label"
+    # (str like "2025-05", "FY 24", "CY 23"), "return_pct" (Optional[float]).
+    # None ⇒ section absent entirely.
+    periodic_returns: Optional[list] = field(default=None, metadata={"persist": False})
+
+    # Full per-security holdings (~50-200 rows) parsed from the multi-page
+    # "Detailed Portfolio" block. Lives in its own `holdings` table. Format:
+    # list[dict] with keys "security_name", "weight_pct", "sector",
+    # "market_cap", "instrument_type", "risk_rating", "investment_style",
+    # "held_since" (ISO date str or None). Same security can appear twice
+    # with different instrument_type — duplicates are intentional, NOT deduped.
+    full_holdings: Optional[list] = field(default=None, metadata={"persist": False})
+
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------

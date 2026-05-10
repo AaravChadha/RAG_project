@@ -1417,6 +1417,27 @@ def parse_risk_rating(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot
 
 
 # ---------------------------------------------------------------------------
+# Section parsers 3.2.11 – 3.2.14
+# ---------------------------------------------------------------------------
+#
+# Factored into `ingest/_section_parsers.py` to keep this file under the
+# 1700-line guidance from the Phase 3 task spec. The four parsers below
+# share helpers (`_to_float`, `_parse_date_flex`, page-2 word helpers)
+# with the parsers above, which they import lazily at module load time.
+#
+# The dispatch list below references them by reference so callers see no
+# difference vs. the in-file parsers.
+
+from ingest._section_parsers import (  # noqa: E402
+    parse_market_cap_composition,
+    parse_investment_style,
+    parse_periodic_returns,
+    parse_holdings_full,
+)
+
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -1435,7 +1456,10 @@ SECTION_PARSERS: List[
     parse_composition,
     parse_drawdown,
     parse_risk_rating,
-    # ... more sections will be added in subsequent tasks (3.2.11 onwards)
+    parse_market_cap_composition,
+    parse_investment_style,
+    parse_periodic_returns,
+    parse_holdings_full,
 ]
 
 
