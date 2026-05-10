@@ -20,7 +20,7 @@ PDF_ROOT = BASE_DIR / "data" / "pdfs"
 SCHEMES_CSV = BASE_DIR.parent / "schemes_master.csv"
 
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")
-LLM_MODEL = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
+LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
 
 PARSER_VERSION = "0.1-spine"
 
