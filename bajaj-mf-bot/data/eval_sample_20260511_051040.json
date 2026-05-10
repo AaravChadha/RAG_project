@@ -1,0 +1,198 @@
+{
+  "sample_ids": [
+    "Q01",
+    "Q05",
+    "Q11",
+    "Q15",
+    "Q19",
+    "Q22",
+    "Q26",
+    "Q32",
+    "Q35",
+    "Q40"
+  ],
+  "results": [
+    {
+      "id": "Q01",
+      "category": "single-fund-single-field",
+      "question": "What is the expense ratio of Canara Robeco Multi Cap Fund?",
+      "answer": "Expense ratio: **1.85%**  \nFund AUM (cr): **\u20b94,679.32\u202fcrore**  \nData as of: **2026\u201105\u201104**  \n\nSource: Canara Robeco Multi Cap Fund, as on 2026-05-04  \n\nThis is research output \u2014 please verify against your own analysis before advising clients.",
+      "passed": true,
+      "reason": "all substrings present",
+      "latency_s": 1.75,
+      "expected_answer_contains": [
+        "1.85",
+        "Canara Robeco",
+        "as on",
+        "2026-05-04",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q05",
+      "category": "cross-fund-ranking",
+      "question": "Rank our 3 recommended funds by 1Y return, highest first.",
+      "answer": "Could you let me know which three funds you\u2019d like ranked? Please provide their names (or parts of the names), and I\u2019ll order them by 1\u2011year return.",
+      "passed": false,
+      "reason": "missing substrings: ['DSP Multi Asset', '21.99', 'Canara Robeco', '6.65', 'Aditya Birla', '5.77', 'as on', 'verify against your own']",
+      "latency_s": 0.5,
+      "expected_answer_contains": [
+        "DSP Multi Asset",
+        "21.99",
+        "Canara Robeco",
+        "6.65",
+        "Aditya Birla",
+        "5.77",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q11",
+      "category": "side-by-side-comparison",
+      "question": "Compare Canara Robeco Multi Cap vs Aditya Birla SL Arbitrage on Sharpe, expense ratio, and 1Y return.",
+      "answer": "**Comparison of Canura Robeco Multi Cap Fund vs. Aditya\u202fBirla\u202fSL\u202fArbitrage Fund**\n\n| Metric (as of 2026\u201105\u201104) | Canara\u202fRobeco\u202fMulti\u202fCap | Aditya\u202fBirla\u202fSL\u202fArbitrage |\n|---|---|---|\n| 1\u2011Year Return | **6.65\u202f%** | **5.77\u202f%** |\n| Sharpe (1\u2011Y) | **\u20110.01** | **\u20115.02** |\n| Sharpe (3\u2011Y) | not available (fund age <\u202f3\u202fyr) | not available (fund age <\u202f3\u202fyr) |\n| Expense Ratio | **1.85\u202f%** | **1.03\u202f%** |\n\n*Both funds show negative 1\u2011year Sharpe ratios, indicating that risk\u2011adjusted performance has lagged the risk\u2011free rate over the past year. The Arbitrage fund has a lower expense ratio, but its Sharpe is markedly worse.*\n\nSource: Canara Robeco Multi Cap Fund, as on 2026-05-04  \nSource: Aditya Birla SL Arbitrage Fund, as on 2026-05-04  \n\nThis is research output \u2014 please verify against your own analysis before advising clients.",
+      "passed": true,
+      "reason": "all substrings present",
+      "latency_s": 1.79,
+      "expected_answer_contains": [
+        "Canara Robeco",
+        "Aditya Birla",
+        "1.85",
+        "1.03",
+        "6.65",
+        "5.77",
+        "-0.01",
+        "-5.02",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q15",
+      "category": "shortlist-suggestion",
+      "question": "Suggest 3 funds with low expense ratio and decent 1Y returns from our recommended list.",
+      "answer": "**Suggested shortlist (low expense\u202f\u2264\u202f0.5\u202f%\u202fand 1\u2011year return\u202f\u2265\u202f5\u202f%)**\n\n| Fund | Expense\u202fratio | 1\u2011Y\u202freturn | Sharpe\u202f1Y | Std\u202fdev\u202f1Y | AUM (Cr\u202f\u20b9) |\n|------|---------------|-----------|-----------|------------|------------|\n| Bandhan Income Plus Arbitrage Fund of Funds | 0.29\u202f% | 5.3\u202f% | \u20132.54 | 0.72\u202f% | 1,592.5 |\n| SBI Income Plus Arbitrage Active Fund of Funds | 0.29\u202f% | 5.06\u202f% | \u20133.23 | 0.76\u202f% | 1,834.28 |\n| Kotak Income Plus Arbitrage Fund of Funds | 0.32\u202f% | 5.23\u202f% | \u20131.92 | 0.96\u202f% | 7,699.44 |\n\n**Why these fit the brief**\n\n* **Expense ratio:** All three are well below 0.5\u202f%, the lowest\u2011cost arbitrage\u2011style funds in the current snapshot.  \n* **1\u2011year return:** Each delivered >5\u202f% nominal return, which is a respectable \u201cdecent\u201d figure for the past year given the low\u2011cost mandate.  \n* **Risk profile:** Std\u202fdev\u202f\u2248\u202f0.7\u20111\u202f% indicates very low volatility, typical of income\u2011plus arbitrage funds. However, Sharpe ratios are negative, signalling that risk\u2011adjusted performance lagged the risk\u2011free benchmark \u2013 an important caveat for risk\u2011aware clients.  \n* **Scale:** AUM ranges from ~\u20b91,600\u202fCr to ~\u20b97,700\u202fCr, providing sufficient size for liquidity while still being relatively niche.\n\nThese three funds give you the cheapest expense\u2011ratio options that still produced modest positive returns over the last year. Choose based on client tolerance for the negative risk\u2011adjusted outcome (Sharpe) versus the appeal of very low volatility and cost.\n\nSource: Bandhan Income Plus Arbitrage Fund of Funds, as on 2026-05-04  \nSource: SBI Income Plus Arbitrage Active Fund of Funds, as on 2026-05-05  \nSource: Kotak Income Plus Arbitrage Fund of Funds, as on 2026-05-05  \n\nThis is research output \u2014 please verify against your own analysis before advising clients.",
+      "passed": true,
+      "reason": "all substrings present",
+      "latency_s": 35.89,
+      "expected_answer_contains": [
+        "expense",
+        "1Y",
+        "%",
+        "Fund",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q19",
+      "category": "recommendation",
+      "question": "Is Aditya Birla SL Arbitrage Fund a buy right now?",
+      "answer": "I couldn't complete the analysis (model returned a malformed tool call). Try rephrasing the question.",
+      "passed": false,
+      "reason": "missing substrings: ['Aditya Birla', '1.03', '5.77', '0.27', 'as on', 'verify against your own']",
+      "latency_s": 30.75,
+      "expected_answer_contains": [
+        "Aditya Birla",
+        "1.03",
+        "5.77",
+        "0.27",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q22",
+      "category": "conditional-client-profile",
+      "question": "For a risk-averse client with a 1-year horizon, which of our recommended funds suits best?",
+      "answer": "**Shortlist for a risk\u2011averse client with a 1\u2011year horizon**\n\n| Fund (canonical name) | 1\u2011yr return | 1\u2011yr Sharpe* | 1\u2011yr\u202fStd\u202fDev | Expense ratio | AUM (cr) |\n|-----------------------|------------|--------------|-------------|---------------|----------|\n| Kotak Arbitrage Fund | 5.92\u202f% | \u20134.87 | 0.26\u202f% | 0.97\u202f% | 67\u202f116.51 |\n| Aditya\u202fBirla\u202fSL\u202fArbitrage Fund | 5.77\u202f% | \u20135.02 | 0.27\u202f% | 1.03\u202f% | 25\u202f064.55 |\n| Invesco India Arbitrage Fund | 5.98\u202f% | \u20134.40 | 0.28\u202f% | 1.06\u202f% | 26\u202f370.10 |\n\n\\*Sharpe is negative because the fund\u2019s return over the past year has been only slightly above the risk\u2011free rate while the volatility is very low; the metric still helps gauge risk\u2011adjusted performance.\n\n**Why these funds fit a risk\u2011averse, short\u2011term profile**\n\n* **Very low volatility** \u2013 All three have 1\u2011yr standard deviations under 0.30\u202f%, the lowest in our current universe. This means their NAVs move very little day\u2011to\u2011day, suiting a client who cannot tolerate swings.\n* **Modest positive returns** \u2013 1\u2011yr returns sit around 5\u20116\u202f%, comfortably above typical savings\u2011account rates while still being generated by low\u2011risk arbitrage strategies.\n* **Reasonable cost** \u2013 Expense ratios are below 1.1\u202f%, comparable to other low\u2011vol funds.\n* **Scale** \u2013 Kotak Arbitrage has the largest AUM, indicating good liquidity and operational stability.\n\n**Recommended fund**\n\n**Kotak Arbitrage Fund** stands out as the best single choice:\n\n* Lowest 1\u2011yr standard deviation (0.26\u202f%) \u2192 the least price\u2011movement risk.\n* Highest 1\u2011yr return among the three (5.92\u202f%).\n* Expense ratio of 0.97\u202f% is modest for an arbitrage fund.\n* Large AUM (\u2248\u202f\u20b967\u202fk\u202fcr) ensures ease of entry/exit and stable management.\n\nIf the client prefers a slightly cheaper expense ratio and can tolerate a marginally higher volatility, the **Bandhan Income\u202fPlus\u202fArbitrage Fund of Funds** (Std\u202fDev\u202f0.72\u202f%, Return\u202f5.30\u202f%, Expense\u202f0.29\u202f%) is an alternative, though its volatility is about three times higher than the top three arbitrage funds.\n\n---\n\nSource: Kotak Arbitrage Fund, as on 2026-05-05  \nSource: Aditya Birla SL Arbitrage Fund, as on 2026-05-04  \nSource: Invesco India Arbitrage Fund, as on 2026-05-05  \n\nThis is research output \u2014 please verify against your own analysis before advising clients.",
+      "passed": true,
+      "reason": "all substrings present",
+      "latency_s": 19.27,
+      "expected_answer_contains": [
+        "Aditya Birla",
+        "0.27",
+        "5.77",
+        "1.03",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q26",
+      "category": "extrapolation",
+      "question": "If Canara Robeco Multi Cap's 1Y CAGR pattern continued, what return should I expect?",
+      "answer": "Based on the latest snapshot, Canara\u202fRobeco\u202fMulti\u202fCap Fund posted a 1\u2011year return of **6.65\u202f%**.  \nIf that 1\u2011year CAGR persists, a reasonable expectation for the next year\u2019s return would be roughly **6.6\u202f%** (the same as the observed 1\u2011year performance).\n\nSupporting snapshot (latest available):\n\n| Metric            | Value |\n|-------------------|-------|\n| 1\u2011Y Return        | 6.65\u202f% |\n| 1\u2011Y Sharpe        | \u20130.01 |\n| 1\u2011Y Std\u202fDev       | 17.66\u202f% |\n| Expense Ratio     | 1.85\u202f% |\n| AUM (cr)          | 4,679.32\u202fcr |\n| As\u2011of date        | 2026\u201105\u201104 |\n\nThe expectation assumes the fund can maintain the same growth trajectory and risk profile seen over the past year.\n\nSource: Canara Robeco Multi Cap Fund, as on 2026-05-04  \n\nThis is research output \u2014 please verify against your own analysis before advising clients.",
+      "passed": true,
+      "reason": "all substrings present",
+      "latency_s": 25.83,
+      "expected_answer_contains": [
+        "Canara Robeco",
+        "6.65",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q32",
+      "category": "holdings-lookup",
+      "question": "Which of our recommended funds hold HDFC Bank?",
+      "answer": "I couldn't complete the analysis. The model didn't reach a final answer within the allowed tool-use steps.",
+      "passed": false,
+      "reason": "missing substrings: ['HDFC Bank', 'as on', 'verify against your own']",
+      "latency_s": 83.25,
+      "expected_answer_contains": [
+        "HDFC Bank",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q35",
+      "category": "sector-tilt",
+      "question": "Show me the top 3 sector exposures for DSP Multi Asset Allocation Fund.",
+      "answer": "**Top 3 sector exposures for DSP Multi Asset Allocation Fund**\n\n| Rank | Sector            | Weight |\n|------|-------------------|--------|\n| 1    | Others            | 32.89\u202f% |\n| 2    | Financial Services| 10.00\u202f% |\n| 3    | Government        | 8.37\u202f% |\n\nSource: DSP Multi Asset Allocation Fund, as on 2026-05-04  \n\nThis is research output \u2014 please verify against your own analysis before advising clients.",
+      "passed": true,
+      "reason": "all substrings present",
+      "latency_s": 15.7,
+      "expected_answer_contains": [
+        "DSP Multi Asset",
+        "as on",
+        "verify against your own"
+      ],
+      "must_refuse": false,
+      "expected_refusal_reason": null
+    },
+    {
+      "id": "Q40",
+      "category": "refusal",
+      "question": "What is the LTCG tax rate on equity mutual funds in India this financial year?",
+      "answer": "Out of scope; I only answer questions about the funds in our research.",
+      "passed": true,
+      "reason": "refusal_reason actual='out_of_scope' expected='out_of_scope'",
+      "latency_s": 1.35,
+      "expected_answer_contains": [
+        "Out of scope"
+      ],
+      "must_refuse": true,
+      "expected_refusal_reason": "out_of_scope"
+    }
+  ]
+}
