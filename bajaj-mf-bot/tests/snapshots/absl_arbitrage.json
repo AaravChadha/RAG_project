@@ -1,0 +1,2464 @@
+{
+  "as_of_date": "2026-05-04",
+  "avg_mkt_cap_cr": 245513.59,
+  "benchmark": "Nifty 50 Arbitrage TRI",
+  "beta_1y": 0.83,
+  "beta_3y": 0.66,
+  "composition_json": {
+    "Cash": 5.27,
+    "Debt": 37.2,
+    "Derivative": -0.41,
+    "Equity": 57.94
+  },
+  "exit_load": "0.25% IF REDEEMED/SWITCHED OUT UNITS WITHIN 30 DAYS FROM THE DATE OF ALLOTMENT.",
+  "expense_ratio": 1.03,
+  "full_holdings": [
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Mutual Fund",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": "Others",
+      "security_name": "Manager Fund - Dir (G)",
+      "weight_pct": 11.35
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 5.52
+    },
+    {
+      "held_since": "2024-04-30",
+      "instrument_type": "Mutual Fund",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": "Others",
+      "security_name": "Aditya Birla Sl Floating Rate Fund-Direct (G)",
+      "weight_pct": 4.2
+    },
+    {
+      "held_since": null,
+      "instrument_type": "Others",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Net CA & O",
+      "sector": null,
+      "security_name": "Cash & Cash Equivalent",
+      "weight_pct": 3.9
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Reliance Industries Ltd",
+      "weight_pct": 3.85
+    },
+    {
+      "held_since": "2024-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Icici Bank Ltd",
+      "weight_pct": 2.85
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Mutual Fund",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": "Others",
+      "security_name": "Aditya Birla Sl Liquid Fund - Direct (G)",
+      "weight_pct": 2.53
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Axis Bank Ltd",
+      "weight_pct": 2.4
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 1.87
+    },
+    {
+      "held_since": "2022-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Telecommunication",
+      "security_name": "Vodafone Idea Ltd",
+      "weight_pct": 1.53
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Small Industries Development Bank Of India Ltd",
+      "weight_pct": 1.41
+    },
+    {
+      "held_since": "2023-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Kotak Mahindra Bank Ltd",
+      "weight_pct": 1.38
+    },
+    {
+      "held_since": null,
+      "instrument_type": "Debt - Other",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": null,
+      "security_name": "Reverse Repo / Treps / Ccil",
+      "weight_pct": 1.37
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "National Bank For Agriculture & Rural Development",
+      "weight_pct": 1.32
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Small Industries Development Bank Of India Ltd",
+      "weight_pct": 1.32
+    },
+    {
+      "held_since": "2024-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Telecommunication",
+      "security_name": "Indus Towers Ltd",
+      "weight_pct": 1.21
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "National Bank For Agriculture & Rural Development",
+      "weight_pct": 1.13
+    },
+    {
+      "held_since": "2024-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Mahindra & Mahindra Ltd",
+      "weight_pct": 1.11
+    },
+    {
+      "held_since": "2024-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Maruti Suzuki India Ltd",
+      "weight_pct": 1.1
+    },
+    {
+      "held_since": "2025-04-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Services",
+      "security_name": "Eternal Ltd",
+      "weight_pct": 1.09
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Steel Authority Of India Ltd",
+      "weight_pct": 1.06
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Multi Commodity Exchange Of India Ltd",
+      "weight_pct": 1.01
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Canara Bank",
+      "weight_pct": 0.99
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Punjab National Bank",
+      "weight_pct": 0.99
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Export-Import Bank Of India",
+      "weight_pct": 0.99
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Canara Bank",
+      "weight_pct": 0.94
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 0.93
+    },
+    {
+      "held_since": "2023-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Jsw Steel Ltd",
+      "weight_pct": 0.93
+    },
+    {
+      "held_since": "2023-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Telecommunication",
+      "security_name": "Bharti Airtel Ltd",
+      "weight_pct": 0.89
+    },
+    {
+      "held_since": "2024-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Bharat Electronics Ltd",
+      "weight_pct": 0.88
+    },
+    {
+      "held_since": "2025-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Itc Ltd",
+      "weight_pct": 0.87
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Punjab National Bank",
+      "weight_pct": 0.85
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Union Bank Of India",
+      "weight_pct": 0.79
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Construction",
+      "security_name": "Larsen & Toubro Ltd",
+      "weight_pct": 0.79
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Aurobindo Pharma Ltd",
+      "weight_pct": 0.76
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "National Bank For Agriculture & Rural Development",
+      "weight_pct": 0.75
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "National Bank For Agriculture & Rural Development",
+      "weight_pct": 0.75
+    },
+    {
+      "held_since": "2024-12-31",
+      "instrument_type": "Mutual Fund",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": "Others",
+      "security_name": "Aditya Birla Sl Crisil-Ibx Financial Services 3To6 Months Debt If-Dir (G)",
+      "weight_pct": 0.74
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Ntpc Ltd",
+      "weight_pct": 0.71
+    },
+    {
+      "held_since": "2022-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Nmdc Ltd",
+      "weight_pct": 0.7
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Britannia Industries Ltd",
+      "weight_pct": 0.67
+    },
+    {
+      "held_since": "2025-04-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Hindustan Zinc Ltd",
+      "weight_pct": 0.65
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Jio Financial Services Ltd",
+      "weight_pct": 0.61
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Tata Steel Ltd",
+      "weight_pct": 0.6
+    },
+    {
+      "held_since": "2024-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Construction Materials",
+      "security_name": "Grasim Industries Ltd",
+      "weight_pct": 0.6
+    },
+    {
+      "held_since": "2024-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Durables",
+      "security_name": "Titan Company Ltd",
+      "weight_pct": 0.55
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Apollo Hospitals Enterprise Ltd",
+      "weight_pct": 0.53
+    },
+    {
+      "held_since": "2023-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Shriram Finance Ltd",
+      "weight_pct": 0.53
+    },
+    {
+      "held_since": "2022-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bajaj Finserv Ltd",
+      "weight_pct": 0.52
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "United Spirits Ltd",
+      "weight_pct": 0.52
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Oil & Natural Gas Corpn Ltd",
+      "weight_pct": 0.52
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Apl Apollo Tubes Ltd",
+      "weight_pct": 0.5
+    },
+    {
+      "held_since": "2023-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Vedanta Ltd",
+      "weight_pct": 0.5
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Patanjali Foods Ltd",
+      "weight_pct": 0.47
+    },
+    {
+      "held_since": "2024-02-29",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Power Grid Corporation Of India Ltd",
+      "weight_pct": 0.46
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Glenmark Pharmaceuticals Ltd",
+      "weight_pct": 0.44
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Adani Enterprises Ltd",
+      "weight_pct": 0.42
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Sammaan Capital Ltd",
+      "weight_pct": 0.41
+    },
+    {
+      "held_since": "2025-04-30",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "AA+",
+      "sector": "Others",
+      "security_name": "Muthoot Finance Ltd",
+      "weight_pct": 0.4
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "AAA",
+      "sector": "Financial Services",
+      "security_name": "Hdb Financial Services Ltd",
+      "weight_pct": 0.4
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Yes Bank Ltd",
+      "weight_pct": 0.4
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Bharat Heavy Electricals Ltd",
+      "weight_pct": 0.39
+    },
+    {
+      "held_since": "2025-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Sun Pharmaceutical Industries Ltd",
+      "weight_pct": 0.39
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 0.38
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 0.37
+    },
+    {
+      "held_since": "2023-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "State Bank Of India",
+      "weight_pct": 0.37
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Canara Bank",
+      "weight_pct": 0.37
+    },
+    {
+      "held_since": "2025-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Rbl Bank Ltd",
+      "weight_pct": 0.37
+    },
+    {
+      "held_since": "2023-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Hindalco Industries Ltd",
+      "weight_pct": 0.36
+    },
+    {
+      "held_since": "2024-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Tvs Motor Company Ltd",
+      "weight_pct": 0.36
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "One 97 Communications Ltd",
+      "weight_pct": 0.35
+    },
+    {
+      "held_since": "2023-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Gail (India) Ltd",
+      "weight_pct": 0.34
+    },
+    {
+      "held_since": "2024-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Aditya Birla Capital Ltd",
+      "weight_pct": 0.33
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bandhan Bank Ltd",
+      "weight_pct": 0.33
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Services",
+      "security_name": "Adani Ports & Special Economic Zone Ltd",
+      "weight_pct": 0.33
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Services",
+      "security_name": "Gmr Airports Ltd",
+      "weight_pct": 0.32
+    },
+    {
+      "held_since": "2024-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Marico Ltd",
+      "weight_pct": 0.32
+    },
+    {
+      "held_since": "2024-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Construction Materials",
+      "security_name": "Ultratech Cement Ltd",
+      "weight_pct": 0.32
+    },
+    {
+      "held_since": "2024-04-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Realty",
+      "security_name": "Dlf Ltd",
+      "weight_pct": 0.31
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Hindustan Aeronautics Ltd",
+      "weight_pct": 0.3
+    },
+    {
+      "held_since": "2025-04-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Pnb Housing Finance Ltd",
+      "weight_pct": 0.29
+    },
+    {
+      "held_since": "2023-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bank Of Baroda",
+      "weight_pct": 0.29
+    },
+    {
+      "held_since": "2024-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Eicher Motors Ltd",
+      "weight_pct": 0.29
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Export-Import Bank Of India",
+      "weight_pct": 0.28
+    },
+    {
+      "held_since": "2022-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Lic Housing Finance Ltd",
+      "weight_pct": 0.28
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Cholamandalam Investment & Finance Company Ltd",
+      "weight_pct": 0.28
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Max Healthcare Institute Ltd",
+      "weight_pct": 0.27
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bajaj Finance Ltd",
+      "weight_pct": 0.26
+    },
+    {
+      "held_since": "2024-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Durables",
+      "security_name": "Crompton Greaves Consumer Electricals Ltd",
+      "weight_pct": 0.26
+    },
+    {
+      "held_since": "2022-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Indusind Bank Ltd",
+      "weight_pct": 0.26
+    },
+    {
+      "held_since": "2025-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Chemicals",
+      "security_name": "Upl Ltd",
+      "weight_pct": 0.26
+    },
+    {
+      "held_since": "2025-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Au Small Finance Bank Ltd",
+      "weight_pct": 0.24
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Adani Energy Solutions Ltd",
+      "weight_pct": 0.24
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Tata Power Company Ltd",
+      "weight_pct": 0.24
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Canara Bank",
+      "weight_pct": 0.24
+    },
+    {
+      "held_since": "2024-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Nestle India Ltd",
+      "weight_pct": 0.23
+    },
+    {
+      "held_since": "2024-02-29",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Realty",
+      "security_name": "Godrej Properties Ltd",
+      "weight_pct": 0.23
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Punjab National Bank",
+      "weight_pct": 0.23
+    },
+    {
+      "held_since": "2024-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Information Technology",
+      "security_name": "Coforge Ltd",
+      "weight_pct": 0.23
+    },
+    {
+      "held_since": "2025-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Alkem Laboratories Ltd",
+      "weight_pct": 0.23
+    },
+    {
+      "held_since": "2024-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Hdfc Life Insurance Company Ltd",
+      "weight_pct": 0.22
+    },
+    {
+      "held_since": "2022-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Biocon Ltd",
+      "weight_pct": 0.22
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Pb Fintech Ltd",
+      "weight_pct": 0.22
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Sona Blw Precision Forgings Ltd",
+      "weight_pct": 0.22
+    },
+    {
+      "held_since": "2024-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Divis Laboratories Ltd",
+      "weight_pct": 0.21
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bank Of India",
+      "weight_pct": 0.21
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Exide Industries Ltd",
+      "weight_pct": 0.2
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Ashok Leyland Ltd",
+      "weight_pct": 0.2
+    },
+    {
+      "held_since": "2025-06-30",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "AA+",
+      "sector": "Others",
+      "security_name": "Muthoot Finance Ltd",
+      "weight_pct": 0.2
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Realty",
+      "security_name": "Lodha Developers Ltd",
+      "weight_pct": 0.2
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 0.2
+    },
+    {
+      "held_since": "2023-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Bharat Petroleum Corporation Ltd",
+      "weight_pct": 0.19
+    },
+    {
+      "held_since": "2023-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Sbi Life Insurance Company Ltd",
+      "weight_pct": 0.19
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Construction Materials",
+      "security_name": "Ambuja Cements Ltd",
+      "weight_pct": 0.19
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Bank Of Baroda",
+      "weight_pct": 0.19
+    },
+    {
+      "held_since": "2024-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Indian Oil Corporation Ltd",
+      "weight_pct": 0.19
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "National Aluminium Company Ltd",
+      "weight_pct": 0.19
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Durables",
+      "security_name": "Asian Paints Ltd",
+      "weight_pct": 0.18
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Mazagon Dock Shipbuilders Ltd",
+      "weight_pct": 0.17
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Construction",
+      "security_name": "Nbcc (India) Ltd",
+      "weight_pct": 0.16
+    },
+    {
+      "held_since": "2025-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Jsw Energy Ltd",
+      "weight_pct": 0.16
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Durables",
+      "security_name": "Kalyan Jewellers India Ltd",
+      "weight_pct": 0.15
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Federal Bank Ltd",
+      "weight_pct": 0.15
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Hdfc Asset Management Company Ltd",
+      "weight_pct": 0.15
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Chemicals",
+      "security_name": "Solar Industries India Ltd",
+      "weight_pct": 0.15
+    },
+    {
+      "held_since": "2025-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Max Financial Services Ltd",
+      "weight_pct": 0.15
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Kaynes Technology India Ltd",
+      "weight_pct": 0.13
+    },
+    {
+      "held_since": "2025-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Adani Green Energy Ltd",
+      "weight_pct": 0.13
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Varun Beverages Ltd",
+      "weight_pct": 0.11
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Laurus Labs Ltd",
+      "weight_pct": 0.11
+    },
+    {
+      "held_since": "2025-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Idfc First Bank Ltd",
+      "weight_pct": 0.11
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Waaree Energies Ltd",
+      "weight_pct": 0.11
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Cg Power & Industrial Solutions Ltd",
+      "weight_pct": 0.11
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Fortis Healthcare Ltd",
+      "weight_pct": 0.11
+    },
+    {
+      "held_since": "2024-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Cipla Ltd",
+      "weight_pct": 0.1
+    },
+    {
+      "held_since": "2025-07-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "AAA",
+      "sector": "Financial Services",
+      "security_name": "Lic Housing Finance Ltd",
+      "weight_pct": 0.1
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Cholamandalam Investment & Finance Company Ltd",
+      "weight_pct": 0.1
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Debt",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "A1+",
+      "sector": "Others",
+      "security_name": "Export-Import Bank Of India",
+      "weight_pct": 0.1
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Manappuram Finance Ltd",
+      "weight_pct": 0.09
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Cholamandalam Investment & Finance Company Ltd",
+      "weight_pct": 0.09
+    },
+    {
+      "held_since": "2025-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Services",
+      "security_name": "Delhivery Ltd",
+      "weight_pct": 0.09
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Uno Minda Ltd",
+      "weight_pct": 0.09
+    },
+    {
+      "held_since": "2025-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Realty",
+      "security_name": "Prestige Estates Projects Ltd",
+      "weight_pct": 0.09
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Housing & Urban Development Corporation Ltd",
+      "weight_pct": 0.09
+    },
+    {
+      "held_since": "2024-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Icici Prudential Life Insurance Company Ltd",
+      "weight_pct": 0.08
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Hindustan Petroleum Corporation Ltd",
+      "weight_pct": 0.08
+    },
+    {
+      "held_since": "2025-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Hero Motocorp Ltd",
+      "weight_pct": 0.08
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Rec Ltd",
+      "weight_pct": 0.07
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Suzlon Energy Ltd",
+      "weight_pct": 0.07
+    },
+    {
+      "held_since": "2025-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Services",
+      "security_name": "Indian Hotels Co Ltd",
+      "weight_pct": 0.07
+    },
+    {
+      "held_since": "2025-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Cummins India Ltd",
+      "weight_pct": 0.06
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Angel One Ltd",
+      "weight_pct": 0.06
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Realty",
+      "security_name": "Phoenix Mills Ltd",
+      "weight_pct": 0.06
+    },
+    {
+      "held_since": "2024-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Tata Consumer Products Ltd",
+      "weight_pct": 0.05
+    },
+    {
+      "held_since": "2025-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Icici Lombard General Insurance Company Ltd",
+      "weight_pct": 0.05
+    },
+    {
+      "held_since": "2025-12-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bajaj Holdings & Investment Ltd",
+      "weight_pct": 0.05
+    },
+    {
+      "held_since": "2024-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Information Technology",
+      "security_name": "Mphasis Ltd",
+      "weight_pct": 0.05
+    },
+    {
+      "held_since": "2025-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Hitachi Energy India Ltd",
+      "weight_pct": 0.04
+    },
+    {
+      "held_since": "2023-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Information Technology",
+      "security_name": "Tata Consultancy Services Ltd",
+      "weight_pct": 0.04
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Durables",
+      "security_name": "Havells India Ltd",
+      "weight_pct": 0.04
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Indian Energy Exchange Ltd",
+      "weight_pct": 0.04
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Power Finance Corporation Ltd",
+      "weight_pct": 0.04
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Textiles",
+      "security_name": "Page Industries Ltd",
+      "weight_pct": 0.04
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Hindustan Unilever Ltd",
+      "weight_pct": 0.03
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Bse Ltd",
+      "weight_pct": 0.03
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Services",
+      "security_name": "Trent Ltd",
+      "weight_pct": 0.03
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Information Technology",
+      "security_name": "Kpit Technologies Ltd",
+      "weight_pct": 0.03
+    },
+    {
+      "held_since": "2022-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Zydus Lifesciences Ltd",
+      "weight_pct": 0.03
+    },
+    {
+      "held_since": "2025-04-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Information Technology",
+      "security_name": "Tata Technologies Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Services",
+      "security_name": "Fsn E-Commerce Ventures Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2025-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Services",
+      "security_name": "Interglobe Aviation Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Dabur India Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2025-10-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Godrej Consumer Products Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2022-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Metals & Mining",
+      "security_name": "Jindal Steel Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2023-06-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Oil, Gas & Consumable Fuels",
+      "security_name": "Coal India Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2023-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Blend",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Chemicals",
+      "security_name": "Srf Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2025-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Inox Wind Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2025-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Construction Materials",
+      "security_name": "Dalmia Bharat Ltd",
+      "weight_pct": 0.02
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Tube Investments Of India Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2023-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Services",
+      "security_name": "Container Corporation Of India Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Capital Goods",
+      "security_name": "Supreme Industries Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Growth",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Consumer Services",
+      "security_name": "Info Edge (India) Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Mankind Pharma Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2025-07-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Lupin Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2024-11-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Bosch Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2023-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Chemicals",
+      "security_name": "Pidilite Industries Ltd",
+      "weight_pct": 0.01
+    },
+    {
+      "held_since": "2024-08-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Samvardhana Motherson International Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": "2025-08-31",
+      "instrument_type": "Equity",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": "Others",
+      "security_name": "Tvs Motor Company Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": "2024-09-30",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Automobile And Auto Components",
+      "security_name": "Tata Motors Passenger Vehicles Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": "2026-02-28",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Power",
+      "security_name": "Nhpc Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": "2026-03-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Mid Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Fast Moving Consumer Goods",
+      "security_name": "Colgate-Palmolive (India) Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": "2026-01-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Large Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Healthcare",
+      "security_name": "Dr Reddys Laboratories Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": "2025-05-31",
+      "instrument_type": "Equity",
+      "investment_style": "Value",
+      "market_cap": "Small Cap",
+      "risk_rating": "EQUITY",
+      "sector": "Financial Services",
+      "security_name": "Computer Age Management Services Ltd",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": null,
+      "instrument_type": "Others",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": null,
+      "security_name": "Cash & Bank Balance",
+      "weight_pct": 0.0
+    },
+    {
+      "held_since": null,
+      "instrument_type": "Derivatives",
+      "investment_style": null,
+      "market_cap": null,
+      "risk_rating": "Unrated",
+      "sector": null,
+      "security_name": "Margin (Future And Options)",
+      "weight_pct": -0.41
+    },
+    {
+      "held_since": null,
+      "instrument_type": "2023",
+      "investment_style": "2025",
+      "market_cap": "2022",
+      "risk_rating": "2024",
+      "sector": "2021",
+      "security_name": "0% 2019",
+      "weight_pct": 2020.0
+    },
+    {
+      "held_since": null,
+      "instrument_type": "2023",
+      "investment_style": "2025",
+      "market_cap": "2022",
+      "risk_rating": "2024",
+      "sector": "2021",
+      "security_name": "0% 2019",
+      "weight_pct": 2020.0
+    },
+    {
+      "held_since": null,
+      "instrument_type": "2023",
+      "investment_style": "2025",
+      "market_cap": "2022",
+      "risk_rating": "2024",
+      "sector": "2021",
+      "security_name": "0% 2019",
+      "weight_pct": 2020.0
+    }
+  ],
+  "fund_age": "16Y 9M",
+  "fund_aum_cr": 25064.55,
+  "fund_managers_json": [
+    {
+      "experience_years": 3,
+      "name": "Krina Mehta",
+      "qualification": "CA",
+      "role": "Equity"
+    },
+    {
+      "experience_years": 10,
+      "name": "Lovelish Solanki",
+      "qualification": "MMS (Finance), BMS (Finance)",
+      "role": "Equity"
+    },
+    {
+      "experience_years": 11,
+      "name": "Mohit Sharma",
+      "qualification": "B Tech (IIT - Madras) and PGDCM (IIM Calcutta)",
+      "role": "Debt"
+    }
+  ],
+  "inception_date": "2009-07-24",
+  "info_ratio_1y": -4.4,
+  "info_ratio_3y": -2.57,
+  "investment_style_json": {
+    "Large Cap_Blend": 4.03,
+    "Large Cap_Growth": 12.25,
+    "Large Cap_Value": 23.74,
+    "Mid Cap_Blend": 0.62,
+    "Mid Cap_Growth": 0.96,
+    "Mid Cap_Value": 13.47,
+    "Small Cap_Blend": null,
+    "Small Cap_Growth": null,
+    "Small Cap_Value": 2.87
+  },
+  "large_cap_pct": 40.02,
+  "median_mkt_cap_cr": 92416.61,
+  "mid_cap_pct": 15.04,
+  "min_investment": "One Thousand Only",
+  "modified_duration": 0.71,
+  "overview": "To generate income by investing predominantly in equity and equity related instruments. Scheme intends to take advantage from the price differentials / mis-pricing prevailing for stock / index in various market segments (Cash & Future).",
+  "parse_errors_json": [
+    {
+      "error": "mkt cap composition sum 57.93 not within 100±5.0",
+      "section": "invariant:mkt_cap_composition_sums_to_100"
+    }
+  ],
+  "parser_version": "0.1-spine",
+  "periodic_returns": [
+    {
+      "period_label": "2025-05",
+      "period_type": "monthly",
+      "return_pct": 0.4
+    },
+    {
+      "period_label": "2025-06",
+      "period_type": "monthly",
+      "return_pct": 0.56
+    },
+    {
+      "period_label": "2025-07",
+      "period_type": "monthly",
+      "return_pct": 0.5
+    },
+    {
+      "period_label": "2025-08",
+      "period_type": "monthly",
+      "return_pct": 0.38
+    },
+    {
+      "period_label": "2025-09",
+      "period_type": "monthly",
+      "return_pct": 0.35
+    },
+    {
+      "period_label": "2025-10",
+      "period_type": "monthly",
+      "return_pct": 0.49
+    },
+    {
+      "period_label": "2025-11",
+      "period_type": "monthly",
+      "return_pct": 0.53
+    },
+    {
+      "period_label": "2025-12",
+      "period_type": "monthly",
+      "return_pct": 0.57
+    },
+    {
+      "period_label": "2026-01",
+      "period_type": "monthly",
+      "return_pct": 0.55
+    },
+    {
+      "period_label": "2026-02",
+      "period_type": "monthly",
+      "return_pct": 0.43
+    },
+    {
+      "period_label": "2026-03",
+      "period_type": "monthly",
+      "return_pct": 0.49
+    },
+    {
+      "period_label": "2026-04",
+      "period_type": "monthly",
+      "return_pct": 0.4
+    },
+    {
+      "period_label": "FY 10",
+      "period_type": "fy",
+      "return_pct": 2.27
+    },
+    {
+      "period_label": "FY 11",
+      "period_type": "fy",
+      "return_pct": 5.9
+    },
+    {
+      "period_label": "FY 12",
+      "period_type": "fy",
+      "return_pct": 7.49
+    },
+    {
+      "period_label": "FY 13",
+      "period_type": "fy",
+      "return_pct": 7.4
+    },
+    {
+      "period_label": "FY 14",
+      "period_type": "fy",
+      "return_pct": 10.44
+    },
+    {
+      "period_label": "FY 15",
+      "period_type": "fy",
+      "return_pct": 7.91
+    },
+    {
+      "period_label": "FY 16",
+      "period_type": "fy",
+      "return_pct": 6.62
+    },
+    {
+      "period_label": "FY 17",
+      "period_type": "fy",
+      "return_pct": 6.29
+    },
+    {
+      "period_label": "FY 18",
+      "period_type": "fy",
+      "return_pct": 5.85
+    },
+    {
+      "period_label": "FY 19",
+      "period_type": "fy",
+      "return_pct": 5.84
+    },
+    {
+      "period_label": "FY 20",
+      "period_type": "fy",
+      "return_pct": 6.37
+    },
+    {
+      "period_label": "FY 21",
+      "period_type": "fy",
+      "return_pct": 3.46
+    },
+    {
+      "period_label": "FY 22",
+      "period_type": "fy",
+      "return_pct": 3.77
+    },
+    {
+      "period_label": "FY 23",
+      "period_type": "fy",
+      "return_pct": 4.91
+    },
+    {
+      "period_label": "FY 24",
+      "period_type": "fy",
+      "return_pct": 7.54
+    },
+    {
+      "period_label": "FY 25",
+      "period_type": "fy",
+      "return_pct": 7.23
+    },
+    {
+      "period_label": "FY 26",
+      "period_type": "fy",
+      "return_pct": 6.11
+    },
+    {
+      "period_label": "FYTD",
+      "period_type": "fy",
+      "return_pct": 0.43
+    },
+    {
+      "period_label": "CY 09",
+      "period_type": "cy",
+      "return_pct": 1.45
+    },
+    {
+      "period_label": "CY 10",
+      "period_type": "cy",
+      "return_pct": 5.41
+    },
+    {
+      "period_label": "CY 11",
+      "period_type": "cy",
+      "return_pct": 7.12
+    },
+    {
+      "period_label": "CY 12",
+      "period_type": "cy",
+      "return_pct": 7.06
+    },
+    {
+      "period_label": "CY 13",
+      "period_type": "cy",
+      "return_pct": 9.44
+    },
+    {
+      "period_label": "CY 14",
+      "period_type": "cy",
+      "return_pct": 8.38
+    },
+    {
+      "period_label": "CY 15",
+      "period_type": "cy",
+      "return_pct": 7.54
+    },
+    {
+      "period_label": "CY 16",
+      "period_type": "cy",
+      "return_pct": 6.58
+    },
+    {
+      "period_label": "CY 17",
+      "period_type": "cy",
+      "return_pct": 5.61
+    },
+    {
+      "period_label": "CY 18",
+      "period_type": "cy",
+      "return_pct": 6.02
+    },
+    {
+      "period_label": "CY 19",
+      "period_type": "cy",
+      "return_pct": 6.17
+    },
+    {
+      "period_label": "CY 20",
+      "period_type": "cy",
+      "return_pct": 4.03
+    },
+    {
+      "period_label": "CY 21",
+      "period_type": "cy",
+      "return_pct": 3.9
+    },
+    {
+      "period_label": "CY 22",
+      "period_type": "cy",
+      "return_pct": 4.07
+    },
+    {
+      "period_label": "CY 23",
+      "period_type": "cy",
+      "return_pct": 7.08
+    },
+    {
+      "period_label": "CY 24",
+      "period_type": "cy",
+      "return_pct": 7.58
+    },
+    {
+      "period_label": "CY 25",
+      "period_type": "cy",
+      "return_pct": 6.38
+    },
+    {
+      "period_label": "YTD",
+      "period_type": "cy",
+      "return_pct": 1.91
+    }
+  ],
+  "portfolio_div_yield": 0.38,
+  "portfolio_pb": 2.54,
+  "portfolio_pe": 21.17,
+  "r_square_1y": 1.83,
+  "r_square_3y": 1.16,
+  "report_month": "2026-05",
+  "return_10y": 5.71,
+  "return_10y_bm": 5.6,
+  "return_1m": 0.39,
+  "return_1m_bm": 0.44,
+  "return_1y": 5.77,
+  "return_1y_bm": 7.08,
+  "return_2y": 6.57,
+  "return_3m": 1.33,
+  "return_3m_bm": 1.48,
+  "return_3y": 6.87,
+  "return_3y_bm": 7.62,
+  "return_5y": 5.9,
+  "return_5y_bm": 6.44,
+  "return_6m": 2.85,
+  "return_6m_bm": 3.6,
+  "return_since_inception": 6.29,
+  "return_since_inception_bm": 6.29,
+  "revision": 1,
+  "risk_rating_json": {
+    "A1+": 17.29,
+    "Aa+": 0.6,
+    "Aaa": 0.5,
+    "Equity": 57.93,
+    "Net Ca & O": 3.9,
+    "Unrated": 19.78
+  },
+  "scheme_name": "Aditya Birla SL Arbitrage Fund (G)",
+  "sector_weights": [
+    {
+      "sector": "Others",
+      "weight_pct": 36.71
+    },
+    {
+      "sector": "Financial Services",
+      "weight_pct": 22.07
+    },
+    {
+      "sector": "Metals & Mining",
+      "weight_pct": 5.42
+    },
+    {
+      "sector": "Oil, Gas & Consumable Fuels",
+      "weight_pct": 5.19
+    },
+    {
+      "sector": "Telecommunication",
+      "weight_pct": 3.64
+    },
+    {
+      "sector": "Automobile And Auto Components",
+      "weight_pct": 3.47
+    },
+    {
+      "sector": "Healthcare",
+      "weight_pct": 3.4
+    },
+    {
+      "sector": "Fast Moving Consumer Goods",
+      "weight_pct": 3.33
+    },
+    {
+      "sector": "Capital Goods",
+      "weight_pct": 2.99
+    },
+    {
+      "sector": "Power",
+      "weight_pct": 1.94
+    },
+    {
+      "sector": "Consumer Services",
+      "weight_pct": 1.22
+    },
+    {
+      "sector": "Consumer Durables",
+      "weight_pct": 1.19
+    },
+    {
+      "sector": "Construction Materials",
+      "weight_pct": 1.12
+    },
+    {
+      "sector": "Construction",
+      "weight_pct": 0.95
+    },
+    {
+      "sector": "Realty",
+      "weight_pct": 0.89
+    },
+    {
+      "sector": "Services",
+      "weight_pct": 0.77
+    },
+    {
+      "sector": "Chemicals",
+      "weight_pct": 0.43
+    },
+    {
+      "sector": "Information Technology",
+      "weight_pct": 0.36
+    },
+    {
+      "sector": "Textiles",
+      "weight_pct": 0.04
+    }
+  ],
+  "sharpe_1y": -5.02,
+  "sharpe_3y": -0.78,
+  "small_cap_pct": 2.87,
+  "std_dev_1y": 0.27,
+  "std_dev_3y": 0.38,
+  "sub_category": "Hybrid: Arbitrage",
+  "top_holdings": [
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Aditya Birla Sl Money Manager Fund - Dir (G)",
+      "weight_pct": 11.35
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 5.52
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Aditya Birla Sl Floating Rate Fund- Direct (G)",
+      "weight_pct": 4.2
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Cash & Cash Equivalent",
+      "weight_pct": 3.9
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Reliance Industries Ltd",
+      "weight_pct": 3.85
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Icici Bank Ltd",
+      "weight_pct": 2.85
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Aditya Birla Sl Liquid Fund - Direct (G)",
+      "weight_pct": 2.53
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Axis Bank Ltd",
+      "weight_pct": 2.4
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Hdfc Bank Ltd",
+      "weight_pct": 1.87
+    },
+    {
+      "as_of_date": "2026-03-31",
+      "security_name": "Vodafone Idea Ltd",
+      "weight_pct": 1.53
+    }
+  ],
+  "total_securities": 159,
+  "tracking_error_1y": 0.42,
+  "tracking_error_3y": 0.85,
+  "treynor_1y": -5.13,
+  "treynor_3y": -0.9,
+  "up_capture_1y": 76.56,
+  "up_capture_3y": 84.97
+}

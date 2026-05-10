@@ -1434,6 +1434,7 @@ from ingest._section_parsers import (  # noqa: E402
     parse_periodic_returns,
     parse_holdings_full,
 )
+from ingest.invariants import run_all_and_capture  # noqa: E402
 
 
 
@@ -1540,10 +1541,24 @@ def parse_pdf(path: Path) -> Tuple[Snapshot, List[ParseError]]:
         snap.pdf_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
         snap.source_pdf_path = str(path)
         snap.revision = 1
-        if errors:
-            snap.parse_errors_json = json.dumps([
+
+        # Invariant checks (Phase 3.3). Failures are informational warnings
+        # — appended to parse_errors_json under the "invariant:<name>" tag
+        # but never raised; the row still gets inserted.
+        _ok, invariant_failures = run_all_and_capture(snap)
+        invariant_records: list[dict] = []
+        for failure in invariant_failures:
+            check_name, _, detail = failure.partition(": ")
+            invariant_records.append({
+                "section": f"invariant:{check_name}",
+                "error": detail.strip() or failure,
+            })
+
+        if errors or invariant_records:
+            payload = [
                 {"section": e.section, "error": e.error} for e in errors
-            ])
+            ] + invariant_records
+            snap.parse_errors_json = json.dumps(payload)
 
     return snap, errors
 
