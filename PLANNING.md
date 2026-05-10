@@ -99,6 +99,15 @@
 
 **Acceptance:** `python -c "from app.chatbot import ask; print(ask('What is the expense ratio of Canara Robeco Multi Cap?'))"` prints the right number with citation. `sqlite3 bajaj_mf.db "SELECT * FROM query_log"` shows the logged row.
 
+### [x] 1.6 Normalized-table population in ingest
+- [x] **1.6.1** Helper `db_writer.insert_snapshot_full(conn, snap, scheme_id) -> snapshot_id` writes fund_snapshots + sector_weights + periodic_returns + holdings in a single transaction.
+- [x] **1.6.2** Holdings re-insertion is delete-then-insert per (scheme_id, report_month), wrapped in transaction so failure rolls back.
+- [x] **1.6.3** `ingest_one.py` refactored to use the new helper.
+- [x] **1.6.4** Test fixture refactored to populate normalized tables for Phase 5 readiness.
+- [x] **1.6.5** New tests verify all 4 tables get populated and integrity holds on re-ingest.
+
+**Acceptance:** sector_weights, periodic_returns, and holdings tables have rows after ingest. `SELECT scheme_id FROM holdings WHERE security_name LIKE '%HDFC Bank%'` returns at least one row.
+
 ---
 
 ## [x] Phase 2 — Eval-driven spec [Day 2]

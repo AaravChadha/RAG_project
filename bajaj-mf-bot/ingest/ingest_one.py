@@ -29,7 +29,8 @@ if str(_PROJECT_DIR) not in sys.path:
     sys.path.insert(0, str(_PROJECT_DIR))
 
 import config  # noqa: E402
-from ingest.models import FUND_SNAPSHOTS_COLUMNS, Snapshot  # noqa: E402
+from ingest.db_writer import counts_for_snapshot, insert_snapshot_full  # noqa: E402
+from ingest.models import Snapshot  # noqa: E402
 from ingest.parse_finalyca import parse_pdf_minimal  # noqa: E402
 
 
@@ -83,19 +84,6 @@ def _lookup_scheme_id(conn: sqlite3.Connection, scheme_name: str) -> int | None:
     return None
 
 
-def _insert_snapshot(conn: sqlite3.Connection, snap: Snapshot) -> int:
-    """INSERT one row into fund_snapshots and return the new snapshot_id."""
-    cols = FUND_SNAPSHOTS_COLUMNS
-    placeholders = ", ".join("?" for _ in cols)
-    sql = (
-        f"INSERT INTO fund_snapshots ({', '.join(cols)}) "
-        f"VALUES ({placeholders})"
-    )
-    cur = conn.execute(sql, snap.to_db_tuple())
-    conn.commit()
-    return int(cur.lastrowid)
-
-
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Parse one Finalyca PDF and ingest into fund_snapshots.",
@@ -147,11 +135,15 @@ def main(argv: list[str] | None = None) -> int:
                 file=sys.stderr,
             )
             return 1
-        snap.scheme_id = scheme_id
-        snapshot_id = _insert_snapshot(conn, snap)
+        snapshot_id = insert_snapshot_full(conn, snap, scheme_id)
+        conn.commit()
+        counts = counts_for_snapshot(snap)
         print(
             f"Inserted snapshot_id={snapshot_id} for scheme_id={scheme_id} "
-            f"({snap.scheme_name}) report_month={snap.report_month}"
+            f"({snap.scheme_name}) report_month={snap.report_month} "
+            f"({counts['sector_weights']} sector_weights, "
+            f"{counts['periodic_returns']} periodic_returns, "
+            f"{counts['holdings']} holdings)"
         )
         return 0
     finally:

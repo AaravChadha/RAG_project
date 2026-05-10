@@ -2,9 +2,11 @@
 
 The flagship fixture is `seeded_db`: it forces a fresh DB, inserts one
 known scheme, parses the Canara Robeco sample PDF to produce a real
-Snapshot, attaches the scheme_id, and writes the snapshot row. This
-gives every test a known-good single-fund dataset so `ask()` can hit
-real data.
+Snapshot, attaches the scheme_id, and writes the snapshot row PLUS the
+normalized side-tables (`sector_weights`, `periodic_returns`,
+`holdings`). This gives every test a known-good single-fund dataset so
+`ask()` can hit real data for both the snapshot-level questions and
+the Phase 5 holdings/sector questions.
 """
 
 from __future__ import annotations
@@ -24,8 +26,8 @@ if str(ROOT) not in sys.path:
 
 import config  # noqa: E402
 from db import init_db  # noqa: E402
-from ingest.models import FUND_SNAPSHOTS_COLUMNS  # noqa: E402
-from ingest.parse_finalyca import parse_pdf_minimal  # noqa: E402
+from ingest.db_writer import insert_snapshot_full  # noqa: E402
+from ingest.parse_finalyca import parse_pdf  # noqa: E402
 
 # Sample PDF path is hardcoded for the spine; Phase 4 will load a manifest.
 _CANARA_PDF = Path(
@@ -45,22 +47,16 @@ _SEED_SCHEME = {
 }
 
 
-def _insert_snapshot(conn: sqlite3.Connection, snap) -> int:
-    """Insert a parsed Snapshot using the canonical column-order tuple."""
-    cols = FUND_SNAPSHOTS_COLUMNS
-    placeholders = ", ".join("?" for _ in cols)
-    sql = (
-        f"INSERT INTO fund_snapshots ({', '.join(cols)}) "
-        f"VALUES ({placeholders})"
-    )
-    cur = conn.execute(sql, snap.to_db_tuple())
-    conn.commit()
-    return int(cur.lastrowid)
-
-
 @pytest.fixture
 def seeded_db() -> Iterator[Path]:
     """Force-rebuild the DB, insert one scheme + one parsed snapshot.
+
+    Uses the full `parse_pdf` (not `parse_pdf_minimal`) so the scratch
+    attributes (`sector_weights`, `periodic_returns`, `full_holdings`)
+    are populated — `insert_snapshot_full` consumes those and writes the
+    normalized side-tables. After this fixture runs the DB contains rows
+    in `schemes`, `fund_snapshots`, `sector_weights`, `periodic_returns`,
+    and `holdings` for Canara Robeco.
 
     Yields the `config.DB_PATH` so tests have a handle to the file if they
     need to open their own connection (e.g. for the `query_log` checks).
@@ -95,17 +91,18 @@ def seeded_db() -> Iterator[Path]:
         )
         conn.commit()
 
-        # 3. Parse the sample PDF and stitch the snapshot's scheme_id from
-        #    the row we just inserted.
-        snap = parse_pdf_minimal(_CANARA_PDF)
+        # 3. Parse the sample PDF (full parse — populates scratch attrs
+        #    for sector_weights / periodic_returns / full_holdings).
+        snap, _errors = parse_pdf(_CANARA_PDF)
         row = conn.execute(
             "SELECT scheme_id FROM schemes WHERE scheme_uid = ?",
             (_SEED_SCHEME["scheme_uid"],),
         ).fetchone()
-        snap.scheme_id = int(row[0])
+        scheme_id = int(row[0])
 
-        # 4. Insert the snapshot.
-        _insert_snapshot(conn, snap)
+        # 4. Insert the snapshot + normalized side-tables in one shot.
+        insert_snapshot_full(conn, snap, scheme_id)
+        conn.commit()
     finally:
         conn.close()
 
