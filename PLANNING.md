@@ -269,10 +269,10 @@
   - [x] **5.2.1.8** Citation rule: every numeric answer ends with `Source: <scheme>, as on <as_of_date>`. For multi-fund answers, list each source. Citation comes BEFORE the verification footer.
   - [x] **5.2.1.9** Format rule: numeric answers as numbers, percentages with `%`, dates ISO.
 
-### [ ] 5.3 Tool-use loop
-- [ ] **5.3.1** In `app/chatbot.py`, replace `ask()` with the loop: send messages, if response has tool_calls execute them and append results, send again, max 6 iterations. Hard-stop with refusal if loop exceeds 6.
-- [ ] **5.3.2** Capture every tool call into `tool_calls_json` for the `query_log` row.
-- [ ] **5.3.3** On refusal path, set `refusal_reason` ∈ `{unknown_scheme, no_data, out_of_scope, loop_exceeded}`.
+### [x] 5.3 Tool-use loop
+- [x] **5.3.1** In `app/chatbot.py`, replace `ask()` with the loop: send messages, if response has tool_calls execute them and append results, send again, max 6 iterations. Hard-stop with refusal if loop exceeds 6.
+- [x] **5.3.2** Capture every tool call into `tool_calls_json` for the `query_log` row.
+- [x] **5.3.3** On refusal path, set `refusal_reason` ∈ `{unknown_scheme, no_data, out_of_scope, loop_exceeded}`.
 
 ### [ ] 5.4 Run evals iteratively
 - [ ] **5.4.1** Run `pytest tests/test_chatbot.py`. For each failure, look at `tool_calls_json` — was the SQL wrong? Was the scheme name fuzzy-matched wrong? Was the refusal triggered incorrectly?
