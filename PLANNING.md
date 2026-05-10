@@ -29,7 +29,7 @@
 | [Phase 4](#phase-4--bulk-ingest--debt-discovery-day-6) | 6 | Ingest all 90 + locate 33 debt schemes | All 90 in DB; debt-circular URL identified |
 | [Phase 5](#phase-5--tool-use-chatbot-day-78) | 7-8 | Chatbot answers golden questions | ≥80% golden Qs pass on first run |
 | [Phase 6](#phase-6--streamlit-ui-day-9) | 9 | Working UI with citations and feedback | Localhost UI accepts query, shows answer, captures thumbs |
-| [Phase 7](#phase-7--cloudflare-tunnel--compliance-day-10) | 10 | Public URL + Bajaj compliance sign-off | Tunnel URL accessible from phone; Groq policy confirmed (or swap to Ollama) |
+| [Phase 7](#phase-7--cloudflare-tunnel--compliance-day-10) | 10 | Public URL + Bajaj compliance sign-off | Tunnel URL accessible from phone; Groq policy confirmed (or contingency to another remote free provider) |
 | [Phase 8](#phase-8--eval--polish-day-1112) | 11-12 | Pass all golden questions | 100% pass or each failure has a documented "why acceptable" note |
 | [Phase 9](#phase-9--pilot-onboarding-day-1314) | 13-14 | 5 RMs trained, baseline data | 5 RM accounts created, ≥1 hour shadowing per RM done |
 
@@ -43,7 +43,7 @@
 
 ### 1.1 Project skeleton & config
 - **1.1.1** Create directory structure under `RAG_project/bajaj-mf-bot/` matching the layout in `~/.claude/plans/i-want-to-make-cozy-storm.md` (db/, ingest/, retrieval/, app/, tests/, data/pdfs/2026-05/).
-- **1.1.2** Write `requirements.txt` with pinned versions: `pdfplumber`, `pymupdf`, `python-dotenv`, `groq`, `ollama`, `streamlit`, `streamlit-authenticator`, `pytest`, `deepdiff`.
+- **1.1.2** Write `requirements.txt` with pinned versions: `pdfplumber`, `pymupdf`, `python-dotenv`, `groq`, `streamlit`, `streamlit-authenticator`, `pytest`, `deepdiff`.
 - **1.1.3** Write `.env.example` with `GROQ_API_KEY=`, `LLM_PROVIDER=groq`, `LLM_MODEL=llama-3.3-70b-versatile`. Real `.env` is gitignored.
 - **1.1.4** Write `.gitignore` excluding `data/pdfs/`, `*.db`, `.env`, `.streamlit/secrets.toml`, `__pycache__`, `.pytest_cache`.
 - **1.1.5** Write `config.py` exposing `DB_PATH`, `PDF_ROOT`, `LLM_PROVIDER`, `LLM_MODEL`, `PARSER_VERSION` constants (read from env where appropriate).
@@ -81,12 +81,12 @@
 
 **Acceptance:** `python ingest/ingest_one.py "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/Canara Robeco Multi Cap Fund.pdf"` inserts one row into `fund_snapshots`. `sqlite3 bajaj_mf.db "SELECT scheme_id, expense_ratio FROM fund_snapshots"` returns one row with the right number (verify against the PDF by eye).
 
-### 1.4 LLM client wrapper (provider-agnostic)
+### 1.4 LLM client wrapper (provider-agnostic interface, Groq-only backend for pilot)
 - **1.4.1** Write `retrieval/llm_client.py` exposing `LLMClient` class with method `chat(messages, tools=None) -> {"content": str, "tool_calls": list, "tokens_in": int, "tokens_out": int, "latency_ms": int, "model": str}`.
-- **1.4.2** Implement `_GroqClient`: uses `groq` Python SDK, model from config, returns the standard dict.
-- **1.4.3** Implement `_OllamaClient`: uses `ollama` Python SDK, model from config, returns the standard dict. (Stub OK — only fully tested if compliance forces a swap.)
-- **1.4.4** `LLMClient.__init__` reads `LLM_PROVIDER` env var and picks the right backend. Fail loud if missing key.
-- **1.4.5** Tool-call shape normalization: both backends must produce `{"name": str, "arguments": dict}` for tool calls so downstream code is provider-agnostic.
+- **1.4.2** Implement `_GroqClient`: uses `groq` Python SDK, model from config, returns the standard dict. **Pilot ships with this only.**
+- **1.4.3** Tool-call shape normalization: produce `{"name": str, "arguments": dict}` from Groq's response so downstream code is provider-agnostic. This is what makes future provider swaps cheap (~30 min).
+- **1.4.4** `LLMClient.__init__` reads `LLM_PROVIDER` env var (defaults to `groq`) and picks the right backend. Fail loud if missing key.
+- **1.4.5** Local LLMs (Ollama etc.) are **out of scope** for the pilot — 8GB M2 RAM is too tight, and 3B-class quality on tool-use is meaningfully worse. If Groq's free tier ever fails, the contingency is another *remote free* provider (Gemini 2.0 Flash, Cerebras) — those slot into `LLMClient` with ~30 min of work.
 
 **Acceptance:** Quick smoke: `python -c "from retrieval.llm_client import LLMClient; c = LLMClient(); print(c.chat([{'role':'user','content':'say hi'}]))"` returns text from Groq.
 
@@ -306,7 +306,7 @@
 
 **Goal:** External URL the 5 RMs can hit. Bajaj compliance signed off on Groq free-tier data policy.
 
-**Exit criterion:** Tunnel URL accessible from a phone (not on dev network); compliance has confirmed Groq free-tier usage in writing OR the LLM has been swapped to Ollama.
+**Exit criterion:** Tunnel URL accessible from a phone (not on dev network); compliance has confirmed Groq free-tier usage in writing OR the LLM has been swapped to another remote free provider (Gemini Flash / Cerebras).
 
 ### 7.1 Tunnel setup
 - **7.1.1** Install `cloudflared`. Authenticate with a Cloudflare account (free).
@@ -316,7 +316,7 @@
 - **7.1.5** Verify external access from phone on cellular (not on dev WiFi).
 
 ### 7.2 Compliance check (run in parallel, not blocking 7.1) — TWO sign-offs needed
-- **7.2.1** **Sign-off A — Groq data policy.** Email Bajaj compliance with: Groq's privacy policy URL + free-tier ToS URL + a one-paragraph summary of what data flows through Groq (RM questions, scheme names, occasionally numbers — never PII). If denied: switch `LLM_PROVIDER=ollama` in `.env`, `ollama pull qwen2.5:3b`, re-run Phase 5 evals. Expect a quality drop; document and triage.
+- **7.2.1** **Sign-off A — Groq data policy.** Email Bajaj compliance with: Groq's privacy policy URL + free-tier ToS URL + a one-paragraph summary of what data flows through Groq (RM questions, scheme names, public market numbers — never PII or client data). Note: data is public-derivable per cross-cutting framing, so this should be procedural. If denied or revoked: implement a `_GeminiClient` (or `_CerebrasClient`) backend in `LLMClient` (~30 min) and switch `LLM_PROVIDER` env var. Re-run Phase 5 evals. Both alternatives are remote, free, and have similar tool-use quality on 70B-class models.
 - **7.2.2** **Sign-off B — operating-mode language.** Send compliance the system prompt (`app/prompts.py`), the verification footer text, and 5 representative bot outputs (one shortlist, one recommendation, one conditional advice, one extrapolation, one refusal). Ask them to confirm: (a) the verification-footer language is sufficient to put research-vs-advice responsibility on the RM, (b) the extrapolation framing is acceptable, (c) the no-client-specific-refusal stance is OK. **This stance is more permissive than typical regulated-product advisory tools — explicit sign-off is required, not implied.**
 - **7.2.3** Document both sign-offs (date, approver, scope) in a `PLANNING.md` appendix section "Phase 7.2 outcome." Keep the email thread for audit.
 - **7.2.4** If sign-off B is denied or modified: tighten the system prompt accordingly (more refusals, stricter footer, etc.) and re-run Phase 5 evals before launch.
@@ -389,13 +389,13 @@
 
 ## Cross-cutting risks (review every Friday)
 
-- **R1a — Compliance: Groq data policy.** Groq free-tier ToS might preclude internal Bajaj data. Mitigation: `LLMClient` swap to Ollama is ~1 day because the interface is provider-agnostic. **Owner: Day 10 must-resolve (sign-off A).**
+- **R1a — Compliance: Groq data policy.** Groq free-tier ToS might preclude internal Bajaj data (lower-stakes than typical because data is public-derivable, but still wants procedural sign-off). Mitigation: implement `_GeminiClient` or `_CerebrasClient` in `LLMClient` and flip the env var — ~30 min, because the interface is provider-agnostic. **Owner: Day 10 must-resolve (sign-off A).**
 - **R1b — Compliance: operating-mode language.** The bot's permissive stance (gives recommendations, extrapolates, doesn't refuse client-conditional advice) is more aggressive than typical regulated tools. Bajaj compliance must explicitly approve the system prompt and verification-footer language. Mitigation if denied: tighten prompt (more refusals, stricter footer), re-run evals — ~1 day. **Owner: Day 10 must-resolve (sign-off B).**
 - **R2 — Mid-month republished PDF.** Schema (`revision` + `superseded_at`) handles it; ingest script must check `pdf_sha256` before insert. **Owner: Phase 4.2.2.**
 - **R3 — Scheme rename / AMC merger mid-pilot.** `scheme_aliases` table handles it; document the runbook. **Owner: deferred to phase-2 unless triggered during pilot.**
 - **R4 — PDF download breakage.** Add monthly URL health check (HEAD all 90 → 123 URLs). **Owner: Phase 7.3 nice-to-have.**
 - **R5 — Local Streamlit downtime.** Laptop sleeps → RMs see 502. Mitigation: prevent sleep with `caffeinate -d` while plugged in; document hours of availability. Push for Bajaj VM. **Owner: Phase 7.3.**
-- **R6 — Quality drop on Ollama swap.** 3B model has worse tool-use than 70B. If forced to swap, expect golden-question pass rate to drop from 80%+ to ~60%. Plan: have 2-3 simpler-prompt fallback versions ready. **Owner: contingency.**
+- **R6 — Groq rate limit / outage.** 14,400 req/day free tier covers 5 RMs (~100 queries/day) with 100x headroom — unlikely to hit limits in pilot. Outages are possible. Mitigation: same as R1a — flip to Gemini Flash or Cerebras via `LLMClient`. **Owner: contingency.**
 
 ---
 
