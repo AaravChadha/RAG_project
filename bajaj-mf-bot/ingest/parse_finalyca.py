@@ -732,6 +732,374 @@ def parse_trailing_returns(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Sna
 
 
 # ---------------------------------------------------------------------------
+# Page-2 layout helpers — shared by risk metrics / sector weights / top holdings
+# ---------------------------------------------------------------------------
+#
+# In the Finalyca template, page index 1 ("page 2 of N" in human-readable
+# numbering) packs three side-by-side blocks across the top half of the page:
+#
+#   x ≈ 24 – 200    Risk Analysis (label + 1Y col + 3Y col)
+#   x ≈ 211 – 380   Sector Wts(%)        (multi-word sector + numeric weight)
+#   x ≈ 397 – 580   Top Holdings         (multi-word security + numeric weight)
+#
+# `extract_tables()` does NOT recover these cleanly — the columns share no
+# ruling lines and the row pitch differs between blocks (risk rows are every
+# ~18pt, sector rows every ~18pt, holdings rows alternate ~9pt). Word-level
+# extraction with manual row-grouping is much more reliable.
+
+# Column boundaries (left edge, right edge). Slightly wider than the
+# observed extremes to absorb minor x drift across funds.
+_PAGE2_RISK_X = (15.0, 205.0)
+_PAGE2_SECTOR_X = (205.0, 392.0)
+_PAGE2_HOLDINGS_X = (392.0, 600.0)
+
+# Inside the risk block the 1Y and 3Y values land at fixed x bands.
+_RISK_1Y_X = (115.0, 175.0)
+_RISK_3Y_X = (175.0, 205.0)
+
+
+def _page2_words(pl: "pdfplumber.PDF") -> list[dict]:
+    """Return all word tokens from page index 1 (the page that hosts the
+    risk-metrics / sector-weights / top-holdings band).
+
+    Returns an empty list if the PDF has fewer than 2 pages.
+    """
+    if len(pl.pages) < 2:
+        return []
+    try:
+        return pl.pages[1].extract_words()
+    except Exception as e:  # pragma: no cover — pdfplumber occasionally raises
+        logger.debug("page2 extract_words raised: %s", e)
+        return []
+
+
+def _group_rows(words: list[dict], y_tol: float = 3.5) -> list[list[dict]]:
+    """Cluster words into rows by `top` y-coordinate proximity.
+
+    Returns rows sorted top-to-bottom; each row's words are sorted left-to-right.
+    """
+    rows: list[tuple[float, list[dict]]] = []
+    for w in words:
+        y = float(w["top"])
+        placed = False
+        for r in rows:
+            if abs(r[0] - y) < y_tol:
+                r[1].append(w)
+                placed = True
+                break
+        if not placed:
+            rows.append((y, [w]))
+    rows.sort(key=lambda r: r[0])
+    return [sorted(ws, key=lambda w: w["x0"]) for _y, ws in rows]
+
+
+def _row_y(row: list[dict]) -> float:
+    return min(float(w["top"]) for w in row) if row else 0.0
+
+
+def _filter_by_x(words: list[dict], x_range: tuple[float, float]) -> list[dict]:
+    lo, hi = x_range
+    return [w for w in words if lo <= float(w["x0"]) < hi]
+
+
+# ---------------------------------------------------------------------------
+# Section parser 3.2.4 — risk metrics (1Y + 3Y blocks)
+# ---------------------------------------------------------------------------
+
+# Label substring (lower-cased) → Snapshot attribute stem (suffix _1y / _3y
+# appended later). We match by substring against the joined row label text
+# so multi-word labels like "Standard Deviation" or "Up Capture Ratio" survive
+# whatever spacing the PDF uses.
+_RISK_LABEL_TO_STEM: tuple[tuple[str, str], ...] = (
+    ("standard deviation", "std_dev"),
+    ("sharpe ratio", "sharpe"),
+    ("sharpe", "sharpe"),
+    ("r-square", "r_square"),
+    ("r square", "r_square"),
+    ("treynor", "treynor"),
+    ("information ratio", "info_ratio"),
+    ("up capture", "up_capture"),
+    ("down capture", "down_capture"),
+    ("tracking error", "tracking_error"),
+    ("sortino", "sortino"),
+    ("beta", "beta"),  # short label — keep last so it doesn't shadow longer matches
+)
+
+
+def _match_risk_stem(label_text: str) -> Optional[str]:
+    lt = label_text.lower().strip()
+    if not lt:
+        return None
+    for needle, stem in _RISK_LABEL_TO_STEM:
+        if needle in lt:
+            return stem
+    return None
+
+
+def parse_risk_metrics(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
+    """Populate the 20 risk-metric fields (10 × 1Y + 10 × 3Y).
+
+    Reads page index 1, restricts to the risk-block x band, and walks each
+    row top-down. The first all-text portion of the row is the metric label;
+    the next 1 or 2 numeric tokens are the 1Y and 3Y values respectively.
+
+    Funds younger than 3 years legitimately have "NA" for every 3Y column —
+    `_to_float` returns None for that, which we accept without erroring.
+    """
+    words = _page2_words(pl)
+    if not words:
+        raise ValueError("page 2 has no extractable words (risk metrics)")
+
+    block_words = _filter_by_x(words, _PAGE2_RISK_X)
+    rows = _group_rows(block_words)
+    if not rows:
+        raise ValueError("risk-metrics block: no rows found")
+
+    matched_any = False
+    for row in rows:
+        # Split row into (label tokens, value tokens) by x position. Values
+        # live to the right of x≈115 (1Y col onward).
+        label_tokens = [w["text"] for w in row if float(w["x0"]) < _RISK_1Y_X[0]]
+        v1y_tokens = [w["text"] for w in row
+                      if _RISK_1Y_X[0] <= float(w["x0"]) < _RISK_1Y_X[1]]
+        v3y_tokens = [w["text"] for w in row
+                      if _RISK_3Y_X[0] <= float(w["x0"]) < _RISK_3Y_X[1]]
+        if not label_tokens or (not v1y_tokens and not v3y_tokens):
+            continue
+        label_text = " ".join(label_tokens)
+        stem = _match_risk_stem(label_text)
+        if stem is None:
+            continue
+        # Skip duplicates — only first match for each stem wins (just in case
+        # the heading "Risk Analysis" sneaks in).
+        attr_1y = f"{stem}_1y"
+        attr_3y = f"{stem}_3y"
+        if v1y_tokens and getattr(snap, attr_1y) is None:
+            setattr(snap, attr_1y, _to_float(v1y_tokens[0]))
+            matched_any = True
+        if v3y_tokens and getattr(snap, attr_3y) is None:
+            setattr(snap, attr_3y, _to_float(v3y_tokens[0]))
+            matched_any = True
+
+    if not matched_any:
+        raise ValueError("risk-metrics block: no labels matched")
+
+
+# ---------------------------------------------------------------------------
+# Section parser 3.2.5 — sector weights
+# ---------------------------------------------------------------------------
+
+# Heading-noise tokens we strip when joining sector names.
+_SECTOR_HEADING_TOKENS = {"sector", "wts(%)", "wts", "(%)"}
+
+# A sector row is "<one or more text words> <one numeric weight>". We treat
+# the last token as the weight if it parses as a float; the rest is the
+# sector name.
+_NUMERIC_RE = re.compile(r"^-?\d+(?:\.\d+)?$")
+
+# After the actual sector list ends, the same x-band on page 2 hosts the
+# Risk Rating, Mkt Cap Composition, and "Increase in Exposure" blocks —
+# all of which look like "<text> <number>" rows and would otherwise be
+# misclassified as sectors. We stop scanning the moment we see any of
+# these row-leading tokens (lower-cased, first non-empty token).
+_SECTOR_STOP_FIRST_TOKEN = {
+    "equity", "debt", "cash", "derivative", "alternate",  # composition (rarely bleeds in)
+    "large", "mid", "small",                              # mkt-cap composition
+    "unrated", "sovereign", "aaa", "aa+", "a1+",          # risk rating
+    "net",                                                # "Net Ca & O"
+}
+
+
+def parse_sector_weights(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
+    """Populate `snap.sector_weights` as List[{sector, weight_pct}].
+
+    Equity funds typically list 10–20 sectors; arbitrage / pure-debt may
+    show 0 or only "Others". If the block contains no parseable rows we
+    leave `snap.sector_weights = None` (do not raise) — caller treats that
+    as "section legitimately absent for this fund type."
+    """
+    words = _page2_words(pl)
+    if not words:
+        return
+    block_words = _filter_by_x(words, _PAGE2_SECTOR_X)
+    if not block_words:
+        return
+    rows = _group_rows(block_words)
+
+    sectors: list[dict] = []
+    for row in rows:
+        tokens = [w["text"] for w in row]
+        if not tokens:
+            continue
+        # Skip the heading row ("Sector Wts(%)") and section-divider rows
+        # ("Portfolio Characteristics" overflows into this column-band in
+        # some layouts, so we explicitly reject those).
+        lc_tokens = [t.lower() for t in tokens]
+        if all(t in _SECTOR_HEADING_TOKENS for t in lc_tokens):
+            continue
+        # Stop the moment we cross into the next block (Risk Rating / Mkt
+        # Cap Composition / Composition) — same x-band, different semantics.
+        first = lc_tokens[0]
+        if first in _SECTOR_STOP_FIRST_TOKEN:
+            break
+        # The last token must be numeric to be a sector row.
+        last = tokens[-1]
+        if not _NUMERIC_RE.match(last):
+            continue
+        weight = _to_float(last)
+        if weight is None:
+            continue
+        sector_name = " ".join(tokens[:-1]).strip()
+        if not sector_name:
+            continue
+        sectors.append({"sector": sector_name, "weight_pct": weight})
+
+    if sectors:
+        snap.sector_weights = sectors
+
+
+# ---------------------------------------------------------------------------
+# Section parser 3.2.6 — top 10 holdings
+# ---------------------------------------------------------------------------
+
+# Header line carries an "As On: 31 Mar 2026" date for the holdings snapshot.
+_HOLDINGS_AS_ON_RE = re.compile(
+    r"As\s*On\s*[:\-]?\s*([0-9]{1,2}\s+[A-Za-z]+\s+[0-9]{2,4})",
+    re.IGNORECASE,
+)
+
+
+def _holdings_as_on(doc: "fitz.Document") -> Optional[date]:
+    """Extract the "As On: <date>" embedded in the Top Holdings header on page 2."""
+    if len(doc) < 2:
+        return None
+    text = doc[1].get_text("text") or ""
+    # The header may wrap: "Top Holdings (As On: 31 Mar\n2026)" — collapse newlines.
+    flat = re.sub(r"\s+", " ", text)
+    # Find the segment that follows "Top Holdings".
+    idx = flat.lower().find("top holdings")
+    if idx < 0:
+        return None
+    window = flat[idx: idx + 200]
+    m = _HOLDINGS_AS_ON_RE.search(window)
+    if not m:
+        return None
+    return _parse_date_flex(m.group(1))
+
+
+# Section-end sentinels in the holdings column. These can appear if the
+# fund has fewer than 10 holdings shown (rare) and the column flows into
+# "Composition" or "Risk Rating" labels.
+_HOLDINGS_STOPS = {"composition", "risk", "rating", "drawdown"}
+
+
+def parse_top_holdings(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
+    """Populate `snap.top_holdings` as List[{security_name, weight_pct, as_of_date}].
+
+    The "Top Holdings" block on page 2 lists 10 (occasionally fewer)
+    securities with a weight%. Long security names wrap to 2–3 visual
+    rows (e.g. "Aditya Birla Sl Money Manager / Fund - Dir (G)") with the
+    weight rendered on the *middle* row. We sidestep the row-clustering
+    fragility by streaming all words in the holdings x-band top-to-bottom
+    and emitting one holding each time a numeric token is hit; preceding
+    text-only tokens (within a vertical window) form the name.
+
+    The block's own "As On" date is captured separately — it can lag the
+    snapshot's overall as_of_date by a month (month-end portfolio cut vs.
+    report-publication-day).
+    """
+    words = _page2_words(pl)
+    if not words:
+        raise ValueError("page 2 has no extractable words (top holdings)")
+    block_words = _filter_by_x(words, _PAGE2_HOLDINGS_X)
+    if not block_words:
+        raise ValueError("top-holdings block: no words in column band")
+
+    as_on_date = _holdings_as_on(doc) or snap.as_of_date
+    as_on_iso = as_on_date.isoformat() if as_on_date else None
+
+    # Drop the header tokens before the first data row. The "Top Holdings (As
+    # On: 31 Mar 2026)" title lives at y ≲ 55 on every fund we've seen.
+    data_words = [w for w in block_words if float(w["top"]) > 55.0]
+    # Cut off at the next-block boundary (Composition / Risk Rating etc).
+    cutoff_y: Optional[float] = None
+    for w in sorted(data_words, key=lambda w: float(w["top"])):
+        if w["text"].lower() in _HOLDINGS_STOPS:
+            cutoff_y = float(w["top"])
+            break
+    if cutoff_y is not None:
+        data_words = [w for w in data_words if float(w["top"]) < cutoff_y]
+
+    # Anchor each holding on its numeric weight token: the weight's y
+    # is the centroid of the visual row, and the security name is every
+    # text token whose y lies within ±8pt of that centroid. This sidesteps
+    # the ordering ambiguity where a wrapped name's second line is rendered
+    # BELOW the weight (e.g. ABSL: "Aditya Birla Sl Money Manager" / 11.35 /
+    # "Fund - Dir (G)").
+    weight_tokens = [w for w in data_words if _NUMERIC_RE.match(w["text"])]
+    weight_tokens.sort(key=lambda w: float(w["top"]))
+
+    # Boundaries between adjacent holdings — midpoints of consecutive
+    # weight y-positions. Text tokens between two boundaries belong to
+    # whichever weight's anchor is closer (i.e. their bucket).
+    weight_ys = [float(w["top"]) for w in weight_tokens]
+
+    def _bucket_for(y: float) -> Optional[int]:
+        """Return the index of the closest weight anchor, or None if no
+        weight is within ~12pt (looser names should still snap)."""
+        if not weight_ys:
+            return None
+        best_i = 0
+        best_d = abs(y - weight_ys[0])
+        for i, wy in enumerate(weight_ys[1:], start=1):
+            d = abs(y - wy)
+            if d < best_d:
+                best_d = d
+                best_i = i
+        # Reject if extremely far from any weight (12pt = ~2/3 of a row pitch).
+        if best_d > 12.0:
+            return None
+        return best_i
+
+    name_parts: list[list[tuple[float, str]]] = [[] for _ in weight_tokens]
+    for w in data_words:
+        text = w["text"]
+        if _NUMERIC_RE.match(text):
+            continue
+        y = float(w["top"])
+        b = _bucket_for(y)
+        if b is None:
+            continue
+        name_parts[b].append((y, text))
+
+    holdings: list[dict] = []
+    for wt, parts in zip(weight_tokens, name_parts):
+        if not parts:
+            continue
+        # Order parts by their actual y (so wrapped lines stay top-to-bottom)
+        # then by x within a line.
+        parts.sort(key=lambda t: t[0])
+        name = " ".join(t for _y, t in parts).strip()
+        if not name:
+            continue
+        weight = _to_float(wt["text"])
+        if weight is None:
+            continue
+        holdings.append({
+            "security_name": name,
+            "weight_pct": weight,
+            "as_of_date": as_on_iso,
+        })
+        if len(holdings) >= 10:
+            break
+
+    if holdings:
+        snap.top_holdings = holdings
+    else:
+        raise ValueError("top-holdings block: parsed zero rows")
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -743,7 +1111,10 @@ SECTION_PARSERS: List[
     parse_header,
     parse_fund_managers,
     parse_trailing_returns,
-    # ... more sections will be added in subsequent tasks (3.2.4 onwards)
+    parse_risk_metrics,
+    parse_sector_weights,
+    parse_top_holdings,
+    # ... more sections will be added in subsequent tasks (3.2.7 onwards)
 ]
 
 

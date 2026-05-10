@@ -195,6 +195,21 @@ class Snapshot:
     scheme_name: Optional[str] = field(default=None, metadata={"persist": False})
     sub_category: Optional[str] = field(default=None, metadata={"persist": False})
 
+    # Normalized sector exposures parsed from the "Sector Wts(%)" block. Lives
+    # in its own table (`sector_weights`) so the persist=False marker keeps it
+    # out of the fund_snapshots tuple. The ingest layer writes these rows after
+    # the snapshot insert returns a snapshot_id. Format: list[dict] with keys
+    # "sector" (str) and "weight_pct" (float). None ⇒ section absent (debt
+    # funds typically have no equity-style sector breakdown).
+    sector_weights: Optional[list] = field(default=None, metadata={"persist": False})
+
+    # Top 10 holdings parsed from the page-2 "Top Holdings" block. Stored as a
+    # scratch attribute here; the per-row insert into `holdings` (or a future
+    # `top_holdings` view) happens in the ingest layer. Format: list[dict]
+    # with keys "security_name" (str), "weight_pct" (float), "as_of_date"
+    # (ISO date string — may differ from the snapshot's overall as_of_date).
+    top_holdings: Optional[list] = field(default=None, metadata={"persist": False})
+
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
