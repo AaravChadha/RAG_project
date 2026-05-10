@@ -1,22 +1,22 @@
 {
   "month": "2026-05",
-  "generated_at": "2026-05-10T22:06:35.413342+00:00",
+  "generated_at": "2026-05-10T22:25:09.595784+00:00",
   "pdf_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
   "db_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/db/bajaj_mf.db",
   "totals": {
     "parsed": 90,
-    "inserted": 0,
-    "skipped_no_change": 90,
+    "inserted": 90,
+    "skipped_no_change": 0,
     "superseded": 0,
     "failed": 0,
-    "elapsed_seconds": 89.4
+    "elapsed_seconds": 90.3
   },
   "entries": [
     {
       "scheme_uid": "absl-balanced-advantage-fund",
       "scheme_name": "ABSL Balanced Advantage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/absl-balanced-advantage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 1,
       "revision": 1,
       "errors": [],
@@ -30,13 +30,18 @@
           "error": "mkt cap composition sum 69.34 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.52 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 69.34 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.52 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 69.34 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 66,
+        "holdings": 133
+      }
     },
     {
       "scheme_uid": "aditya-birla-sl-arbitrage-fund",
       "scheme_name": "Aditya Birla SL Arbitrage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/aditya-birla-sl-arbitrage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 2,
       "revision": 1,
       "errors": [],
@@ -46,24 +51,34 @@
           "error": "mkt cap composition sum 57.93 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 57.93 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 57.93 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 48,
+        "holdings": 198
+      }
     },
     {
       "scheme_uid": "aditya-birla-sl-flexi-cap-fund",
       "scheme_name": "Aditya Birla SL Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/aditya-birla-sl-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 3,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 16,
+        "periodic_returns": 70,
+        "holdings": 86
+      }
     },
     {
       "scheme_uid": "aditya-birla-sl-regular-savings-fund",
       "scheme_name": "Aditya Birla SL Regular Savings Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/aditya-birla-sl-regular-savings-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 4,
       "revision": 1,
       "errors": [],
@@ -73,13 +88,18 @@
           "error": "mkt cap composition sum 19.04 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 19.04 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 19.04 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 58,
+        "holdings": 135
+      }
     },
     {
       "scheme_uid": "axis-balanced-advantage-fund",
       "scheme_name": "Axis Balanced Advantage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/axis-balanced-advantage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 5,
       "revision": 1,
       "errors": [],
@@ -89,13 +109,18 @@
           "error": "mkt cap composition sum 66.40 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 66.40 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 66.40 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 32,
+        "holdings": 219
+      }
     },
     {
       "scheme_uid": "axis-gold-fund",
       "scheme_name": "Axis Gold Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/axis-gold-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 6,
       "revision": 1,
       "errors": [],
@@ -105,13 +130,18 @@
           "error": "full_holdings has only 2 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 44,
+        "holdings": 2
+      }
     },
     {
       "scheme_uid": "bandhan-income-plus-arbitrage-fund-of-funds",
       "scheme_name": "Bandhan Income Plus Arbitrage Fund of Funds",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/bandhan-income-plus-arbitrage-fund-of-funds.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 7,
       "revision": 1,
       "errors": [
@@ -126,50 +156,55 @@
           "error": "full_holdings has only 1 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 58,
+        "holdings": 1
+      }
     },
     {
       "scheme_uid": "bandhan-large-midcap-fund",
       "scheme_name": "Bandhan Large & Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/bandhan-large-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 8,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 21,
+        "periodic_returns": 56,
+        "holdings": 122
+      }
     },
     {
       "scheme_uid": "bandhan-small-cap-fund",
       "scheme_name": "Bandhan Small Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/bandhan-small-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 9,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 109.84 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 109.84 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 109.84 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 23,
+        "periodic_returns": 27,
+        "holdings": 259
+      }
     },
     {
       "scheme_uid": "baroda-bnp-paribas-innovation-fund",
       "scheme_name": "Baroda BNP Paribas Innovation Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/baroda-bnp-paribas-innovation-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 10,
       "revision": 1,
       "errors": [],
@@ -179,13 +214,18 @@
           "error": "mkt cap composition sum 92.50 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.50 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.50 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 14,
+        "periodic_returns": 19,
+        "holdings": 51
+      }
     },
     {
       "scheme_uid": "baroda-bnp-paribas-manufacturing-fund",
       "scheme_name": "Baroda BNP Paribas Manufacturing Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/baroda-bnp-paribas-manufacturing-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 11,
       "revision": 1,
       "errors": [
@@ -204,62 +244,82 @@
           "error": "mkt cap composition sum 90.68 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 93.69 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.68 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 93.69 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.68 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 11,
+        "periodic_returns": 18,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "canara-robeco-focused-fund",
       "scheme_name": "Canara Robeco Focused Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/canara-robeco-focused-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 12,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 14,
+        "periodic_returns": 24,
+        "holdings": 36
+      }
     },
     {
       "scheme_uid": "canara-robeco-midcap-fund",
       "scheme_name": "Canara Robeco Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/canara-robeco-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 13,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 22,
+        "holdings": 61
+      }
     },
     {
       "scheme_uid": "canara-robeco-multi-cap-fund",
       "scheme_name": "Canara Robeco Multi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/canara-robeco-multi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 14,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 20,
+        "holdings": 104
+      }
     },
     {
       "scheme_uid": "dsp-dynamic-asset-allocator-fund",
       "scheme_name": "DSP Dynamic Asset Allocator Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/dsp-dynamic-asset-allocator-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 15,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 39,
+        "holdings": 91
+      }
     },
     {
       "scheme_uid": "dsp-large-cap-fund",
       "scheme_name": "DSP Large Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/dsp-large-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 16,
       "revision": 1,
       "errors": [],
@@ -273,13 +333,18 @@
           "error": "mkt cap composition sum 90.12 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.12 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.12 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.12 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.12 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 10,
+        "periodic_returns": 61,
+        "holdings": 41
+      }
     },
     {
       "scheme_uid": "dsp-multi-asset-allocation-fund",
       "scheme_name": "DSP Multi Asset Allocation Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/dsp-multi-asset-allocation-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 17,
       "revision": 1,
       "errors": [],
@@ -293,13 +358,18 @@
           "error": "mkt cap composition sum 31.45 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 78.74 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 31.45 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 78.74 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 31.45 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 18,
+        "periodic_returns": 20,
+        "holdings": 97
+      }
     },
     {
       "scheme_uid": "dsp-natural-resources-new-energy-fund",
       "scheme_name": "DSP Natural Resources & New Energy Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/dsp-natural-resources-new-energy-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 18,
       "revision": 1,
       "errors": [
@@ -322,13 +392,18 @@
           "error": "full_holdings has only 3 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 81.46 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 65.55 not within 100\\u00b15.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 3 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 81.46 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 65.55 not within 100\\u00b15.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 3 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 4,
+        "periodic_returns": 50,
+        "holdings": 3
+      }
     },
     {
       "scheme_uid": "dsp-regular-savings-fund",
       "scheme_name": "DSP Regular Savings Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/dsp-regular-savings-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 19,
       "revision": 1,
       "errors": [],
@@ -338,13 +413,18 @@
           "error": "mkt cap composition sum 19.52 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 19.52 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 19.52 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 13,
+        "periodic_returns": 58,
+        "holdings": 57
+      }
     },
     {
       "scheme_uid": "dsp-value-fund",
       "scheme_name": "DSP Value Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/dsp-value-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 20,
       "revision": 1,
       "errors": [],
@@ -358,29 +438,34 @@
           "error": "mkt cap composition sum 64.86 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 81.75 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 64.86 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 81.75 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 64.86 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 18,
+        "holdings": 79
+      }
     },
     {
       "scheme_uid": "edelweiss-aggressive-hybrid-fund",
       "scheme_name": "Edelweiss Aggressive Hybrid Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/edelweiss-aggressive-hybrid-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 21,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 48,
+        "holdings": 115
+      }
     },
     {
       "scheme_uid": "edelweiss-arbitrage-fund",
       "scheme_name": "Edelweiss Arbitrage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/edelweiss-arbitrage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 22,
       "revision": 1,
       "errors": [],
@@ -390,13 +475,18 @@
           "error": "mkt cap composition sum 65.11 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 65.11 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 65.11 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 38,
+        "holdings": 198
+      }
     },
     {
       "scheme_uid": "edelweiss-large-cap-fund",
       "scheme_name": "Edelweiss Large Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/edelweiss-large-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 23,
       "revision": 1,
       "errors": [
@@ -415,13 +505,18 @@
           "error": "mkt cap composition sum 90.87 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.38 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.87 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.38 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.87 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 18,
+        "periodic_returns": 48,
+        "holdings": 81
+      }
     },
     {
       "scheme_uid": "edelweiss-midcap-fund",
       "scheme_name": "Edelweiss Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/edelweiss-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 24,
       "revision": 1,
       "errors": [],
@@ -435,13 +530,18 @@
           "error": "mkt cap composition sum 94.20 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.20 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.20 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.20 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.20 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 52,
+        "holdings": 92
+      }
     },
     {
       "scheme_uid": "franklin-build-india-fund",
       "scheme_name": "Franklin Build India Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/franklin-build-india-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 25,
       "revision": 1,
       "errors": [],
@@ -455,13 +555,18 @@
           "error": "mkt cap composition sum 94.44 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.41 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.44 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.41 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.44 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 13,
+        "periodic_returns": 48,
+        "holdings": 43
+      }
     },
     {
       "scheme_uid": "franklin-india-dividend-yield-fund",
       "scheme_name": "Franklin India Dividend Yield Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/franklin-india-dividend-yield-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 26,
       "revision": 1,
       "errors": [],
@@ -471,13 +576,18 @@
           "error": "mkt cap composition sum 79.68 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 79.68 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 79.68 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 54,
+        "holdings": 53
+      }
     },
     {
       "scheme_uid": "franklin-india-opportunities-fund",
       "scheme_name": "Franklin India Opportunities Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/franklin-india-opportunities-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 27,
       "revision": 1,
       "errors": [],
@@ -487,13 +597,18 @@
           "error": "mkt cap composition sum 92.84 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.84 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.84 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 67,
+        "holdings": 59
+      }
     },
     {
       "scheme_uid": "franklin-india-us-opportunities-equity-active-fund-of-fund",
       "scheme_name": "Franklin India US Opportunities Equity Active Fund of Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/franklin-india-us-opportunities-equity-active-fund-of-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 28,
       "revision": 1,
       "errors": [
@@ -512,13 +627,18 @@
           "error": "full_holdings has only 2 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 43,
+        "holdings": 2
+      }
     },
     {
       "scheme_uid": "hdfc-gold-etf-fund-of-funds",
       "scheme_name": "HDFC Gold ETF Fund of Funds",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hdfc-gold-etf-fund-of-funds.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 29,
       "revision": 1,
       "errors": [],
@@ -528,13 +648,18 @@
           "error": "full_holdings has only 2 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 44,
+        "holdings": 2
+      }
     },
     {
       "scheme_uid": "hdfc-large-mid-cap-fund",
       "scheme_name": "HDFC Large & Mid Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hdfc-large-mid-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 30,
       "revision": 1,
       "errors": [
@@ -544,13 +669,18 @@
         }
       ],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 79,
+        "holdings": 245
+      }
     },
     {
       "scheme_uid": "hdfc-midcap-fund",
       "scheme_name": "HDFC Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hdfc-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 31,
       "revision": 1,
       "errors": [],
@@ -564,34 +694,39 @@
           "error": "mkt cap composition sum 92.35 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.35 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.35 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.35 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.35 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 52,
+        "holdings": 83
+      }
     },
     {
       "scheme_uid": "hdfc-multi-asset-active-fund-of-fund",
       "scheme_name": "HDFC Multi Asset Active Fund of Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hdfc-multi-asset-active-fund-of-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 32,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:holdings_min_count",
           "error": "full_holdings has only 1 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 2,
+        "periodic_returns": 24,
+        "holdings": 1
+      }
     },
     {
       "scheme_uid": "hdfc-small-cap-fund",
       "scheme_name": "HDFC Small Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hdfc-small-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 33,
       "revision": 1,
       "errors": [
@@ -610,35 +745,50 @@
           "error": "mkt cap composition sum 89.73 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 89.73 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 89.73 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 89.73 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 89.73 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 49,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "helios-flexi-cap-fund",
       "scheme_name": "Helios Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/helios-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 34,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 16,
+        "periodic_returns": 19,
+        "holdings": 69
+      }
     },
     {
       "scheme_uid": "hsbc-india-export-opportunities-fund",
       "scheme_name": "HSBC India Export Opportunities Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hsbc-india-export-opportunities-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 35,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 18,
+        "holdings": 48
+      }
     },
     {
       "scheme_uid": "hsbc-value-fund",
       "scheme_name": "HSBC Value Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/hsbc-value-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 36,
       "revision": 1,
       "errors": [
@@ -657,13 +807,18 @@
           "error": "mkt cap composition sum 92.95 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.95 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.95 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.95 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.95 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 18,
+        "periodic_returns": 47,
+        "holdings": 82
+      }
     },
     {
       "scheme_uid": "icici-pru-dividend-yield-equity-fund",
       "scheme_name": "ICICI Pru Dividend Yield Equity Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-dividend-yield-equity-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 37,
       "revision": 1,
       "errors": [
@@ -678,34 +833,39 @@
           "error": "mkt cap composition sum 91.26 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 91.26 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 91.26 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 38,
+        "holdings": 78
+      }
     },
     {
       "scheme_uid": "icici-pru-equity-debt-fund",
       "scheme_name": "ICICI Pru Equity & Debt Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-equity-debt-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 38,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 107.06 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 107.06 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 107.06 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 22,
+        "periodic_returns": 68,
+        "holdings": 243
+      }
     },
     {
       "scheme_uid": "icici-pru-large-mid-cap-fund",
       "scheme_name": "ICICI Pru Large & Mid Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-large-mid-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 39,
       "revision": 1,
       "errors": [
@@ -720,45 +880,55 @@
           "error": "mkt cap composition sum 94.27 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.27 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.27 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 21,
+        "periodic_returns": 70,
+        "holdings": 98
+      }
     },
     {
       "scheme_uid": "icici-pru-multi-asset-fund",
       "scheme_name": "ICICI Pru Multi - Asset Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-multi-asset-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 40,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 130.29 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 130.29 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 130.29 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 25,
+        "periodic_returns": 62,
+        "holdings": 252
+      }
     },
     {
       "scheme_uid": "icici-pru-multi-cap-fund",
       "scheme_name": "ICICI Pru Multi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-multi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 41,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 78,
+        "holdings": 153
+      }
     },
     {
       "scheme_uid": "icici-pru-regular-savings-fund",
       "scheme_name": "ICICI Pru Regular Savings Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-regular-savings-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 42,
       "revision": 1,
       "errors": [],
@@ -772,35 +942,50 @@
           "error": "mkt cap composition sum 22.04 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 121.00 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 22.04 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 121.00 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 22.04 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 22,
+        "periodic_returns": 59,
+        "holdings": 150
+      }
     },
     {
       "scheme_uid": "icici-pru-value-fund",
       "scheme_name": "ICICI Pru Value Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-value-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 43,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 58,
+        "holdings": 79
+      }
     },
     {
       "scheme_uid": "icici-prudential-focused-equity-fund",
       "scheme_name": "ICICI Prudential Focused Equity Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-prudential-focused-equity-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 44,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 16,
+        "periodic_returns": 48,
+        "holdings": 39
+      }
     },
     {
       "scheme_uid": "invesco-india-arbitrage-fund",
       "scheme_name": "Invesco India Arbitrage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/invesco-india-arbitrage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 45,
       "revision": 1,
       "errors": [],
@@ -814,24 +999,34 @@
           "error": "mkt cap composition sum 55.18 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 87.48 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 55.18 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 87.48 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 55.18 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 52,
+        "holdings": 455
+      }
     },
     {
       "scheme_uid": "invesco-india-contra-fund",
       "scheme_name": "Invesco India Contra Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/invesco-india-contra-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 46,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 52,
+        "holdings": 81
+      }
     },
     {
       "scheme_uid": "invesco-india-small-cap-fund",
       "scheme_name": "Invesco India Small Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/invesco-india-small-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 47,
       "revision": 1,
       "errors": [
@@ -841,13 +1036,18 @@
         }
       ],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "normalized_counts": {
+        "sector_weights": 13,
+        "periodic_returns": 30,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "kotak-aggressive-hybrid-fund",
       "scheme_name": "Kotak Aggressive Hybrid Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-aggressive-hybrid-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 48,
       "revision": 1,
       "errors": [],
@@ -861,13 +1061,18 @@
           "error": "mkt cap composition sum 79.71 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.59 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 79.71 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.59 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 79.71 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 38,
+        "holdings": 115
+      }
     },
     {
       "scheme_uid": "kotak-arbitrage-fund",
       "scheme_name": "Kotak Arbitrage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-arbitrage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 49,
       "revision": 1,
       "errors": [
@@ -882,57 +1087,82 @@
           "error": "mkt cap composition sum 62.62 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 62.62 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 62.62 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 56,
+        "holdings": 190
+      }
     },
     {
       "scheme_uid": "kotak-business-cycle-fund",
       "scheme_name": "Kotak Business Cycle Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-business-cycle-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 50,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 16,
+        "periodic_returns": 22,
+        "holdings": 59
+      }
     },
     {
       "scheme_uid": "kotak-contra-fund",
       "scheme_name": "Kotak Contra Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-contra-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 51,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 16,
+        "periodic_returns": 56,
+        "holdings": 66
+      }
     },
     {
       "scheme_uid": "kotak-flexi-cap-fund",
       "scheme_name": "Kotak Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 52,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 16,
+        "periodic_returns": 48,
+        "holdings": 63
+      }
     },
     {
       "scheme_uid": "kotak-focused-fund",
       "scheme_name": "Kotak Focused Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-focused-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 53,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 28,
+        "holdings": 31
+      }
     },
     {
       "scheme_uid": "kotak-income-plus-arbitrage-fund-of-funds",
       "scheme_name": "Kotak Income Plus Arbitrage Fund of Funds",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-income-plus-arbitrage-fund-of-funds.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 54,
       "revision": 1,
       "errors": [
@@ -942,35 +1172,50 @@
         }
       ],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 22,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "kotak-large-cap-fund",
       "scheme_name": "Kotak Large Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-large-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 55,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 18,
+        "periodic_returns": 70,
+        "holdings": 66
+      }
     },
     {
       "scheme_uid": "kotak-large-midcap-fund",
       "scheme_name": "Kotak Large & Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/kotak-large-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 56,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 58,
+        "holdings": 72
+      }
     },
     {
       "scheme_uid": "lic-mf-manufacturing-fund",
       "scheme_name": "LIC MF Manufacturing Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/lic-mf-manufacturing-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 57,
       "revision": 1,
       "errors": [
@@ -989,40 +1234,50 @@
           "error": "mkt cap composition sum 91.34 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 91.34 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 91.34 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 91.34 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 91.34 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 12,
+        "periodic_returns": 18,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "mahindra-manulife-aggressive-hybrid-fund",
       "scheme_name": "Mahindra Manulife Aggressive Hybrid Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mahindra-manulife-aggressive-hybrid-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 58,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 27,
+        "holdings": 100
+      }
     },
     {
       "scheme_uid": "mahindra-manulife-focused-fund",
       "scheme_name": "Mahindra Manulife Focused Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mahindra-manulife-focused-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 59,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 14,
+        "periodic_returns": 26,
+        "holdings": 33
+      }
     },
     {
       "scheme_uid": "mahindra-manulife-multi-asset-allocation-fund",
       "scheme_name": "Mahindra Manulife Multi Asset Allocation Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mahindra-manulife-multi-asset-allocation-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 60,
       "revision": 1,
       "errors": [],
@@ -1032,13 +1287,18 @@
           "error": "mkt cap composition sum 55.54 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 55.54 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 55.54 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 21,
+        "periodic_returns": 19,
+        "holdings": 86
+      }
     },
     {
       "scheme_uid": "mahindra-manulife-multi-cap-fund",
       "scheme_name": "Mahindra Manulife Multi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mahindra-manulife-multi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 61,
       "revision": 1,
       "errors": [],
@@ -1048,13 +1308,18 @@
           "error": "mkt cap composition sum 94.11 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.11 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.11 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 32,
+        "holdings": 84
+      }
     },
     {
       "scheme_uid": "mirae-asset-balanced-advantage-fund",
       "scheme_name": "Mirae Asset Balanced Advantage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mirae-asset-balanced-advantage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 62,
       "revision": 1,
       "errors": [],
@@ -1064,35 +1329,50 @@
           "error": "mkt cap composition sum 67.47 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 67.47 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 67.47 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 22,
+        "holdings": 142
+      }
     },
     {
       "scheme_uid": "mirae-asset-flexi-cap-fund",
       "scheme_name": "Mirae Asset Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mirae-asset-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 63,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 21,
+        "holdings": 90
+      }
     },
     {
       "scheme_uid": "mirae-asset-great-consumer-fund",
       "scheme_name": "Mirae Asset Great Consumer Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/mirae-asset-great-consumer-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 64,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 8,
+        "periodic_returns": 45,
+        "holdings": 44
+      }
     },
     {
       "scheme_uid": "motilal-oswal-gold-silver-passive-fund-of-funds",
       "scheme_name": "Motilal Oswal Gold & Silver Passive Fund of Funds",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/motilal-oswal-gold-silver-passive-fund-of-funds.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 65,
       "revision": 1,
       "errors": [],
@@ -1106,13 +1386,18 @@
           "error": "full_holdings has only 2 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 62.37 not within 100\\u00b11.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 62.37 not within 100\\u00b11.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 22,
+        "holdings": 2
+      }
     },
     {
       "scheme_uid": "motilal-oswal-large-and-midcap-fund",
       "scheme_name": "Motilal Oswal Large and Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/motilal-oswal-large-and-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 66,
       "revision": 1,
       "errors": [
@@ -1122,32 +1407,37 @@
         }
       ],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "normalized_counts": {
+        "sector_weights": 9,
+        "periodic_returns": 28,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "motilal-oswal-midcap-fund",
       "scheme_name": "Motilal Oswal Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/motilal-oswal-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 67,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 9,
+        "periodic_returns": 39,
+        "holdings": 33
+      }
     },
     {
       "scheme_uid": "nippon-india-aggressive-hybrid-fund",
       "scheme_name": "Nippon India Aggressive Hybrid Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-aggressive-hybrid-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 68,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:composition_sums_to_100",
@@ -1158,13 +1448,18 @@
           "error": "sector weights sum 115.75 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 101.66 not within 100\\u00b11.0\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 115.75 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 101.66 not within 100\\u00b11.0\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 115.75 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 22,
+        "periodic_returns": 56,
+        "holdings": 136
+      }
     },
     {
       "scheme_uid": "nippon-india-gold-savings-fund",
       "scheme_name": "Nippon India Gold Savings Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-gold-savings-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 69,
       "revision": 1,
       "errors": [],
@@ -1174,67 +1469,74 @@
           "error": "full_holdings has only 2 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 45,
+        "holdings": 2
+      }
     },
     {
       "scheme_uid": "nippon-india-growth-midcap-fund",
       "scheme_name": "Nippon India Growth Midcap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-growth-midcap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 70,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 18,
+        "periodic_returns": 76,
+        "holdings": 104
+      }
     },
     {
       "scheme_uid": "nippon-india-large-cap-fund",
       "scheme_name": "Nippon India Large Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-large-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 71,
       "revision": 1,
       "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        },
         {
           "section": "parse_holdings_full",
           "error": "holdings_full: parsed zero rows across all pages"
         }
       ],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "normalized_counts": {
+        "sector_weights": 18,
+        "periodic_returns": 52,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "nippon-india-multi-asset-allocation-fund",
       "scheme_name": "Nippon India Multi Asset Allocation Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-multi-asset-allocation-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 72,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 26,
+        "holdings": 167
+      }
     },
     {
       "scheme_uid": "nippon-india-multi-cap-fund",
       "scheme_name": "Nippon India Multi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-multi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 73,
       "revision": 1,
       "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        },
         {
           "section": "parse_holdings_full",
           "error": "holdings_full: parsed zero rows across all pages"
@@ -1246,92 +1548,97 @@
           "error": "sector weights sum 105.82 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 105.82 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 105.82 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 57,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "nippon-india-small-cap-fund",
       "scheme_name": "Nippon India Small Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/nippon-india-small-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 74,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 118.33 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 118.33 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 118.33 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 24,
+        "periodic_returns": 46,
+        "holdings": 254
+      }
     },
     {
       "scheme_uid": "parag-parikh-conservative-hybrid-fund",
       "scheme_name": "Parag Parikh Conservative Hybrid Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/parag-parikh-conservative-hybrid-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 75,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 13,
+        "periodic_returns": 24,
+        "holdings": 110
+      }
     },
     {
       "scheme_uid": "parag-parikh-flexi-cap-fund",
       "scheme_name": "Parag Parikh Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/parag-parikh-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 76,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 126.90 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 126.90 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 126.90 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 40,
+        "holdings": 121
+      }
     },
     {
       "scheme_uid": "quant-multi-asset-allocation-fund",
       "scheme_name": "Quant Multi Asset Allocation Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/quant-multi-asset-allocation-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 77,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 88.01 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 88.01 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 88.01 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 15,
+        "periodic_returns": 64,
+        "holdings": 68
+      }
     },
     {
       "scheme_uid": "sbi-banking-financial-services-fund",
       "scheme_name": "SBI Banking & Financial Services Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/sbi-banking-financial-services-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 78,
       "revision": 1,
       "errors": [],
@@ -1349,13 +1656,18 @@
           "error": "full_holdings has only 3 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.45 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.40 not within 100\\u00b15.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 3 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.45 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.40 not within 100\\u00b15.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 3 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 2,
+        "periodic_returns": 37,
+        "holdings": 3
+      }
     },
     {
       "scheme_uid": "sbi-contra-fund",
       "scheme_name": "SBI Contra Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/sbi-contra-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 79,
       "revision": 1,
       "errors": [],
@@ -1369,13 +1681,18 @@
           "error": "mkt cap composition sum 80.90 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.40 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 80.90 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.40 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 80.90 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 68,
+        "holdings": 100
+      }
     },
     {
       "scheme_uid": "sbi-focused-fund",
       "scheme_name": "SBI Focused Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/sbi-focused-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 80,
       "revision": 1,
       "errors": [],
@@ -1389,13 +1706,18 @@
           "error": "mkt cap composition sum 76.93 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.36 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 76.93 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.36 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 76.93 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 13,
+        "periodic_returns": 58,
+        "holdings": 34
+      }
     },
     {
       "scheme_uid": "sbi-income-plus-arbitrage-active-fund-of-funds",
       "scheme_name": "SBI Income Plus Arbitrage Active Fund of Funds",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/sbi-income-plus-arbitrage-active-fund-of-funds.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 81,
       "revision": 1,
       "errors": [
@@ -1410,13 +1732,18 @@
           "error": "full_holdings has only 1 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]",
+      "normalized_counts": {
+        "sector_weights": 1,
+        "periodic_returns": 16,
+        "holdings": 1
+      }
     },
     {
       "scheme_uid": "tata-arbitrage-fund",
       "scheme_name": "Tata Arbitrage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/tata-arbitrage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 82,
       "revision": 1,
       "errors": [],
@@ -1430,35 +1757,50 @@
           "error": "mkt cap composition sum 67.01 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.30 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 67.01 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.30 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 67.01 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 19,
+        "periodic_returns": 30,
+        "holdings": 177
+      }
     },
     {
       "scheme_uid": "tata-flexi-cap-fund",
       "scheme_name": "Tata Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/tata-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 83,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 17,
+        "periodic_returns": 30,
+        "holdings": 59
+      }
     },
     {
       "scheme_uid": "uti-large-mid-cap-fund",
       "scheme_name": "UTI Large & Mid Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/uti-large-mid-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 84,
       "revision": 1,
       "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": null
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 22,
+        "periodic_returns": 80,
+        "holdings": 81
+      }
     },
     {
       "scheme_uid": "uti-transportation-logistics-fund",
       "scheme_name": "UTI Transportation & Logistics Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/uti-transportation-logistics-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 85,
       "revision": 1,
       "errors": [
@@ -1473,99 +1815,100 @@
           "error": "mkt cap composition sum 94.05 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.05 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.05 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 6,
+        "periodic_returns": 56,
+        "holdings": 0
+      }
     },
     {
       "scheme_uid": "white-oak-capital-balanced-advantage-fund",
       "scheme_name": "White Oak Capital Balanced Advantage Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/white-oak-capital-balanced-advantage-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 86,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 108.25 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 108.25 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 108.25 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 21,
+        "periodic_returns": 21,
+        "holdings": 145
+      }
     },
     {
       "scheme_uid": "white-oak-capital-flexi-cap-fund",
       "scheme_name": "White Oak Capital Flexi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/white-oak-capital-flexi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 87,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}]"
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 22,
+        "holdings": 165
+      }
     },
     {
       "scheme_uid": "white-oak-capital-multi-asset-allocation-fund",
       "scheme_name": "White Oak Capital Multi Asset Allocation Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/white-oak-capital-multi-asset-allocation-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 88,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 76.65 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 76.65 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 76.65 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 20,
+        "holdings": 190
+      }
     },
     {
       "scheme_uid": "white-oak-capital-multi-cap-fund",
       "scheme_name": "White Oak Capital Multi Cap Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/white-oak-capital-multi-cap-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 89,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
           "section": "invariant:sector_weights_sum_close",
           "error": "sector weights sum 93.04 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 93.04 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 93.04 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 20,
+        "periodic_returns": 20,
+        "holdings": 199
+      }
     },
     {
       "scheme_uid": "woc-pharma-and-healthcare-fund",
       "scheme_name": "WOC Pharma and Healthcare Fund",
       "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/woc-pharma-and-healthcare-fund.pdf",
-      "status": "skipped_no_change",
+      "status": "inserted",
       "snapshot_id": 90,
       "revision": 1,
       "errors": [
-        {
-          "section": "parse_drawdown",
-          "error": "Drawdown header not found"
-        },
         {
           "section": "parse_holdings_full",
           "error": "holdings_full: parsed zero rows across all pages"
@@ -1577,7 +1920,12 @@
           "error": "sector weights sum 114.91 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_drawdown\", \"error\": \"Drawdown header not found\"}, {\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 114.91 not within 100\\u00b15.0\"}]"
+      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 114.91 not within 100\\u00b15.0\"}]",
+      "normalized_counts": {
+        "sector_weights": 6,
+        "periodic_returns": 19,
+        "holdings": 0
+      }
     }
   ]
 }

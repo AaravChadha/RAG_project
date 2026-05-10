@@ -773,6 +773,34 @@ def _page2_words(pl: "pdfplumber.PDF") -> list[dict]:
         return []
 
 
+def _words_with_anchor(
+    pl: "pdfplumber.PDF",
+    anchor: str,
+    candidate_pages: tuple[int, ...] = (1, 2),
+) -> list[dict]:
+    """Return words from whichever candidate page contains the given anchor.
+
+    Some sections (drawdown, risk_rating, mkt cap composition, etc.) live on
+    page 2 in the typical Finalyca layout but spill to page 3 for funds whose
+    earlier blocks (fund-manager bios, sector weights with many sectors, etc.)
+    push them past the page boundary. Pages are searched in order; the first
+    page containing `anchor` (case-insensitive substring match on any word's
+    text) wins. Falls back to empty list if no candidate page has the anchor.
+    """
+    anchor_lc = anchor.lower()
+    for page_idx in candidate_pages:
+        if page_idx >= len(pl.pages):
+            continue
+        try:
+            words = pl.pages[page_idx].extract_words()
+        except Exception as e:  # pragma: no cover
+            logger.debug("page %d extract_words raised: %s", page_idx, e)
+            continue
+        if any(anchor_lc in (w.get("text") or "").lower() for w in words):
+            return words
+    return []
+
+
 def _group_rows(words: list[dict], y_tol: float = 3.5) -> list[list[dict]]:
     """Cluster words into rows by `top` y-coordinate proximity.
 
@@ -1293,7 +1321,7 @@ def parse_composition(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot
 #   Recovery Date     NA       NA   ← may be "Not Yet Recovered"
 
 # 1Y column lives at x ≈ 100–175; 3Y at x ≈ 175–205.
-_DRAWDOWN_1Y_X = (95.0, 175.0)
+_DRAWDOWN_1Y_X = (95.0, 150.0)
 
 
 def parse_drawdown(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> None:
@@ -1301,10 +1329,15 @@ def parse_drawdown(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -
 
     Reads only the 1Y column. If a date cell is NA / "Not Yet Recovered" /
     "-" / empty, leaves the corresponding field as None (not a failure).
+
+    The Drawdown block sits at the bottom of page 2 in the typical Finalyca
+    layout, but for funds whose page-2 content runs long (extra fund managers,
+    longer overview, more sector rows) it spills onto page 3. We try page 2
+    first, then page 3.
     """
-    words = _page2_words(pl)
+    words = _words_with_anchor(pl, "drawdown", candidate_pages=(1, 2))
     if not words:
-        raise ValueError("page 2 has no extractable words (drawdown)")
+        raise ValueError("Drawdown header not found")
 
     start_y = _find_left_band_anchor(words, "drawdown")
     if start_y is None:
