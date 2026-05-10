@@ -1,0 +1,734 @@
+{
+  "month": "2026-05",
+  "generated_at": "2026-05-10T21:56:38.157479+00:00",
+  "csv_source": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/schemes_master.csv",
+  "out_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
+  "totals": {
+    "rows": 90,
+    "downloaded": 90,
+    "skipped": 0,
+    "failed": 0
+  },
+  "entries": [
+    {
+      "scheme_uid": "canara-robeco-multi-cap-fund",
+      "scheme_name": "Canara Robeco Multi Cap Fund",
+      "category": "Multi Cap Funds",
+      "url": "https://research-host.example/Recommended/Canara%20Robeco%20Multi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 199851
+    },
+    {
+      "scheme_uid": "franklin-india-opportunities-fund",
+      "scheme_name": "Franklin India Opportunities Fund",
+      "category": "Multi Cap Funds",
+      "url": "https://research-host.example/Recommended/Franklin%20India%20Opportunities%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 258904
+    },
+    {
+      "scheme_uid": "icici-pru-multi-cap-fund",
+      "scheme_name": "ICICI Pru Multi Cap Fund",
+      "category": "Multi Cap Funds",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Multicap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 265222
+    },
+    {
+      "scheme_uid": "mahindra-manulife-multi-cap-fund",
+      "scheme_name": "Mahindra Manulife Multi Cap Fund",
+      "category": "Multi Cap Funds",
+      "url": "https://research-host.example/Recommended/Mahindra%20Manulife%20Multi%20Cap%20Fund%20(G).pdf",
+      "outcome": "downloaded",
+      "size_bytes": 237411
+    },
+    {
+      "scheme_uid": "nippon-india-multi-cap-fund",
+      "scheme_name": "Nippon India Multi Cap Fund",
+      "category": "Multi Cap Funds",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Multi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 263389
+    },
+    {
+      "scheme_uid": "white-oak-capital-multi-cap-fund",
+      "scheme_name": "White Oak Capital Multi Cap Fund",
+      "category": "Multi Cap Funds",
+      "url": "https://research-host.example/Recommended/White%20Oak%20Capital%20Multi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 218655
+    },
+    {
+      "scheme_uid": "aditya-birla-sl-flexi-cap-fund",
+      "scheme_name": "Aditya Birla SL Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/Aditya%20Birla%20SL%20Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 263883
+    },
+    {
+      "scheme_uid": "helios-flexi-cap-fund",
+      "scheme_name": "Helios Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/Helios%20Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 191737
+    },
+    {
+      "scheme_uid": "kotak-flexi-cap-fund",
+      "scheme_name": "Kotak Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/Kotak%20Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 248703
+    },
+    {
+      "scheme_uid": "mirae-asset-flexi-cap-fund",
+      "scheme_name": "Mirae Asset Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/Mirae%20Asset%20Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 209485
+    },
+    {
+      "scheme_uid": "parag-parikh-flexi-cap-fund",
+      "scheme_name": "Parag Parikh Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/Parag%20Parikh%20Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 252709
+    },
+    {
+      "scheme_uid": "tata-flexi-cap-fund",
+      "scheme_name": "Tata Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/Tata-Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 228903
+    },
+    {
+      "scheme_uid": "white-oak-capital-flexi-cap-fund",
+      "scheme_name": "White Oak Capital Flexi Cap Fund",
+      "category": "Flexi Cap Funds",
+      "url": "https://research-host.example/Recommended/White%20Oak%20Capital%20Flexi%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 222286
+    },
+    {
+      "scheme_uid": "dsp-large-cap-fund",
+      "scheme_name": "DSP Large Cap Fund",
+      "category": "Large Cap Funds",
+      "url": "https://research-host.example/Recommended/DSP%20Large%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 244565
+    },
+    {
+      "scheme_uid": "edelweiss-large-cap-fund",
+      "scheme_name": "Edelweiss Large Cap Fund",
+      "category": "Large Cap Funds",
+      "url": "https://research-host.example/Recommended/Edelweiss%20Large%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 253735
+    },
+    {
+      "scheme_uid": "kotak-large-cap-fund",
+      "scheme_name": "Kotak Large Cap Fund",
+      "category": "Large Cap Funds",
+      "url": "https://research-host.example/Recommended/Kotak%20Large%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 257429
+    },
+    {
+      "scheme_uid": "nippon-india-large-cap-fund",
+      "scheme_name": "Nippon India Large Cap Fund",
+      "category": "Large Cap Funds",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Large%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 254056
+    },
+    {
+      "scheme_uid": "bandhan-large-midcap-fund",
+      "scheme_name": "Bandhan Large & Midcap Fund",
+      "category": "Large & Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Bandhan%20Large%20&%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 260962
+    },
+    {
+      "scheme_uid": "hdfc-large-mid-cap-fund",
+      "scheme_name": "HDFC Large & Mid Cap Fund",
+      "category": "Large & Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/HDFC%20Large%20and%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 283531
+    },
+    {
+      "scheme_uid": "icici-pru-large-mid-cap-fund",
+      "scheme_name": "ICICI Pru Large & Mid Cap Fund",
+      "category": "Large & Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Large%20&%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 259016
+    },
+    {
+      "scheme_uid": "kotak-large-midcap-fund",
+      "scheme_name": "Kotak Large & Midcap Fund",
+      "category": "Large & Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Kotak%20Large%20&%20Midcap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 256472
+    },
+    {
+      "scheme_uid": "motilal-oswal-large-and-midcap-fund",
+      "scheme_name": "Motilal Oswal Large and Midcap Fund",
+      "category": "Large & Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Motilal%20Oswal%20Large%20&%20Midcap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 269806
+    },
+    {
+      "scheme_uid": "uti-large-mid-cap-fund",
+      "scheme_name": "UTI Large & Mid Cap Fund",
+      "category": "Large & Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/UTI-Large%20&%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 261390
+    },
+    {
+      "scheme_uid": "canara-robeco-focused-fund",
+      "scheme_name": "Canara Robeco Focused Fund",
+      "category": "Focused Funds",
+      "url": "https://research-host.example/Recommended/Canara%20Robeco%20Focused%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 205993
+    },
+    {
+      "scheme_uid": "icici-prudential-focused-equity-fund",
+      "scheme_name": "ICICI Prudential Focused Equity Fund",
+      "category": "Focused Funds",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Focused%20Equity%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 239771
+    },
+    {
+      "scheme_uid": "kotak-focused-fund",
+      "scheme_name": "Kotak Focused Fund",
+      "category": "Focused Funds",
+      "url": "https://research-host.example/Recommended/Kotak%20Focused%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 222465
+    },
+    {
+      "scheme_uid": "mahindra-manulife-focused-fund",
+      "scheme_name": "Mahindra Manulife Focused Fund",
+      "category": "Focused Funds",
+      "url": "https://research-host.example/Recommended/Mahindra%20Manulife%20Focused%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 211169
+    },
+    {
+      "scheme_uid": "sbi-focused-fund",
+      "scheme_name": "SBI Focused Fund",
+      "category": "Focused Funds",
+      "url": "https://research-host.example/Recommended/SBI%20Focused%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 246380
+    },
+    {
+      "scheme_uid": "canara-robeco-midcap-fund",
+      "scheme_name": "Canara Robeco Midcap Fund",
+      "category": "Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Canara%20Robeco%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 202670
+    },
+    {
+      "scheme_uid": "edelweiss-midcap-fund",
+      "scheme_name": "Edelweiss Midcap Fund",
+      "category": "Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Edelweiss%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 254855
+    },
+    {
+      "scheme_uid": "hdfc-midcap-fund",
+      "scheme_name": "HDFC Midcap Fund",
+      "category": "Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/HDFC%20Mid%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 254508
+    },
+    {
+      "scheme_uid": "motilal-oswal-midcap-fund",
+      "scheme_name": "Motilal Oswal Midcap Fund",
+      "category": "Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Motilal%20Oswal%20Midcap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 284843
+    },
+    {
+      "scheme_uid": "nippon-india-growth-midcap-fund",
+      "scheme_name": "Nippon India Growth Midcap Fund",
+      "category": "Mid Cap Funds",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Growth%20Midcap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 259708
+    },
+    {
+      "scheme_uid": "bandhan-small-cap-fund",
+      "scheme_name": "Bandhan Small Cap Fund",
+      "category": "Small Cap Funds",
+      "url": "https://research-host.example/Recommended/Bandhan%20Small%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 253331
+    },
+    {
+      "scheme_uid": "hdfc-small-cap-fund",
+      "scheme_name": "HDFC Small Cap Fund",
+      "category": "Small Cap Funds",
+      "url": "https://research-host.example/Recommended/HDFC%20Small%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 258049
+    },
+    {
+      "scheme_uid": "invesco-india-small-cap-fund",
+      "scheme_name": "Invesco India Small Cap Fund",
+      "category": "Small Cap Funds",
+      "url": "https://research-host.example/Recommended/Invesco%20India%20Small%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 233723
+    },
+    {
+      "scheme_uid": "nippon-india-small-cap-fund",
+      "scheme_name": "Nippon India Small Cap Fund",
+      "category": "Small Cap Funds",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Small%20Cap%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 273295
+    },
+    {
+      "scheme_uid": "dsp-value-fund",
+      "scheme_name": "DSP Value Fund",
+      "category": "Value / Contra Funds",
+      "url": "https://research-host.example/Recommended/DSP%20Value%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 189333
+    },
+    {
+      "scheme_uid": "hsbc-value-fund",
+      "scheme_name": "HSBC Value Fund",
+      "category": "Value / Contra Funds",
+      "url": "https://research-host.example/Recommended/HSBC%20Value%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 253968
+    },
+    {
+      "scheme_uid": "icici-pru-value-fund",
+      "scheme_name": "ICICI Pru Value Fund",
+      "category": "Value / Contra Funds",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Value%20Fund%20(G).pdf",
+      "outcome": "downloaded",
+      "size_bytes": 251597
+    },
+    {
+      "scheme_uid": "invesco-india-contra-fund",
+      "scheme_name": "Invesco India Contra Fund",
+      "category": "Value / Contra Funds",
+      "url": "https://research-host.example/Recommended/Invesco%20India%20Contra%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 249935
+    },
+    {
+      "scheme_uid": "kotak-contra-fund",
+      "scheme_name": "Kotak Contra Fund",
+      "category": "Value / Contra Funds",
+      "url": "https://research-host.example/Recommended/Kotak%20Contra%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 253213
+    },
+    {
+      "scheme_uid": "sbi-contra-fund",
+      "scheme_name": "SBI Contra Fund",
+      "category": "Value / Contra Funds",
+      "url": "https://research-host.example/Recommended/SBI%20Contra%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 262881
+    },
+    {
+      "scheme_uid": "baroda-bnp-paribas-innovation-fund",
+      "scheme_name": "Baroda BNP Paribas Innovation Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/Baroda%20BNP%20Paribas%20Innovation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 189103
+    },
+    {
+      "scheme_uid": "baroda-bnp-paribas-manufacturing-fund",
+      "scheme_name": "Baroda BNP Paribas Manufacturing Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/Baroda%20BNP%20Paribas%20Manufacturing%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 181661
+    },
+    {
+      "scheme_uid": "dsp-natural-resources-new-energy-fund",
+      "scheme_name": "DSP Natural Resources & New Energy Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/DSP%20Natural%20Resources%20&%20New%20Energy%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 221294
+    },
+    {
+      "scheme_uid": "franklin-build-india-fund",
+      "scheme_name": "Franklin Build India Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/Franklin%20Build%20India%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 248065
+    },
+    {
+      "scheme_uid": "hsbc-india-export-opportunities-fund",
+      "scheme_name": "HSBC India Export Opportunities Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/HSBC%20India%20Export%20Opportunities%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 193547
+    },
+    {
+      "scheme_uid": "kotak-business-cycle-fund",
+      "scheme_name": "Kotak Business Cycle Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/Kotak%20Business%20Cycle%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 209372
+    },
+    {
+      "scheme_uid": "lic-mf-manufacturing-fund",
+      "scheme_name": "LIC MF Manufacturing Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/LIC%20MF%20Manufacturing%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 186268
+    },
+    {
+      "scheme_uid": "mirae-asset-great-consumer-fund",
+      "scheme_name": "Mirae Asset Great Consumer Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/Mirae%20Asset%20Great%20Consumer%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 241693
+    },
+    {
+      "scheme_uid": "sbi-banking-financial-services-fund",
+      "scheme_name": "SBI Banking & Financial Services Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/SBI%20Banking%20&%20Financial%20Services%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 221099
+    },
+    {
+      "scheme_uid": "uti-transportation-logistics-fund",
+      "scheme_name": "UTI Transportation & Logistics Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/UTI-Transportation%20&%20Logistics%20Fund%20(G).pdf",
+      "outcome": "downloaded",
+      "size_bytes": 230917
+    },
+    {
+      "scheme_uid": "woc-pharma-and-healthcare-fund",
+      "scheme_name": "WOC Pharma and Healthcare Fund",
+      "category": "Thematic Fund",
+      "url": "https://research-host.example/Recommended/WOC%20Pharma%20and%20Healthcare%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 191993
+    },
+    {
+      "scheme_uid": "franklin-india-dividend-yield-fund",
+      "scheme_name": "Franklin India Dividend Yield Fund",
+      "category": "Dividend Yield Fund",
+      "url": "https://research-host.example/Recommended/Franklin%20India%20Dividend%20Yield%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 253704
+    },
+    {
+      "scheme_uid": "icici-pru-dividend-yield-equity-fund",
+      "scheme_name": "ICICI Pru Dividend Yield Equity Fund",
+      "category": "Dividend Yield Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Dividend%20Yield%20Equity%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 242668
+    },
+    {
+      "scheme_uid": "franklin-india-us-opportunities-equity-active-fund-of-fund",
+      "scheme_name": "Franklin India US Opportunities Equity Active Fund of Fund",
+      "category": "International Fund",
+      "url": "https://research-host.example/Recommended/Franklin%20US%20Opportunities%20Equity%20Active%20Fund%20of%20Funds.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 200987
+    },
+    {
+      "scheme_uid": "axis-gold-fund",
+      "scheme_name": "Axis Gold Fund",
+      "category": "Gold Fund",
+      "url": "https://research-host.example/Recommended/Axis%20Gold%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 193669
+    },
+    {
+      "scheme_uid": "hdfc-gold-etf-fund-of-funds",
+      "scheme_name": "HDFC Gold ETF Fund of Funds",
+      "category": "Gold Fund",
+      "url": "https://research-host.example/Recommended/HDFC%20Gold%20ETF%20Fund%20of%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 197397
+    },
+    {
+      "scheme_uid": "motilal-oswal-gold-silver-passive-fund-of-funds",
+      "scheme_name": "Motilal Oswal Gold & Silver Passive Fund of Funds",
+      "category": "Gold Fund",
+      "url": "https://research-host.example/Recommended/Motilal%20Oswal%20Gold%20and%20Silver%20Passive%20Fund%20of%20Funds.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 225051
+    },
+    {
+      "scheme_uid": "nippon-india-gold-savings-fund",
+      "scheme_name": "Nippon India Gold Savings Fund",
+      "category": "Gold Fund",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Gold%20Savings%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 194506
+    },
+    {
+      "scheme_uid": "absl-balanced-advantage-fund",
+      "scheme_name": "ABSL Balanced Advantage Fund",
+      "category": "Balanced Advantage Fund",
+      "url": "https://research-host.example/Recommended/Aditya%20Birla%20SL%20Balanced%20Advantage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 259791
+    },
+    {
+      "scheme_uid": "axis-balanced-advantage-fund",
+      "scheme_name": "Axis Balanced Advantage Fund",
+      "category": "Balanced Advantage Fund",
+      "url": "https://research-host.example/Recommended/Axis%20Balanced%20Advantage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 245327
+    },
+    {
+      "scheme_uid": "dsp-dynamic-asset-allocator-fund",
+      "scheme_name": "DSP Dynamic Asset Allocator Fund",
+      "category": "Balanced Advantage Fund",
+      "url": "https://research-host.example/Recommended/DSP%20Dynamic%20Asset%20Allocation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 228989
+    },
+    {
+      "scheme_uid": "hdfc-multi-asset-active-fund-of-fund",
+      "scheme_name": "HDFC Multi Asset Active Fund of Fund",
+      "category": "Balanced Advantage Fund",
+      "url": "https://research-host.example/Recommended/HDFC%20Multi-Asset%20Active%20Fund%20of%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 191111
+    },
+    {
+      "scheme_uid": "mirae-asset-balanced-advantage-fund",
+      "scheme_name": "Mirae Asset Balanced Advantage Fund",
+      "category": "Balanced Advantage Fund",
+      "url": "https://research-host.example/Recommended/Mirae%20Asset%20Balanced%20Advantage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 211567
+    },
+    {
+      "scheme_uid": "white-oak-capital-balanced-advantage-fund",
+      "scheme_name": "White Oak Capital Balanced Advantage Fund",
+      "category": "Balanced Advantage Fund",
+      "url": "https://research-host.example/Recommended/WOC%20Balanced%20Advantage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 212176
+    },
+    {
+      "scheme_uid": "aditya-birla-sl-regular-savings-fund",
+      "scheme_name": "Aditya Birla SL Regular Savings Fund",
+      "category": "Conservative Hybrid Fund",
+      "url": "https://research-host.example/Recommended/Aditya%20Birla%20SL%20Regular%20Savings%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 252533
+    },
+    {
+      "scheme_uid": "dsp-regular-savings-fund",
+      "scheme_name": "DSP Regular Savings Fund",
+      "category": "Conservative Hybrid Fund",
+      "url": "https://research-host.example/Recommended/DSP%20Regular%20Savings%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 226551
+    },
+    {
+      "scheme_uid": "icici-pru-regular-savings-fund",
+      "scheme_name": "ICICI Pru Regular Savings Fund",
+      "category": "Conservative Hybrid Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Regular%20Savings%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 245479
+    },
+    {
+      "scheme_uid": "parag-parikh-conservative-hybrid-fund",
+      "scheme_name": "Parag Parikh Conservative Hybrid Fund",
+      "category": "Conservative Hybrid Fund",
+      "url": "https://research-host.example/Recommended/Parag%20Parikh%20Conservative%20Hybrid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 211218
+    },
+    {
+      "scheme_uid": "edelweiss-aggressive-hybrid-fund",
+      "scheme_name": "Edelweiss Aggressive Hybrid Fund",
+      "category": "Aggressive Hybrid Fund",
+      "url": "https://research-host.example/Recommended/Edelweiss%20Aggressive%20Hybrid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 249307
+    },
+    {
+      "scheme_uid": "icici-pru-equity-debt-fund",
+      "scheme_name": "ICICI Pru Equity & Debt Fund",
+      "category": "Aggressive Hybrid Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Equity%20&%20Debt%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 268500
+    },
+    {
+      "scheme_uid": "kotak-aggressive-hybrid-fund",
+      "scheme_name": "Kotak Aggressive Hybrid Fund",
+      "category": "Aggressive Hybrid Fund",
+      "url": "https://research-host.example/Recommended/kotak%20Aggressive%20Hybrid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 241689
+    },
+    {
+      "scheme_uid": "mahindra-manulife-aggressive-hybrid-fund",
+      "scheme_name": "Mahindra Manulife Aggressive Hybrid Fund",
+      "category": "Aggressive Hybrid Fund",
+      "url": "https://research-host.example/Recommended/Mahindra%20Manulife%20Aggressive%20Hybrid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 218784
+    },
+    {
+      "scheme_uid": "nippon-india-aggressive-hybrid-fund",
+      "scheme_name": "Nippon India Aggressive Hybrid Fund",
+      "category": "Aggressive Hybrid Fund",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Aggressive%20Hybrid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 252668
+    },
+    {
+      "scheme_uid": "dsp-multi-asset-allocation-fund",
+      "scheme_name": "DSP Multi Asset Allocation Fund",
+      "category": "Multi Asset Allocation Fund",
+      "url": "https://research-host.example/Recommended/DSP%20Multi%20Asset%20Allocation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 190464
+    },
+    {
+      "scheme_uid": "icici-pru-multi-asset-fund",
+      "scheme_name": "ICICI Pru Multi - Asset Fund",
+      "category": "Multi Asset Allocation Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Mult%20Asset%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 268766
+    },
+    {
+      "scheme_uid": "mahindra-manulife-multi-asset-allocation-fund",
+      "scheme_name": "Mahindra Manulife Multi Asset Allocation Fund",
+      "category": "Multi Asset Allocation Fund",
+      "url": "https://research-host.example/Recommended/Mahindra%20Manulife%20Multi%20Asset%20Allocation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 189270
+    },
+    {
+      "scheme_uid": "nippon-india-multi-asset-allocation-fund",
+      "scheme_name": "Nippon India Multi Asset Allocation Fund",
+      "category": "Multi Asset Allocation Fund",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Multi%20Asset%20Allocation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 227204
+    },
+    {
+      "scheme_uid": "quant-multi-asset-allocation-fund",
+      "scheme_name": "Quant Multi Asset Allocation Fund",
+      "category": "Multi Asset Allocation Fund",
+      "url": "https://research-host.example/Recommended/Quant%20Multi%20Asset%20Allocation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 220298
+    },
+    {
+      "scheme_uid": "white-oak-capital-multi-asset-allocation-fund",
+      "scheme_name": "White Oak Capital Multi Asset Allocation Fund",
+      "category": "Multi Asset Allocation Fund",
+      "url": "https://research-host.example/Recommended/White%20Oak%20Capital%20Multi%20Asset%20Allocation%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 211682
+    },
+    {
+      "scheme_uid": "aditya-birla-sl-arbitrage-fund",
+      "scheme_name": "Aditya Birla SL Arbitrage Fund",
+      "category": "Arbitrage Funds",
+      "url": "https://research-host.example/Recommended/Aditya%20Birla%20SL%20Arbitrage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 250675
+    },
+    {
+      "scheme_uid": "edelweiss-arbitrage-fund",
+      "scheme_name": "Edelweiss Arbitrage Fund",
+      "category": "Arbitrage Funds",
+      "url": "https://research-host.example/Recommended/Edelweiss%20Arbitrage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 246756
+    },
+    {
+      "scheme_uid": "invesco-india-arbitrage-fund",
+      "scheme_name": "Invesco India Arbitrage Fund",
+      "category": "Arbitrage Funds",
+      "url": "https://research-host.example/Recommended/Invesco%20India%20Arbitrage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 273184
+    },
+    {
+      "scheme_uid": "kotak-arbitrage-fund",
+      "scheme_name": "Kotak Arbitrage Fund",
+      "category": "Arbitrage Funds",
+      "url": "https://research-host.example/Recommended/Kotak%20Arbitrage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 247747
+    },
+    {
+      "scheme_uid": "tata-arbitrage-fund",
+      "scheme_name": "Tata Arbitrage Fund",
+      "category": "Arbitrage Funds",
+      "url": "https://research-host.example/Recommended/Tata%20Arbitrage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 227931
+    },
+    {
+      "scheme_uid": "bandhan-income-plus-arbitrage-fund-of-funds",
+      "scheme_name": "Bandhan Income Plus Arbitrage Fund of Funds",
+      "category": "Income Plus Arbitrage",
+      "url": "https://research-host.example/Recommended/Bandhan%20Income%20Plus%20Arbitrage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 189749
+    },
+    {
+      "scheme_uid": "kotak-income-plus-arbitrage-fund-of-funds",
+      "scheme_name": "Kotak Income Plus Arbitrage Fund of Funds",
+      "category": "Income Plus Arbitrage",
+      "url": "https://research-host.example/Recommended/Kotak%20Income%20Plus%20Arbitrage%20Fund%20of%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 177705
+    },
+    {
+      "scheme_uid": "sbi-income-plus-arbitrage-active-fund-of-funds",
+      "scheme_name": "SBI Income Plus Arbitrage Active Fund of Funds",
+      "category": "Income Plus Arbitrage",
+      "url": "https://research-host.example/Recommended/SBI%20Income%20Plus%20Arbitrage%20Active%20FOF.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 158115
+    }
+  ]
+}
