@@ -82,6 +82,48 @@ def query_db(sql: str, params: tuple = ()) -> List[Dict[str, Any]]:
         conn.close()
 
 
+def update_query_feedback(
+    query_id: int,
+    feedback: str,
+    comment: Optional[str] = None,
+) -> None:
+    """Update ``user_feedback`` and ``feedback_comment`` for a query_log row.
+
+    Used by the Streamlit UI (Phase 6) when an RM clicks thumbs-up /
+    thumbs-down under an assistant message. Writes are upserts on the
+    existing row keyed by ``query_id`` — the row is guaranteed to exist
+    because ``log_query`` ran synchronously before the UI could render
+    the buttons.
+
+    Args:
+        query_id: Primary key from ``log_query()`` return value.
+        feedback: ``"thumbs_up"`` or ``"thumbs_down"``. Any string is
+            accepted at the SQL layer; the UI is responsible for the
+            two-value convention.
+        comment: Optional free-text comment, typically only attached to
+            thumbs-down. ``None`` leaves the column NULL.
+
+    Raises:
+        ValueError: If ``query_id`` does not match any row in query_log.
+    """
+    conn = sqlite3.connect(str(config.DB_PATH))
+    try:
+        cur = conn.execute(
+            """
+            UPDATE query_log
+               SET user_feedback = ?,
+                   feedback_comment = ?
+             WHERE query_id = ?
+            """,
+            (feedback, comment, query_id),
+        )
+        conn.commit()
+        if cur.rowcount == 0:
+            raise ValueError(f"No query_log row found for query_id={query_id}")
+    finally:
+        conn.close()
+
+
 def log_query(
     question: str,
     sql: Optional[str],

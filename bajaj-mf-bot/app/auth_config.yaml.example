@@ -1,0 +1,34 @@
+# Bajaj MF research bot — streamlit-authenticator config (template).
+#
+# Copy this file to `app/auth_config.yaml` (which is gitignored) and
+# replace the placeholders with real credentials. Use
+# `python -m scripts.create_auth_account ...` to generate each entry
+# rather than editing this file by hand — the script bcrypt-hashes the
+# password for you.
+#
+# The `cookie.key` value must be a long, random secret (32+ bytes of
+# hex). Generate one with: `python -c "import secrets; print(secrets.token_hex(32))"`.
+#
+# Username convention: firstname.lastname (mapped to employee_id below
+# for audit traceability via query_log.user_id).
+
+credentials:
+  usernames:
+    test.rm1:
+      name: Test RM One
+      password: $2b$12$REPLACE_ME_WITH_BCRYPT_HASH
+      email: test.rm1@bajajcapital.in
+      employee_id: BC0001
+    test.rm2:
+      name: Test RM Two
+      password: $2b$12$REPLACE_ME_WITH_BCRYPT_HASH
+      email: test.rm2@bajajcapital.in
+      employee_id: BC0002
+
+cookie:
+  name: bajaj_mf_bot_session
+  key: REPLACE_WITH_RANDOM_32_BYTE_HEX
+  expiry_days: 1
+
+preauthorized:
+  emails: []

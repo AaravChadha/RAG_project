@@ -52,8 +52,9 @@ def test_ask_expense_ratio_returns_value(seeded_db):
     *can* assert deterministically is: a number is present, the
     footer is present, and the answer is non-empty.
     """
-    answer = ask("What is the expense ratio of Canara Robeco Multi Cap?")
+    answer, query_id = ask("What is the expense ratio of Canara Robeco Multi Cap?")
     assert answer
+    assert query_id > 0
     assert "verify against your own" in answer
     # The mock always emits a digit somewhere in the answer.
     assert any(ch.isdigit() for ch in answer)
@@ -66,13 +67,13 @@ def test_ask_non_tool_question_echoes(seeded_db):
     mentions "expense ratio". Anything else falls through to the echo
     branch — which the loop returns as the final answer directly.
     """
-    answer = ask("What is the meaning of life?")
+    answer, _query_id = ask("What is the meaning of life?")
     assert "[mock response]" in answer
 
 
 def test_query_log_records_question(seeded_db):
     question = "What is the expense ratio of Canara Robeco Multi Cap?"
-    answer = ask(question)
+    answer, _query_id = ask(question)
 
     conn = sqlite3.connect(str(config.DB_PATH))
     try:

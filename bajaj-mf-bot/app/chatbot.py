@@ -155,14 +155,18 @@ def _truncate(s: str, cap: int = _TOOL_RESULT_LOG_CAP) -> str:
     return s[:cap] + f"...[truncated, {len(s) - cap} more chars]"
 
 
-def ask(question: str, user_id: Optional[str] = None) -> str:
+def ask(question: str, user_id: Optional[str] = None) -> Tuple[str, int]:
     """Answer ``question`` via an LLM tool-use loop.
 
-    Returns the final answer string. Always logs one row to ``query_log``
-    capturing the question, tool trace, model, cumulative tokens/latency,
-    and any inferred refusal reason. The ``query_id`` is captured for
-    future UI affordances (Phase 6 feedback buttons) but not returned —
-    that wiring is for a later phase.
+    Returns ``(answer, query_id)`` so callers (notably the Streamlit UI in
+    Phase 6) can hand the query_id to the feedback buttons without a
+    second DB round-trip. Always logs one row to ``query_log`` capturing
+    the question, tool trace, model, cumulative tokens/latency, and any
+    inferred refusal reason.
+
+    Note: the signature changed in Phase 6 from ``-> str`` to
+    ``-> (str, int)``. Callers that only want the string must unpack:
+    ``answer, _ = ask(...)``.
     """
     client = LLMClient()
 
@@ -302,9 +306,9 @@ def ask(question: str, user_id: Optional[str] = None) -> str:
         refusal_reason=refusal_reason,
         user_id=user_id,
     )
-    # query_id is captured for future Phase 6 thumbs-up/thumbs-down
-    # wiring. We don't return it yet — extending the signature can wait
-    # until the UI actually needs it.
+    # query_id is returned alongside the answer so Phase 6's UI can wire
+    # thumbs-up/thumbs-down feedback to the right row without re-querying
+    # query_log.
     logger.debug(
         "ask: logged query_id=%d refusal=%s loop_exceeded=%s",
         query_id,
@@ -312,7 +316,7 @@ def ask(question: str, user_id: Optional[str] = None) -> str:
         loop_exceeded,
     )
 
-    return final_answer
+    return final_answer, query_id
 
 
 def _cli(argv: list[str] | None = None) -> int:
@@ -353,7 +357,7 @@ def _cli(argv: list[str] | None = None) -> int:
             print("No question provided.", file=sys.stderr)
             return 2
 
-    answer = ask(question)
+    answer, _query_id = ask(question)
     print(answer)
     return 0
 

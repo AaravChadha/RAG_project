@@ -55,9 +55,10 @@ def _read_last_log_row():
 
 def test_loop_exits_on_no_tool_calls(seeded_db):
     """Question that doesn't trigger a tool call still terminates + logs."""
-    answer = ask("say hi")
+    answer, query_id = ask("say hi")
     # The mock's default branch echoes the user content back.
     assert "[mock response]" in answer
+    assert query_id > 0
 
     last = _read_last_log_row()
     assert last is not None
@@ -71,7 +72,7 @@ def test_loop_exits_on_no_tool_calls(seeded_db):
 
 def test_loop_executes_tool_call(seeded_db):
     """Expense-ratio question round-trips through query_db once."""
-    answer = ask("What is the expense ratio of Canara Robeco Multi Cap?")
+    answer, _query_id = ask("What is the expense ratio of Canara Robeco Multi Cap?")
 
     assert "verify against your own" in answer
     # The mock threads the first numeric value from the tool result
@@ -101,7 +102,7 @@ def test_loop_handles_tool_error(seeded_db, monkeypatch):
 
     monkeypatch.setattr(chatbot_module, "execute_tool", _fake_execute_tool)
 
-    answer = ask("What is the expense ratio of Canara Robeco Multi Cap?")
+    answer, _query_id = ask("What is the expense ratio of Canara Robeco Multi Cap?")
 
     assert answer, "loop must produce a non-empty final answer"
     # Footer still attached — the mock's branch-2 always emits it.
@@ -143,7 +144,7 @@ def test_max_iterations_loop_exceeded(seeded_db, monkeypatch):
 
     monkeypatch.setattr(llm_client_module._MockClient, "chat", _always_tool)
 
-    answer = ask("force the loop to exceed")
+    answer, _query_id = ask("force the loop to exceed")
 
     assert "couldn't complete" in answer.lower()
     # Exactly MAX_ITERATIONS chat() invocations happen before bailing.

@@ -120,7 +120,7 @@ def main() -> int:
         print(f"Q: {q['question']}")
         t0 = time.perf_counter()
         try:
-            answer = ask(q["question"], user_id="eval")
+            answer, _query_id = ask(q["question"], user_id="eval")
         except Exception as e:  # broad catch — log and continue the eval
             answer = f"[ASK CRASHED: {type(e).__name__}: {e}]"
         latency_s = time.perf_counter() - t0

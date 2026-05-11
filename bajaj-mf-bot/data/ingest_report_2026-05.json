@@ -1,6 +1,6 @@
 {
   "month": "2026-05",
-  "generated_at": "2026-05-10T23:37:04.547834+00:00",
+  "generated_at": "2026-05-11T00:00:42.380495+00:00",
   "pdf_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
   "db_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/db/bajaj_mf.db",
   "totals": {
@@ -9,7 +9,7 @@
     "skipped_no_change": 0,
     "superseded": 0,
     "failed": 0,
-    "elapsed_seconds": 89.5
+    "elapsed_seconds": 90.1
   },
   "entries": [
     {

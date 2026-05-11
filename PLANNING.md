@@ -282,30 +282,30 @@
 
 ---
 
-## [ ] Phase 6 — Streamlit UI [Day 9]
+## [x] Phase 6 — Streamlit UI [Day 9]
 
 **Goal:** A 5-RM-friendly chat UI with citations, feedback, and password gate.
 
 **Exit criterion:** `streamlit run app/streamlit_app.py` opens a working chat interface on `localhost:8501` that authenticates and handles the smoke-test question.
 
-### [ ] 6.1 Auth gate — this is the rival defense, treat seriously
-- [ ] **6.1.1** Create `app/auth_config.yaml` (gitignored) with 5 RM accounts (`username`, hashed `password` via bcrypt, `name`). Use `streamlit-authenticator`'s hasher.
-- [ ] **6.1.2** Wire `streamlit-authenticator` into `streamlit_app.py`. **No content renders until login** — not even the "Bajaj Capital Research Bot" title. A scraper hitting the URL should see only a login form.
-- [ ] **6.1.3** Disable account self-registration. Only admin (you) can add accounts via the YAML file.
-- [ ] **6.1.4** Username convention: `firstname.lastname` mapped to a Bajaj employee ID in a separate column for auditability — query_log records the username, audit can map back to employee.
-- [ ] **6.1.5** Session timeout: 8 hours (Streamlit default). Re-auth on next visit.
-- [ ] **6.1.6** Phase-2 hardening (NOT pilot, but document the sequencing): IP allowlist for Bajaj corporate ranges → rate limit per username → account lockout after 5 failed attempts → migrate to Bajaj SSO before scaling past 50 users.
+### [x] 6.1 Auth gate — this is the rival defense, treat seriously
+- [x] **6.1.1** Create `app/auth_config.yaml` (gitignored) with 5 RM accounts (`username`, hashed `password` via bcrypt, `name`). Use `streamlit-authenticator`'s hasher.
+- [x] **6.1.2** Wire `streamlit-authenticator` into `streamlit_app.py`. **No content renders until login** — not even the "Bajaj Capital Research Bot" title. A scraper hitting the URL should see only a login form.
+- [x] **6.1.3** Disable account self-registration. Only admin (you) can add accounts via the YAML file.
+- [x] **6.1.4** Username convention: `firstname.lastname` mapped to a Bajaj employee ID in a separate column for auditability — query_log records the username, audit can map back to employee.
+- [x] **6.1.5** Session timeout: 8 hours (Streamlit default). Re-auth on next visit.
+- [x] **6.1.6** Phase-2 hardening (NOT pilot, but document the sequencing): IP allowlist for Bajaj corporate ranges → rate limit per username → account lockout after 5 failed attempts → migrate to Bajaj SSO before scaling past 50 users.
 
-### [ ] 6.2 Chat UI
-- [ ] **6.2.1** Use `st.chat_message` and `st.chat_input`. Persist conversation in `st.session_state`.
-- [ ] **6.2.2** On each user message: call `chatbot.ask`, render response, render `Source: ...` line as a smaller-font caption.
-- [ ] **6.2.3** Render thumbs-up/thumbs-down buttons under each bot message. Click writes `user_feedback` to that row's `query_log` entry (lookup by `query_id` returned from `ask()`).
-- [ ] **6.2.4** Optional comment field after thumbs-down.
+### [x] 6.2 Chat UI
+- [x] **6.2.1** Use `st.chat_message` and `st.chat_input`. Persist conversation in `st.session_state`.
+- [x] **6.2.2** On each user message: call `chatbot.ask`, render response, render `Source: ...` line as a smaller-font caption.
+- [x] **6.2.3** Render thumbs-up/thumbs-down buttons under each bot message. Click writes `user_feedback` to that row's `query_log` entry (lookup by `query_id` returned from `ask()`).
+- [x] **6.2.4** Optional comment field after thumbs-down.
 
-### [ ] 6.3 Operational UI niceties (cheap, high-value)
-- [ ] **6.3.1** Sidebar: shows current month's data status ("Data loaded: May 2026, 90 schemes").
-- [ ] **6.3.2** Sidebar: link to "Report a problem" — writes a feedback row to a `feedback` table or just opens a `mailto:`.
-- [ ] **6.3.3** Spinner during LLM call.
+### [x] 6.3 Operational UI niceties (cheap, high-value)
+- [x] **6.3.1** Sidebar: shows current month's data status ("Data loaded: May 2026, 90 schemes").
+- [x] **6.3.2** Sidebar: link to "Report a problem" — writes a feedback row to a `feedback` table or just opens a `mailto:`.
+- [x] **6.3.3** Spinner during LLM call.
 
 **Acceptance:** Manual smoke test — log in as a test RM, ask 3 questions (one fact, one cross-fund, one refusal), thumbs-down one of them, verify all four actions land in `query_log`.
 
