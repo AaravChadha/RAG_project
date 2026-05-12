@@ -2,15 +2,15 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-11 (end of session)
+> **Last update**: 2026-05-12 (end of session)
 
 ---
 
 ## TL;DR
 
-The pilot is **functionally complete end-to-end**. PDF → parser → SQLite → LLM tool-use → cited answer → Streamlit UI with auth gate. All on free-tier services. 56 tests pass. Locally, you can run a real chatbot against 90 real Bajaj-recommended schemes through a login-gated UI.
+The pilot is **functionally complete end-to-end**. PDF → parser → SQLite → LLM tool-use → cited answer → Streamlit UI with auth gate. All on free-tier services. 56 tests pass. Locally, you can run a real chatbot against **122 Bajaj-recommended schemes** (90 equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 28 pure debt) through a login-gated UI.
 
-Phases 1-6 of the original plan are done. Phases 7-9 (tunnel + compliance, eval polish, RM onboarding) are not started.
+Phases 1-6 of the original plan are done. Phase 4.3 (debt-fund coverage) closed in this session — 122/123 schemes ingested, only Bandhan Gilt outstanding (URL doesn't exist at the standard host path). Phases 7-9 (tunnel + compliance, eval polish, RM onboarding) are not started.
 
 ---
 
@@ -26,9 +26,10 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env       # then put your GROQ_API_KEY in .env
 
-# 2. (One-time per data refresh) Seed DB + ingest 90 PDFs
+# 2. (One-time per data refresh) Seed DB + download + ingest 122 PDFs
 python -m db.init_db --force
-python -m ingest.ingest_month --month 2026-05    # ~90s, downloads from Bajaj's public host
+python -m ingest.download_pdfs --month 2026-05   # ~2 min, downloads from Bajaj's public host (skip-if-present)
+python -m ingest.ingest_month --month 2026-05    # ~2 min, parses all 122
 
 # 3. (One-time) Create at least one auth user
 python -m scripts.create_auth_account \
@@ -57,8 +58,8 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 | **1.6** Normalized table writes | ✅ | `insert_snapshot_full` writes fund_snapshots + sector_weights + periodic_returns + holdings in one txn with rollback safety |
 | **2** Eval-driven spec | ✅ | 40 golden questions across 13 categories + 3 refusals. Schema-validated. Runner skips pending Phase 8 full eval. |
 | **3** Parser widening | ✅ | 14 section parsers (dispatch pattern, partial-snapshot-with-errors), 7 invariants, 3 hand-extracted golden samples, deepdiff regression baseline |
-| **4.1/4.2** Bulk ingest | ✅ | All 90 PDFs downloaded + parsed + ingested. `data/ingest_report_2026-05.json` has per-scheme outcomes. |
-| **4.3.1** Email search | ✅ | The forwarded .eml has the debt schemes mentioned (~180 URLs, of which 90 are in CSV, ~33 likely debt funds in the rest). Pending your debt-fund CSV. |
+| **4.1/4.2** Bulk ingest | ✅ | All 90 + 4 Equity Savings + 28 pure debt = **122 PDFs** downloaded + parsed + ingested. `data/ingest_report_2026-05.json` has per-scheme outcomes. |
+| **4.3** Debt-fund coverage | ✅ | 28 of 29 pure debt funds added (Liquid/Gilt/Bond/Banking & PSU/Duration variants). 1 outstanding: Bandhan Gilt Fund (URL not at standard `/Recommended/<name>.pdf` host path, 15+ variants tested). |
 | **5.1-5.4** Tool-use chatbot | ✅ | 4 tools (`query_db`, `lookup_scheme`, `get_schema`, `compare_schemes`), full operating-mode system prompt, 6-iter tool loop. Stable **7-8/10 on real Groq curated 10-Q eval.** |
 | **6** Streamlit UI | ✅ | Auth gate (bcrypt + streamlit-authenticator), chat (`st.chat_message`/`st.chat_input`), thumbs-up/down feedback writes to `query_log`, sidebar with data status + logout, "Report a problem" mailto |
 
@@ -109,13 +110,30 @@ Per cross-cutting constraints in PLANNING.md, the underlying data is public (AMF
 ### Bot has no developer info
 Hard rule in the system prompt: if asked "who built you?" the bot answers *"I'm an internal Bajaj Capital research tool — I don't have details on who built me."* No name/email/handle anywhere in user-facing strings.
 
+### Parser quality cleanup (2026-05-12)
+A targeted audit cut `parse_errors_json`-flagged funds from **60/90 to 8/122** — and none of the remaining 8 are parser bugs. Fixes:
+- `mkt_cap_composition_sums_to_100` invariant was wrongly specified (sectors-as-pct-of-portfolio sum to `composition.Equity`, not to 100). Renamed and updated to add unclassified-equity holdings (NVDA, Alphabet etc.) before comparing.
+- `sector_weights_sum_close` → `sector_weights_sum_in_range [50, 110]`, skips debt-heavy funds (sums then mirror gross debt exposure).
+- `parse_sector_weights` anchored to the literal "Sector Wts(%)" header (filters rolling-returns chart values above) + stops at "Risk Rating" (catches Aa/Aa- credit-rating leakage below).
+- `parse_holdings_full` now detects column x-positions from the header row per-fund (was using hardcoded bands that broke on ~30pt-shifted compact layouts → fixed 10 zero-holdings funds). Plus alphabetic-content + `weight_pct ∈ [-25, 105]` guards filter chart-axis year labels.
+- `parse_fund_managers` role regex broadened to match any `<prefix> - EQUITY/DEBT/FOREIGN INV.` line (was anchored to "Fund Manager - " literally) — fixed 9 funds with varied titles like "Senior Fund Manager", "Research Analyst", "Chief Dealer - Equities", etc.
+- `holdings_min_count` invariant made fund-type-aware: Gold/FoF funds use min=1, diversified funds use min=5.
+
+### Debt-template support (2026-05-12)
+Debt PDFs share ~80% of the equity Finalyca template. Most sections work without changes; only Portfolio Characteristics differs (debt: Avg Maturity Years + YTM + Modified Duration vs equity: P/E, P/B, Mkt Cap fields).
+- Schema additions: `avg_maturity_years REAL` + `yield_to_maturity REAL` (migration 002).
+- `parse_portfolio_characteristics` recognizes the debt labels; equity-only attrs stay None for debt and vice versa.
+- `sector_weights_sum_in_range` skipped for debt-heavy funds.
+- `EXPECTED_SECTIONS_BY_FUND_TYPE["debt"]` corrected to reflect actual debt-template section presence.
+- Macaulay Duration deliberately skipped — Finalyca's "Macauly Duration Years" label has silent unit switching (days for short tenor, years for long tenor); Modified Duration is the universally useful field.
+
 ---
 
 ## What's still pending — from you
 
 | Item | Why | What unblocks it |
 |---|---|---|
-| **Debt-fund CSV** (~33 additional schemes) | Phase 4.3 complete debt coverage | You provide the CSV (the .eml has the URLs but you said you'd provide separately). When ready: just drop it, the schema/parser handle it — but debt funds have a slightly different shape (credit ratings, no equity sectors) so expect minor parser tweaks in Phase 8. |
+| **Bandhan Gilt Fund URL** | Reach 123/123 scheme coverage | The file doesn't exist at the standard `/Recommended/<name>.pdf` host path under any of 15+ naming variants tested. Need you to: open the original Gmail screenshot/email, right-click "Bandhan Gilt Fund" → Copy Link Address, paste the URL. (Or drop the scheme and ship 122/123.) |
 | **Phase 7 hosting choice** | Get a URL the 5 RMs can hit | Decide: Cloudflare Tunnel from your dev machine (recommended for pilot) vs Bajaj-internal VM vs Streamlit Community Cloud public-repo path. |
 | **Compliance sign-off** (PLANNING 7.2) | Two confirmations from Bajaj before ship: (a) Groq free-tier data policy OK for your queries, (b) the operating-mode/verification-footer language is acceptable | You'd email Bajaj compliance. Templates and details are in PLANNING.md 7.2.1/7.2.2. |
 
@@ -131,9 +149,9 @@ These are deliberately deferred — they're real but non-blocking, and Phase 8 i
 
 3. **Full 40-question eval** — we only ran the curated 10. Full run uses ~330K tokens, exceeds 200K daily cap, so needs 2 calendar days to spread across token quota OR a model swap.
 
-4. **Remaining parser quirks** — `parse_fund_managers` fails on 9 funds (different role-line wording), `parse_holdings_full` on 10 (FoF/arbitrage table geometry), `parse_portfolio_characteristics` on 2. All caught by `parse_errors_json`, none fatal.
+4. ~~**Remaining parser quirks** — `parse_fund_managers` fails on 9 funds (different role-line wording), `parse_holdings_full` on 10 (FoF/arbitrage table geometry), `parse_portfolio_characteristics` on 2. All caught by `parse_errors_json`, none fatal.~~ → **Closed in 2026-05-12 session.** Holdings and fund-manager bugs fixed; only `parse_portfolio_characteristics` still fails on 2 funds (Franklin US Opps FoF + SBI Income Plus Arbitrage FoF) and those are legitimate — the section is literally absent from the source PDF for those FoFs.
 
-5. **`EXPECTED_SECTIONS_BY_FUND_TYPE` enforcement** — map exists in `parse_finalyca.py` but isn't used to distinguish "section missing because fund type doesn't have it" from "section missing because parser broke."
+5. **`EXPECTED_SECTIONS_BY_FUND_TYPE` enforcement** — map exists in `parse_finalyca.py` and the `debt` entry was corrected in 2026-05-12, but isn't yet used to distinguish "section missing because fund type doesn't have it" from "section missing because parser broke."
 
 6. **UX polish** (PLANNING 8.2): slow-query status messages, long-answer truncation with expander, friendlier error states.
 
