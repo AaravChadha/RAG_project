@@ -19,7 +19,7 @@
   "drawdown_pct": -9.85,
   "large_cap_pct": 21.50,
   "fund_managers_count": 3,
-  "full_holdings_count": 97,
+  "full_holdings_count": 94,
   "composition_json_keys": ["Alternate", "Cash", "Debt", "Equity", "Others"],
-  "_notes": "Fund is ~2.6 years old (Inception 27 Sep 2023, as_of 04 May 2026), so return_3y is NA. Benchmark text includes a trailing period because the PDF prints it that way (matched verbatim). Mkt cap composition does not sum to 100 because the fund holds significant Gold/Silver ETFs (Alternate) and other non-equity assets. composition_json_keys reflect the 5-bucket breakdown of a multi-asset fund."
+  "_notes": "Fund is ~2.6 years old (Inception 27 Sep 2023, as_of 04 May 2026), so return_3y is NA. Benchmark text includes a trailing period because the PDF prints it that way (matched verbatim). Mkt cap composition does not sum to 100 because the fund holds significant Gold/Silver ETFs (Alternate) and other non-equity assets. composition_json_keys reflect the 5-bucket breakdown of a multi-asset fund. The 3-row delta from a prior 97 reflects chart-axis tokens (year labels at the bottom of the Detailed Portfolio page) being correctly filtered out by the alphabetic-content guard on security_name."
 }

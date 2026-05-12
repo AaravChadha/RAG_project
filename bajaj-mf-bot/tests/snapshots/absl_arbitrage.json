@@ -1962,36 +1962,6 @@
       "sector": null,
       "security_name": "Margin (Future And Options)",
       "weight_pct": -0.41
-    },
-    {
-      "held_since": null,
-      "instrument_type": "2023",
-      "investment_style": "2025",
-      "market_cap": "2022",
-      "risk_rating": "2024",
-      "sector": "2021",
-      "security_name": "0% 2019",
-      "weight_pct": 2020.0
-    },
-    {
-      "held_since": null,
-      "instrument_type": "2023",
-      "investment_style": "2025",
-      "market_cap": "2022",
-      "risk_rating": "2024",
-      "sector": "2021",
-      "security_name": "0% 2019",
-      "weight_pct": 2020.0
-    },
-    {
-      "held_since": null,
-      "instrument_type": "2023",
-      "investment_style": "2025",
-      "market_cap": "2022",
-      "risk_rating": "2024",
-      "sector": "2021",
-      "security_name": "0% 2019",
-      "weight_pct": 2020.0
     }
   ],
   "fund_age": "16Y 9M",
@@ -2036,12 +2006,6 @@
   "min_investment": "One Thousand Only",
   "modified_duration": 0.71,
   "overview": "To generate income by investing predominantly in equity and equity related instruments. Scheme intends to take advantage from the price differentials / mis-pricing prevailing for stock / index in various market segments (Cash & Future).",
-  "parse_errors_json": [
-    {
-      "error": "mkt cap composition sum 57.93 not within 100±5.0",
-      "section": "invariant:mkt_cap_composition_sums_to_100"
-    }
-  ],
   "parser_version": "0.1-spine",
   "periodic_returns": [
     {

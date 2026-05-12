@@ -19,7 +19,7 @@
   "drawdown_pct": null,
   "large_cap_pct": 40.02,
   "fund_managers_count": 3,
-  "full_holdings_count": 198,
+  "full_holdings_count": 195,
   "composition_json_keys": ["Cash", "Debt", "Derivative", "Equity"],
-  "_notes": "Arbitrage fund — Drawdown Analysis shows NA for both 1Y and 3Y columns (no meaningful drawdown for arbitrage), so drawdown_pct is null. Composition has a negative Derivative leg (-0.41), which is real and expected. Mkt cap composition does not sum to 100 because most of the portfolio is non-equity (Debt + Cash + Derivative). full_holdings_count of 198 exceeds the 159 securities reported because individual securities appear in both Equity and Future-leg rows (intentional, not deduped per the model docstring)."
+  "_notes": "Arbitrage fund — Drawdown Analysis shows NA for both 1Y and 3Y columns (no meaningful drawdown for arbitrage), so drawdown_pct is null. Composition has a negative Derivative leg (-0.41), which is real and expected. Mkt cap composition does not sum to 100 because most of the portfolio is non-equity (Debt + Cash + Derivative). full_holdings_count of 195 exceeds the 159 securities reported because individual securities appear in both Equity and Future-leg rows (intentional, not deduped per the model docstring). The 3-row delta from a prior 198 reflects chart-axis tokens (year labels at the bottom of the Detailed Portfolio page) being correctly filtered out by the alphabetic-content guard on security_name."
 }

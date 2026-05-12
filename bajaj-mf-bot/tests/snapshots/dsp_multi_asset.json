@@ -956,36 +956,6 @@
       "sector": "Others",
       "security_name": "Sony Financial Holdings Inc Npv",
       "weight_pct": 0.02
-    },
-    {
-      "held_since": null,
-      "instrument_type": "Apr 2025 Jul",
-      "investment_style": "Jan 2026",
-      "market_cap": "Jan 2025",
-      "risk_rating": "2025 Oct 2025",
-      "sector": "2024 Oct 2024",
-      "security_name": "0% Oct 2023 Jan 2024 Apr",
-      "weight_pct": null
-    },
-    {
-      "held_since": null,
-      "instrument_type": "Apr 2025 Jul",
-      "investment_style": "Jan 2026",
-      "market_cap": "Jan 2025",
-      "risk_rating": "2025 Oct 2025",
-      "sector": "2024 Oct 2024",
-      "security_name": "0% Oct 2023 Jan 2024 Apr",
-      "weight_pct": null
-    },
-    {
-      "held_since": null,
-      "instrument_type": "Apr 2025 Jul",
-      "investment_style": "Jan 2026",
-      "market_cap": "Jan 2025",
-      "risk_rating": "2025 Oct 2025",
-      "sector": "2024 Oct 2024",
-      "security_name": "0% Oct 2023 Jan 2024 Apr",
-      "weight_pct": null
     }
   ],
   "fund_age": "2Y 7M",
@@ -1030,12 +1000,8 @@
   "overview": "The investment objective of the Scheme is to seek to generate long term capital appreciation by investing in multi asset classes including equity and equity related securities, debt and money market instruments, commodity ETFs, exchange traded commodity derivatives and overseas securities There is no assurance that the investment objective of the Scheme will be achieved.",
   "parse_errors_json": [
     {
-      "error": "sector weights sum 78.74 not within 100±5.0",
-      "section": "invariant:sector_weights_sum_close"
-    },
-    {
-      "error": "mkt cap composition sum 31.45 not within 100±5.0",
-      "section": "invariant:mkt_cap_composition_sums_to_100"
+      "error": "mkt cap total 42.12 (cap_sum 31.45 + unclassified equity 10.67) not within composition.Equity 51.20 ± 5.0",
+      "section": "invariant:mkt_cap_composition_sums_to_equity_pct"
     }
   ],
   "parser_version": "0.1-spine",

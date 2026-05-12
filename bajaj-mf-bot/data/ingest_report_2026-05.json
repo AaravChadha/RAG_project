@@ -1,6 +1,6 @@
 {
   "month": "2026-05",
-  "generated_at": "2026-05-11T00:20:06.242159+00:00",
+  "generated_at": "2026-05-12T09:22:46.628092+00:00",
   "pdf_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
   "db_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/db/bajaj_mf.db",
   "totals": {
@@ -9,7 +9,7 @@
     "skipped_no_change": 0,
     "superseded": 0,
     "failed": 0,
-    "elapsed_seconds": 90.1
+    "elapsed_seconds": 90.9
   },
   "entries": [
     {
@@ -20,21 +20,12 @@
       "snapshot_id": 1,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 94.52 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 69.34 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.52 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 69.34 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 66,
-        "holdings": 133
+        "holdings": 130
       }
     },
     {
@@ -45,17 +36,12 @@
       "snapshot_id": 2,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 57.93 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 57.93 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 48,
-        "holdings": 198
+        "holdings": 195
       }
     },
     {
@@ -71,7 +57,7 @@
       "normalized_counts": {
         "sector_weights": 16,
         "periodic_returns": 70,
-        "holdings": 86
+        "holdings": 83
       }
     },
     {
@@ -82,17 +68,12 @@
       "snapshot_id": 4,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 19.04 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 19.04 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 58,
-        "holdings": 135
+        "holdings": 132
       }
     },
     {
@@ -103,17 +84,12 @@
       "snapshot_id": 5,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 66.40 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 66.40 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 32,
-        "holdings": 219
+        "holdings": 216
       }
     },
     {
@@ -124,17 +100,12 @@
       "snapshot_id": 6,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 2 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 44,
-        "holdings": 2
+        "holdings": 5
       }
     },
     {
@@ -144,23 +115,13 @@
       "status": "inserted",
       "snapshot_id": 7,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 1 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 58,
-        "holdings": 1
+        "holdings": 7
       }
     },
     {
@@ -176,7 +137,7 @@
       "normalized_counts": {
         "sector_weights": 21,
         "periodic_returns": 56,
-        "holdings": 122
+        "holdings": 118
       }
     },
     {
@@ -187,17 +148,12 @@
       "snapshot_id": 9,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 109.84 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 109.84 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 23,
+        "sector_weights": 22,
         "periodic_returns": 27,
-        "holdings": 259
+        "holdings": 256
       }
     },
     {
@@ -208,13 +164,8 @@
       "snapshot_id": 10,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 92.50 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.50 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 14,
         "periodic_returns": 19,
@@ -228,27 +179,13 @@
       "status": "inserted",
       "snapshot_id": 11,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 93.69 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 90.68 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 93.69 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.68 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 11,
         "periodic_returns": 18,
-        "holdings": 0
+        "holdings": 48
       }
     },
     {
@@ -310,9 +247,9 @@
       "invariant_warnings": [],
       "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 17,
+        "sector_weights": 16,
         "periodic_returns": 39,
-        "holdings": 91
+        "holdings": 88
       }
     },
     {
@@ -323,21 +260,12 @@
       "snapshot_id": 16,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 90.12 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 90.12 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.12 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.12 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 10,
         "periodic_returns": 61,
-        "holdings": 41
+        "holdings": 38
       }
     },
     {
@@ -350,19 +278,15 @@
       "errors": [],
       "invariant_warnings": [
         {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 78.74 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 31.45 not within 100\u00b15.0"
+          "section": "invariant:mkt_cap_composition_sums_to_equity_pct",
+          "error": "mkt cap total 42.12 (cap_sum 31.45 + unclassified equity 10.67) not within composition.Equity 51.20 \u00b1 5.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 78.74 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 31.45 not within 100\\u00b15.0\"}]",
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_equity_pct\", \"error\": \"mkt cap total 42.12 (cap_sum 31.45 + unclassified equity 10.67) not within composition.Equity 51.20 \\u00b1 5.0\"}]",
       "normalized_counts": {
         "sector_weights": 18,
         "periodic_returns": 20,
-        "holdings": 97
+        "holdings": 94
       }
     },
     {
@@ -372,31 +296,18 @@
       "status": "inserted",
       "snapshot_id": 18,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [
         {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 81.46 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 65.55 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 3 entries (min 5)"
+          "section": "invariant:mkt_cap_composition_sums_to_equity_pct",
+          "error": "mkt cap total 65.55 not within composition.Equity 81.46 \u00b1 5.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 81.46 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 65.55 not within 100\\u00b15.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 3 entries (min 5)\"}]",
+      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_equity_pct\", \"error\": \"mkt cap total 65.55 not within composition.Equity 81.46 \\u00b1 5.0\"}]",
       "normalized_counts": {
         "sector_weights": 4,
         "periodic_returns": 50,
-        "holdings": 3
+        "holdings": 28
       }
     },
     {
@@ -407,17 +318,12 @@
       "snapshot_id": 19,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 19.52 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 19.52 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 13,
         "periodic_returns": 58,
-        "holdings": 57
+        "holdings": 54
       }
     },
     {
@@ -428,17 +334,8 @@
       "snapshot_id": 20,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 81.75 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 64.86 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 81.75 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 64.86 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 18,
@@ -456,9 +353,9 @@
       "invariant_warnings": [],
       "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 20,
+        "sector_weights": 19,
         "periodic_returns": 48,
-        "holdings": 115
+        "holdings": 112
       }
     },
     {
@@ -469,17 +366,12 @@
       "snapshot_id": 22,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 65.11 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 65.11 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 38,
-        "holdings": 198
+        "holdings": 195
       }
     },
     {
@@ -489,27 +381,13 @@
       "status": "inserted",
       "snapshot_id": 23,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 92.38 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 90.87 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.38 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.87 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 18,
         "periodic_returns": 48,
-        "holdings": 81
+        "holdings": 78
       }
     },
     {
@@ -520,21 +398,12 @@
       "snapshot_id": 24,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 94.20 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 94.20 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.20 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.20 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 52,
-        "holdings": 92
+        "holdings": 89
       }
     },
     {
@@ -545,21 +414,12 @@
       "snapshot_id": 25,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 94.41 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 94.44 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.41 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.44 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 13,
         "periodic_returns": 48,
-        "holdings": 43
+        "holdings": 40
       }
     },
     {
@@ -570,17 +430,12 @@
       "snapshot_id": 26,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 79.68 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 79.68 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 15,
         "periodic_returns": 54,
-        "holdings": 53
+        "holdings": 50
       }
     },
     {
@@ -591,17 +446,12 @@
       "snapshot_id": 27,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 92.84 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.84 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 15,
         "periodic_returns": 67,
-        "holdings": 59
+        "holdings": 56
       }
     },
     {
@@ -613,21 +463,12 @@
       "revision": 1,
       "errors": [
         {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        },
-        {
           "section": "parse_portfolio_characteristics",
           "error": "Portfolio Characteristics header not found"
         }
       ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 2 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": "[{\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}]",
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 43,
@@ -642,17 +483,12 @@
       "snapshot_id": 29,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 2 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 44,
-        "holdings": 2
+        "holdings": 6
       }
     },
     {
@@ -662,18 +498,13 @@
       "status": "inserted",
       "snapshot_id": 30,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}]",
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 79,
-        "holdings": 245
+        "holdings": 241
       }
     },
     {
@@ -684,21 +515,12 @@
       "snapshot_id": 31,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 92.35 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 92.35 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.35 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.35 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 52,
-        "holdings": 83
+        "holdings": 80
       }
     },
     {
@@ -709,17 +531,12 @@
       "snapshot_id": 32,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 1 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 2,
+        "sector_weights": 1,
         "periodic_returns": 24,
-        "holdings": 1
+        "holdings": 21
       }
     },
     {
@@ -729,27 +546,13 @@
       "status": "inserted",
       "snapshot_id": 33,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 89.73 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 89.73 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 89.73 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 89.73 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 15,
         "periodic_returns": 49,
-        "holdings": 0
+        "holdings": 85
       }
     },
     {
@@ -791,27 +594,13 @@
       "status": "inserted",
       "snapshot_id": 36,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 92.95 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 92.95 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 92.95 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 92.95 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 18,
         "periodic_returns": 47,
-        "holdings": 82
+        "holdings": 79
       }
     },
     {
@@ -821,23 +610,13 @@
       "status": "inserted",
       "snapshot_id": 37,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 91.26 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 91.26 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 38,
-        "holdings": 78
+        "holdings": 75
       }
     },
     {
@@ -848,17 +627,12 @@
       "snapshot_id": 38,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 107.06 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 107.06 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 22,
+        "sector_weights": 21,
         "periodic_returns": 68,
-        "holdings": 243
+        "holdings": 240
       }
     },
     {
@@ -868,23 +642,13 @@
       "status": "inserted",
       "snapshot_id": 39,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 94.27 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.27 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 21,
         "periodic_returns": 70,
-        "holdings": 98
+        "holdings": 95
       }
     },
     {
@@ -895,17 +659,12 @@
       "snapshot_id": 40,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 130.29 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 130.29 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 25,
+        "sector_weights": 23,
         "periodic_returns": 62,
-        "holdings": 252
+        "holdings": 249
       }
     },
     {
@@ -921,7 +680,7 @@
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 78,
-        "holdings": 153
+        "holdings": 150
       }
     },
     {
@@ -932,21 +691,12 @@
       "snapshot_id": 42,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 121.00 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 22.04 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 121.00 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 22.04 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 22,
+        "sector_weights": 21,
         "periodic_returns": 59,
-        "holdings": 150
+        "holdings": 147
       }
     },
     {
@@ -962,7 +712,7 @@
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 58,
-        "holdings": 79
+        "holdings": 76
       }
     },
     {
@@ -978,7 +728,7 @@
       "normalized_counts": {
         "sector_weights": 16,
         "periodic_returns": 48,
-        "holdings": 39
+        "holdings": 36
       }
     },
     {
@@ -989,21 +739,12 @@
       "snapshot_id": 45,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 87.48 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 55.18 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 87.48 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 55.18 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 52,
-        "holdings": 455
+        "holdings": 452
       }
     },
     {
@@ -1019,7 +760,7 @@
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 52,
-        "holdings": 81
+        "holdings": 78
       }
     },
     {
@@ -1029,18 +770,13 @@
       "status": "inserted",
       "snapshot_id": 47,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 13,
         "periodic_returns": 30,
-        "holdings": 0
+        "holdings": 65
       }
     },
     {
@@ -1051,21 +787,12 @@
       "snapshot_id": 48,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 94.59 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 79.71 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.59 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 79.71 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 38,
-        "holdings": 115
+        "holdings": 112
       }
     },
     {
@@ -1075,23 +802,13 @@
       "status": "inserted",
       "snapshot_id": 49,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_fund_managers",
-          "error": "no FUND MANAGER role lines found in block"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 62.62 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_fund_managers\", \"error\": \"no FUND MANAGER role lines found in block\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 62.62 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 56,
-        "holdings": 190
+        "holdings": 187
       }
     },
     {
@@ -1123,7 +840,7 @@
       "normalized_counts": {
         "sector_weights": 16,
         "periodic_returns": 56,
-        "holdings": 66
+        "holdings": 63
       }
     },
     {
@@ -1139,7 +856,7 @@
       "normalized_counts": {
         "sector_weights": 16,
         "periodic_returns": 48,
-        "holdings": 63
+        "holdings": 60
       }
     },
     {
@@ -1165,18 +882,13 @@
       "status": "inserted",
       "snapshot_id": 54,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 22,
-        "holdings": 0
+        "holdings": 13
       }
     },
     {
@@ -1192,7 +904,7 @@
       "normalized_counts": {
         "sector_weights": 18,
         "periodic_returns": 70,
-        "holdings": 66
+        "holdings": 63
       }
     },
     {
@@ -1208,7 +920,7 @@
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 58,
-        "holdings": 72
+        "holdings": 69
       }
     },
     {
@@ -1218,27 +930,13 @@
       "status": "inserted",
       "snapshot_id": 57,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 91.34 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 91.34 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 91.34 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 91.34 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 12,
         "periodic_returns": 18,
-        "holdings": 0
+        "holdings": 61
       }
     },
     {
@@ -1270,7 +968,7 @@
       "normalized_counts": {
         "sector_weights": 14,
         "periodic_returns": 26,
-        "holdings": 33
+        "holdings": 32
       }
     },
     {
@@ -1281,13 +979,8 @@
       "snapshot_id": 60,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 55.54 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 55.54 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 21,
         "periodic_returns": 19,
@@ -1302,17 +995,12 @@
       "snapshot_id": 61,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 94.11 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.11 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 32,
-        "holdings": 84
+        "holdings": 81
       }
     },
     {
@@ -1323,13 +1011,8 @@
       "snapshot_id": 62,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 67.47 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 67.47 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 22,
@@ -1365,7 +1048,7 @@
       "normalized_counts": {
         "sector_weights": 8,
         "periodic_returns": 45,
-        "holdings": 44
+        "holdings": 41
       }
     },
     {
@@ -1380,17 +1063,13 @@
         {
           "section": "invariant:composition_sums_to_100",
           "error": "composition sum 62.37 not within 100\u00b11.0"
-        },
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 2 entries (min 5)"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 62.37 not within 100\\u00b11.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 62.37 not within 100\\u00b11.0\"}]",
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 22,
-        "holdings": 2
+        "holdings": 6
       }
     },
     {
@@ -1400,18 +1079,13 @@
       "status": "inserted",
       "snapshot_id": 66,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 9,
         "periodic_returns": 28,
-        "holdings": 0
+        "holdings": 31
       }
     },
     {
@@ -1427,7 +1101,7 @@
       "normalized_counts": {
         "sector_weights": 9,
         "periodic_returns": 39,
-        "holdings": 33
+        "holdings": 30
       }
     },
     {
@@ -1442,17 +1116,13 @@
         {
           "section": "invariant:composition_sums_to_100",
           "error": "composition sum 101.66 not within 100\u00b11.0"
-        },
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 115.75 not within 100\u00b15.0"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 101.66 not within 100\\u00b11.0\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 115.75 not within 100\\u00b15.0\"}]",
+      "parse_errors_json": "[{\"section\": \"invariant:composition_sums_to_100\", \"error\": \"composition sum 101.66 not within 100\\u00b11.0\"}]",
       "normalized_counts": {
-        "sector_weights": 22,
+        "sector_weights": 20,
         "periodic_returns": 56,
-        "holdings": 136
+        "holdings": 133
       }
     },
     {
@@ -1463,17 +1133,12 @@
       "snapshot_id": 69,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 2 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 2 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 45,
-        "holdings": 2
+        "holdings": 7
       }
     },
     {
@@ -1489,7 +1154,7 @@
       "normalized_counts": {
         "sector_weights": 18,
         "periodic_returns": 76,
-        "holdings": 104
+        "holdings": 101
       }
     },
     {
@@ -1499,18 +1164,13 @@
       "status": "inserted",
       "snapshot_id": 71,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
+      "errors": [],
       "invariant_warnings": [],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}]",
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 18,
         "periodic_returns": 52,
-        "holdings": 0
+        "holdings": 70
       }
     },
     {
@@ -1526,7 +1186,7 @@
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 26,
-        "holdings": 167
+        "holdings": 164
       }
     },
     {
@@ -1536,23 +1196,13 @@
       "status": "inserted",
       "snapshot_id": 73,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 105.82 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 105.82 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 20,
+        "sector_weights": 19,
         "periodic_returns": 57,
-        "holdings": 0
+        "holdings": 126
       }
     },
     {
@@ -1563,17 +1213,12 @@
       "snapshot_id": 74,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 118.33 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 118.33 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 24,
+        "sector_weights": 23,
         "periodic_returns": 46,
-        "holdings": 254
+        "holdings": 251
       }
     },
     {
@@ -1587,7 +1232,7 @@
       "invariant_warnings": [],
       "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 13,
+        "sector_weights": 12,
         "periodic_returns": 24,
         "holdings": 110
       }
@@ -1600,17 +1245,12 @@
       "snapshot_id": 76,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 126.90 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 126.90 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 17,
+        "sector_weights": 15,
         "periodic_returns": 40,
-        "holdings": 121
+        "holdings": 118
       }
     },
     {
@@ -1621,17 +1261,12 @@
       "snapshot_id": 77,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 88.01 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 88.01 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 15,
         "periodic_returns": 64,
-        "holdings": 68
+        "holdings": 65
       }
     },
     {
@@ -1642,25 +1277,12 @@
       "snapshot_id": 78,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 90.45 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 90.40 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 3 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.45 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 90.40 not within 100\\u00b15.0\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 3 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 2,
         "periodic_returns": 37,
-        "holdings": 3
+        "holdings": 36
       }
     },
     {
@@ -1671,21 +1293,12 @@
       "snapshot_id": 79,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 90.40 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 80.90 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.40 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 80.90 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 68,
-        "holdings": 100
+        "holdings": 97
       }
     },
     {
@@ -1696,21 +1309,12 @@
       "snapshot_id": 80,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 90.36 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 76.93 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 90.36 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 76.93 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 13,
         "periodic_returns": 58,
-        "holdings": 34
+        "holdings": 31
       }
     },
     {
@@ -1726,17 +1330,12 @@
           "error": "Portfolio Characteristics header not found"
         }
       ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:holdings_min_count",
-          "error": "full_holdings has only 1 entries (min 5)"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}, {\"section\": \"invariant:holdings_min_count\", \"error\": \"full_holdings has only 1 entries (min 5)\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": "[{\"section\": \"parse_portfolio_characteristics\", \"error\": \"Portfolio Characteristics header not found\"}]",
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 16,
-        "holdings": 1
+        "holdings": 8
       }
     },
     {
@@ -1747,21 +1346,12 @@
       "snapshot_id": 82,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 94.30 not within 100\u00b15.0"
-        },
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 67.01 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 94.30 not within 100\\u00b15.0\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 67.01 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 30,
-        "holdings": 177
+        "holdings": 174
       }
     },
     {
@@ -1793,7 +1383,7 @@
       "normalized_counts": {
         "sector_weights": 22,
         "periodic_returns": 80,
-        "holdings": 81
+        "holdings": 77
       }
     },
     {
@@ -1803,23 +1393,13 @@
       "status": "inserted",
       "snapshot_id": 85,
       "revision": 1,
-      "errors": [
-        {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
-        }
-      ],
-      "invariant_warnings": [
-        {
-          "section": "invariant:mkt_cap_composition_sums_to_100",
-          "error": "mkt cap composition sum 94.05 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:mkt_cap_composition_sums_to_100\", \"error\": \"mkt cap composition sum 94.05 not within 100\\u00b15.0\"}]",
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 6,
         "periodic_returns": 56,
-        "holdings": 0
+        "holdings": 47
       }
     },
     {
@@ -1830,15 +1410,10 @@
       "snapshot_id": 86,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 108.25 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 108.25 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 21,
+        "sector_weights": 20,
         "periodic_returns": 21,
         "holdings": 145
       }
@@ -1854,7 +1429,7 @@
       "invariant_warnings": [],
       "parse_errors_json": null,
       "normalized_counts": {
-        "sector_weights": 20,
+        "sector_weights": 19,
         "periodic_returns": 22,
         "holdings": 165
       }
@@ -1867,13 +1442,8 @@
       "snapshot_id": 88,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 76.65 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 76.65 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 20,
@@ -1888,17 +1458,12 @@
       "snapshot_id": 89,
       "revision": 1,
       "errors": [],
-      "invariant_warnings": [
-        {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 93.04 not within 100\u00b15.0"
-        }
-      ],
-      "parse_errors_json": "[{\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 93.04 not within 100\\u00b15.0\"}]",
+      "invariant_warnings": [],
+      "parse_errors_json": null,
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 20,
-        "holdings": 199
+        "holdings": 196
       }
     },
     {
@@ -1908,24 +1473,78 @@
       "status": "inserted",
       "snapshot_id": 90,
       "revision": 1,
+      "errors": [],
+      "invariant_warnings": [],
+      "parse_errors_json": null,
+      "normalized_counts": {
+        "sector_weights": 5,
+        "periodic_returns": 19,
+        "holdings": 53
+      }
+    },
+    {
+      "scheme_uid": "dsp-equity-savings-fund",
+      "scheme_name": "DSP Equity Savings Fund",
+      "pdf_path": null,
+      "status": "missing_pdf",
+      "snapshot_id": null,
+      "revision": null,
       "errors": [
         {
-          "section": "parse_holdings_full",
-          "error": "holdings_full: parsed zero rows across all pages"
+          "section": "download",
+          "error": "PDF not on disk"
         }
       ],
-      "invariant_warnings": [
+      "invariant_warnings": [],
+      "parse_errors_json": null
+    },
+    {
+      "scheme_uid": "edelweiss-equity-savings-fund",
+      "scheme_name": "Edelweiss Equity Savings Fund",
+      "pdf_path": null,
+      "status": "missing_pdf",
+      "snapshot_id": null,
+      "revision": null,
+      "errors": [
         {
-          "section": "invariant:sector_weights_sum_close",
-          "error": "sector weights sum 114.91 not within 100\u00b15.0"
+          "section": "download",
+          "error": "PDF not on disk"
         }
       ],
-      "parse_errors_json": "[{\"section\": \"parse_holdings_full\", \"error\": \"holdings_full: parsed zero rows across all pages\"}, {\"section\": \"invariant:sector_weights_sum_close\", \"error\": \"sector weights sum 114.91 not within 100\\u00b15.0\"}]",
-      "normalized_counts": {
-        "sector_weights": 6,
-        "periodic_returns": 19,
-        "holdings": 0
-      }
+      "invariant_warnings": [],
+      "parse_errors_json": null
+    },
+    {
+      "scheme_uid": "icici-pru-equity-savings-fund",
+      "scheme_name": "ICICI Pru Equity Savings Fund",
+      "pdf_path": null,
+      "status": "missing_pdf",
+      "snapshot_id": null,
+      "revision": null,
+      "errors": [
+        {
+          "section": "download",
+          "error": "PDF not on disk"
+        }
+      ],
+      "invariant_warnings": [],
+      "parse_errors_json": null
+    },
+    {
+      "scheme_uid": "kotak-equity-savings-fund",
+      "scheme_name": "Kotak Equity Savings Fund",
+      "pdf_path": null,
+      "status": "missing_pdf",
+      "snapshot_id": null,
+      "revision": null,
+      "errors": [
+        {
+          "section": "download",
+          "error": "PDF not on disk"
+        }
+      ],
+      "invariant_warnings": [],
+      "parse_errors_json": null
     }
   ]
 }

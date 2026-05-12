@@ -475,11 +475,25 @@ def parse_header(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapshot) -> 
 # Section parser 3.2.2 — fund managers
 # ---------------------------------------------------------------------------
 
-# Roles we recognize as a manager-role line. The template upper-cases the
-# role (FUND MANAGER - EQUITY) but a few PDFs use mixed case ("Fund Manager
-# - EQUITY"), so we match case-insensitively.
+# Roles we recognize as a manager-role line. The Finalyca template most
+# often emits "FUND MANAGER - EQUITY" (upper-case, role suffix at end),
+# but actual prefixes drift wildly per AMC: "Senior Fund Manager",
+# "Assistant Fund Mananger" (sic — Edelweiss has the typo),
+# "Chief Dealer - Equities", "Head-Equity and Fund Manager",
+# "Fund Management and Investment analyst", "Research Analyst",
+# "Associate Vice President - Fund Management", "Fund Manager & Analyst",
+# etc. We anchor on the *end* of the line — ` - <ROLE>` where ROLE is in
+# a known set — and accept any short prefix. The 80-char cap keeps us
+# from accidentally swallowing paragraph endings that happen to end with
+# the word "EQUITY".
 _ROLE_RE = re.compile(
-    r"^\s*Fund\s*Manager\s*[-–]\s*(Equity\s*&\s*Debt|Equity|Debt|Equity-Debt)\s*$",
+    r"^.{0,80}[-–]\s*("
+    r"Equity\s*&\s*Debt|"
+    r"Equity-Debt|"
+    r"Foreign\s*Inv(?:\.|estment|estments)?|"
+    r"Equity|"
+    r"Debt"
+    r")\s*\.?\s*$",
     re.IGNORECASE,
 )
 
@@ -501,11 +515,17 @@ def _role_for(text: str) -> Optional[str]:
     m = _ROLE_RE.match(text)
     if not m:
         return None
-    raw = m.group(1).strip()
+    raw = m.group(1).strip().lower()
     # Normalize "Equity & Debt" / "Equity-Debt" variants.
-    if "&" in raw or "-" in raw.lower().replace("debt", "").replace("equity", "").strip():
+    if "&" in raw or "-" in raw.replace("debt", "").replace("equity", "").strip():
         return "Equity & Debt"
-    return raw.capitalize() if raw.lower() == "equity" else "Debt" if raw.lower() == "debt" else raw
+    if raw == "equity":
+        return "Equity"
+    if raw == "debt":
+        return "Debt"
+    if raw.startswith("foreign"):
+        return "Foreign Investment"
+    return raw.capitalize()
 
 
 def _parse_one_manager(name: str, role: str, body_text: str) -> dict:
@@ -929,11 +949,15 @@ _NUMERIC_RE = re.compile(r"^-?\d+(?:\.\d+)?$")
 # Risk Rating, Mkt Cap Composition, and "Increase in Exposure" blocks —
 # all of which look like "<text> <number>" rows and would otherwise be
 # misclassified as sectors. We stop scanning the moment we see any of
-# these row-leading tokens (lower-cased, first non-empty token).
+# these row-leading tokens (lower-cased, first non-empty token). "risk"
+# specifically catches the "Risk Rating %" header row that introduces the
+# credit-rating block — a single stop there is more robust than enumerating
+# every credit grade Finalyca uses (AAA / AA+ / Aa / Aa- / A+ / Aaa(So) / …).
 _SECTOR_STOP_FIRST_TOKEN = {
+    "risk",                                               # "Risk Rating %" — credit rating block header
     "equity", "debt", "cash", "derivative", "alternate",  # composition (rarely bleeds in)
     "large", "mid", "small",                              # mkt-cap composition
-    "unrated", "sovereign", "aaa", "aa+", "a1+",          # risk rating
+    "unrated", "sovereign", "aaa", "aa+", "a1+",          # legacy credit-rating safety net
     "net",                                                # "Net Ca & O"
 }
 
@@ -945,6 +969,13 @@ def parse_sector_weights(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snaps
     show 0 or only "Others". If the block contains no parseable rows we
     leave `snap.sector_weights = None` (do not raise) — caller treats that
     as "section legitimately absent for this fund type."
+
+    The page-2 sector x-band [205, 392] is also occupied (above and below
+    the actual sector list) by other Finalyca blocks: rolling-returns
+    chart values up top, then Risk Rating / Mkt Cap Composition below.
+    We anchor scanning to the literal "Sector Wts(%)" header — rows before
+    it are ignored, and we stop at the first row whose leading token signals
+    the next block.
     """
     words = _page2_words(pl)
     if not words:
@@ -955,15 +986,19 @@ def parse_sector_weights(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snaps
     rows = _group_rows(block_words)
 
     sectors: list[dict] = []
+    seen_header = False
     for row in rows:
         tokens = [w["text"] for w in row]
         if not tokens:
             continue
-        # Skip the heading row ("Sector Wts(%)") and section-divider rows
-        # ("Portfolio Characteristics" overflows into this column-band in
-        # some layouts, so we explicitly reject those).
         lc_tokens = [t.lower() for t in tokens]
+        # Anchor to the "Sector Wts(%)" header — anything above it is
+        # noise from the rolling-returns / chart row that also lives in
+        # this x-band on some fund layouts (Multi Asset, Parag Parikh, etc.).
         if all(t in _SECTOR_HEADING_TOKENS for t in lc_tokens):
+            seen_header = True
+            continue
+        if not seen_header:
             continue
         # Stop the moment we cross into the next block (Risk Rating / Mkt
         # Cap Composition / Composition) — same x-band, different semantics.

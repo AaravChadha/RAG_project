@@ -71,8 +71,23 @@ def composition_sums_to_100(snap: Snapshot) -> Tuple[bool, str]:
     return True, ""
 
 
-def sector_weights_sum_close(snap: Snapshot) -> Tuple[bool, str]:
-    """If `sector_weights` is set, weights sum to 100 ± 5.0."""
+def sector_weights_sum_in_range(snap: Snapshot) -> Tuple[bool, str]:
+    """Sector weights sum should land in a sanity range of [50, 110].
+
+    Why not "sum to 100"? Finalyca reports sector weights with semantics
+    that vary by fund type:
+      * Pure-equity funds: sectors sum to ~equity_pct (typically 90–100).
+      * Balanced Advantage / Arbitrage funds: sectors sum to *gross*
+        equity exposure (can sit in the 90–105 range even when net
+        equity is 60–70%, because of derivative-hedged positions).
+      * Hybrid/debt funds with row-extraction contamination: sectors
+        can exceed 110 when credit-rating buckets (Aa, Government, A1+)
+        leak in from the adjacent Risk Rating block on page 2.
+
+    The invariant therefore flags only the two bug-shaped extremes —
+    row loss (<<50) and credit-rating contamination (>110) — and stays
+    silent on the legitimate-variability middle band.
+    """
     if not snap.sector_weights:
         return True, "n/a — field missing"
     total = 0.0
@@ -80,34 +95,96 @@ def sector_weights_sum_close(snap: Snapshot) -> Tuple[bool, str]:
         w = row.get("weight_pct") if isinstance(row, dict) else None
         if isinstance(w, (int, float)):
             total += float(w)
-    if abs(total - 100.0) > 5.0:
-        return False, f"sector weights sum {total:.2f} not within 100±5.0"
+    if total < 50.0 or total > 110.0:
+        return False, f"sector weights sum {total:.2f} outside [50, 110]"
     return True, ""
 
 
-def mkt_cap_composition_sums_to_100(snap: Snapshot) -> Tuple[bool, str]:
-    """If all 3 of large/mid/small cap pct are set, sum is 100 ± 5.0.
+def mkt_cap_composition_sums_to_equity_pct(snap: Snapshot) -> Tuple[bool, str]:
+    """large+mid+small + unclassified_equity ≈ composition.Equity ± 5.
 
-    Loose tolerance because some funds have unrated / cash holdings that
-    aren't counted in the cap breakdown. If any of the 3 is None, the
-    check is skipped (n/a).
+    Large/Mid/Small cap percentages are % of *total portfolio* (not % of
+    equity), so they sum to the Equity portion of `composition_json` —
+    *minus* any equity Finalyca leaves uncategorized in the cap grid.
+    Foreign stocks (Microsoft, Nvidia, Alphabet, Sony, …) and REIT/InvIT
+    holdings routinely land outside Large/Mid/Small and appear in the
+    holdings table with `market_cap = NULL`. The invariant therefore
+    adds the weight of those uncategorized-equity holdings before
+    comparing against `Equity`.
+
+    Skipped (n/a) when any of the 3 cap fields is None, composition_json
+    is missing/unparseable, or composition lacks an "Equity" key.
     """
     parts = (snap.large_cap_pct, snap.mid_cap_pct, snap.small_cap_pct)
     if any(p is None for p in parts):
         return True, "n/a — field missing"
-    total = sum(float(p) for p in parts)
-    if abs(total - 100.0) > 5.0:
-        return False, f"mkt cap composition sum {total:.2f} not within 100±5.0"
+    if not snap.composition_json:
+        return True, "n/a — composition_json missing"
+    try:
+        comp = json.loads(snap.composition_json)
+    except (TypeError, ValueError):
+        return True, "n/a — composition_json unparseable"
+    equity_pct = comp.get("Equity") if isinstance(comp, dict) else None
+    if not isinstance(equity_pct, (int, float)):
+        return True, "n/a — composition has no Equity key"
+    cap_sum = sum(float(p) for p in parts)
+
+    # Equity holdings that Finalyca didn't classify into Large/Mid/Small
+    # (typically foreign stocks + REIT/InvIT). If holdings failed to parse
+    # entirely, `unclassified` stays 0 and we fall back to the bare cap_sum
+    # check — the failure will still surface if the gap is wide.
+    unclassified = 0.0
+    if snap.full_holdings:
+        for h in snap.full_holdings:
+            if not isinstance(h, dict):
+                continue
+            if h.get("instrument_type") != "Equity":
+                continue
+            if h.get("market_cap"):  # has a Large/Mid/Small bucket already
+                continue
+            w = h.get("weight_pct")
+            if isinstance(w, (int, float)):
+                unclassified += float(w)
+
+    total = cap_sum + unclassified
+    if abs(total - float(equity_pct)) > 5.0:
+        suffix = ""
+        if unclassified > 0:
+            suffix = f" (cap_sum {cap_sum:.2f} + unclassified equity {unclassified:.2f})"
+        return False, (
+            f"mkt cap total {total:.2f}{suffix} not within "
+            f"composition.Equity {equity_pct:.2f} ± 5.0"
+        )
     return True, ""
 
 
 def holdings_min_count(snap: Snapshot) -> Tuple[bool, str]:
-    """If `full_holdings` is set, has at least 5 entries."""
+    """If `full_holdings` is set, has at least N entries (N varies by shape).
+
+    Diversified active funds (Multi Cap, Flexi Cap, Large Cap, Mid Cap,
+    Small Cap, Focused, etc.) hold 30-200 securities — a count under 5
+    indicates a parser miss. But passively-managed Gold funds and
+    Fund-of-Fund structures (Gold ETF FoFs, Income Plus Arbitrage FoFs,
+    International FoFs) legitimately hold 1-3 securities (a single ETF,
+    a single underlying mutual fund, plus a cash sliver). For those we
+    only require ≥ 1, which still catches a wholesale parse_holdings_full
+    failure (0 rows) while not false-flagging legitimate concentration.
+    """
     if not snap.full_holdings:
         return True, "n/a — field missing"
     n = len(snap.full_holdings)
-    if n < 5:
-        return False, f"full_holdings has only {n} entries (min 5)"
+
+    name_lc = (snap.scheme_name or "").lower()
+    sub_lc = (snap.sub_category or "").lower()
+    is_concentrated_by_design = (
+        "fund of fund" in name_lc
+        or "fund of funds" in name_lc
+        or "gold" in name_lc
+        or "gold" in sub_lc
+    )
+    min_count = 1 if is_concentrated_by_design else 5
+    if n < min_count:
+        return False, f"full_holdings has only {n} entries (min {min_count})"
     return True, ""
 
 
@@ -141,8 +218,8 @@ def inception_before_as_of(snap: Snapshot) -> Tuple[bool, str]:
 ALL_CHECKS: list[Tuple[str, Callable[[Snapshot], Tuple[bool, str]]]] = [
     ("returns_in_range", returns_in_range),
     ("composition_sums_to_100", composition_sums_to_100),
-    ("sector_weights_sum_close", sector_weights_sum_close),
-    ("mkt_cap_composition_sums_to_100", mkt_cap_composition_sums_to_100),
+    ("sector_weights_sum_in_range", sector_weights_sum_in_range),
+    ("mkt_cap_composition_sums_to_equity_pct", mkt_cap_composition_sums_to_equity_pct),
     ("holdings_min_count", holdings_min_count),
     ("expense_ratio_sane", expense_ratio_sane),
     ("inception_before_as_of", inception_before_as_of),

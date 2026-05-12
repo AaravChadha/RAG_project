@@ -432,6 +432,12 @@ def parse_periodic_returns(
 # 8-column table spanning multiple pages from "Detailed Portfolio" header
 # until a next-section sentinel (Sector Wts. Trend, Mkt Cap Trend, etc.).
 
+# Default holdings-table column bands (kept as a fallback when the header
+# row can't be detected). The Finalyca template ships in at least two
+# spacings — a "wide" variant (Canara Robeco etc., weights at x≈157) and
+# a "compact" variant (HDFC Small Cap etc., weights at x≈144). Per-fund
+# detection from the header row replaces these constants on the happy
+# path; see `_detect_holdings_cols`.
 _HOLDINGS_COLS: list[tuple[str, float, float]] = [
     ("security_name", 0.0, 155.0),
     ("weight_pct", 155.0, 195.0),
@@ -442,6 +448,64 @@ _HOLDINGS_COLS: list[tuple[str, float, float]] = [
     ("investment_style", 455.0, 515.0),
     ("held_since", 515.0, 600.0),
 ]
+
+# Header-row words (lower-cased) that identify each column. The first
+# word in each list wins if multiple match. "Wts" specifically — not
+# "(%)" — because some layouts split the unit into a separate token.
+_HOLDINGS_COL_HEADER_TOKENS: list[tuple[str, tuple[str, ...]]] = [
+    ("security_name", ("security",)),
+    ("weight_pct", ("wts",)),
+    ("sector", ("sector",)),
+    ("market_cap", ("market",)),
+    ("instrument_type", ("instrument",)),
+    ("risk_rating", ("risk",)),
+    ("investment_style", ("investment",)),
+    ("held_since", ("held",)),
+]
+
+
+def _detect_holdings_cols(words: list[dict]) -> Optional[list[tuple[str, float, float]]]:
+    """Read column x positions from the holdings-table header row.
+
+    Returns a list shaped like `_HOLDINGS_COLS` (col, x_lo, x_hi) where
+    each column's band runs from its header's x0 (security_name pinned
+    to 0.0 so multi-word security names extend leftward) to the next
+    column's x0. Returns None if the "Security … Held Since" header row
+    isn't located — caller falls back to the hardcoded `_HOLDINGS_COLS`.
+    """
+    sec_y: Optional[float] = None
+    for w in words:
+        if w["text"].lower() == "security":
+            sec_y = float(w["top"])
+            break
+    if sec_y is None:
+        return None
+    header_words = [w for w in words if abs(float(w["top"]) - sec_y) < 6.0]
+    if not header_words:
+        return None
+    positions: dict[str, float] = {}
+    for col, candidates in _HOLDINGS_COL_HEADER_TOKENS:
+        for w in header_words:
+            t = w["text"].lower().rstrip(":")
+            if t in candidates:
+                # First match per column wins. security_name's x0 is later
+                # forced to 0.0 so multi-word names extend leftward.
+                if col not in positions:
+                    positions[col] = float(w["x0"])
+                break
+    # Need all 8 columns to commit to detection; otherwise fall back.
+    if len(positions) != len(_HOLDINGS_COL_HEADER_TOKENS):
+        return None
+    ordered = sorted(positions.items(), key=lambda kv: kv[1])
+    cols: list[tuple[str, float, float]] = []
+    for i, (col, x_lo) in enumerate(ordered):
+        x_hi = ordered[i + 1][1] if i + 1 < len(ordered) else 600.0
+        cols.append((col, x_lo, x_hi))
+    # Force security_name's left edge to 0 so long names extend leftward.
+    cols = [(c, 0.0, hi) if c == "security_name" else (c, lo, hi)
+            for c, lo, hi in cols]
+    return cols
+
 
 _HOLDINGS_END_PHRASES = (
     "sector wts. trend", "sector wts trend", "mkt cap trend",
@@ -462,8 +526,13 @@ def _parse_holdings_page(
     pl_page,
     *,
     is_first_page: bool,
+    cols: list[tuple[str, float, float]] = _HOLDINGS_COLS,
 ) -> tuple[list[dict], bool]:
     """Parse one page's slice of the holdings table.
+
+    `cols` overrides the per-fund column bands when the caller has
+    detected them from the header row; defaults to the hardcoded
+    `_HOLDINGS_COLS` for backward compatibility.
 
     Returns (rows, hit_end_sentinel). hit_end_sentinel is True when this
     page contains a next-section header that terminates the holdings block.
@@ -487,6 +556,12 @@ def _parse_holdings_page(
                     hit_end = True
                     break
 
+    # Weight-token band derived from the detected `cols`, not hardcoded.
+    weight_lo, weight_hi = next(
+        ((lo, hi) for c, lo, hi in cols if c == "weight_pct"),
+        (155.0, 195.0),
+    )
+
     start_y = 0.0
     if is_first_page:
         for w in words:
@@ -494,7 +569,7 @@ def _parse_holdings_page(
                 start_y = max(start_y, float(w["top"]) + 5.0)
         first_data_y: Optional[float] = None
         for w in sorted(words, key=lambda w: float(w["top"])):
-            if 155.0 <= float(w["x0"]) < 195.0 and _NUMERIC_RE.match(w["text"]):
+            if weight_lo <= float(w["x0"]) < weight_hi and _NUMERIC_RE.match(w["text"]):
                 first_data_y = float(w["top"])
                 break
         if first_data_y is not None:
@@ -509,7 +584,7 @@ def _parse_holdings_page(
 
     weight_tokens = [
         w for w in data_words
-        if 155.0 <= float(w["x0"]) < 195.0 and _NUMERIC_RE.match(w["text"])
+        if weight_lo <= float(w["x0"]) < weight_hi and _NUMERIC_RE.match(w["text"])
     ]
     weight_tokens.sort(key=lambda w: float(w["top"]))
     if not weight_tokens:
@@ -541,12 +616,18 @@ def _parse_holdings_page(
         def _join_col(name: str) -> str:
             ws = [w for w in group
                   if any(lo <= float(w["x0"]) < hi
-                         for col, lo, hi in _HOLDINGS_COLS if col == name)]
+                         for col, lo, hi in cols if col == name)]
             ws.sort(key=lambda w: (float(w["top"]), float(w["x0"])))
             return " ".join(w["text"] for w in ws).strip()
 
         security_name = _join_col("security_name")
         if not security_name:
+            continue
+        # Guard against chart-axis tokens leaking in when the Detailed
+        # Portfolio ends mid-page and the AUM/Performance trend chart's
+        # year labels (2019, 2020, …) land in our row bucket. A real
+        # security name always contains at least one ASCII letter.
+        if not any(c.isalpha() for c in security_name):
             continue
         weight_pct = _to_float(_join_col("weight_pct"))
         sector = _na_to_none(_join_col("sector"))
@@ -593,11 +674,21 @@ def parse_holdings_full(
     if start_page is None:
         raise ValueError("Detailed Portfolio header not found in any page")
 
+    # Detect this fund's column geometry from the first page's header row;
+    # fall back to the hardcoded defaults if detection fails.
+    try:
+        first_words = pl.pages[start_page].extract_words()
+    except Exception as e:  # pragma: no cover
+        logger.debug("holdings_full: extract_words on first page failed: %s", e)
+        first_words = []
+    detected_cols = _detect_holdings_cols(first_words) if first_words else None
+    cols = detected_cols if detected_cols else _HOLDINGS_COLS
+
     all_rows: list[dict] = []
     is_first = True
     for i in range(start_page, len(pl.pages)):
         page = pl.pages[i]
-        rows, hit_end = _parse_holdings_page(page, is_first_page=is_first)
+        rows, hit_end = _parse_holdings_page(page, is_first_page=is_first, cols=cols)
         all_rows.extend(rows)
         is_first = False
         if hit_end:
