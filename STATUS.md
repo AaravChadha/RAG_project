@@ -2,15 +2,15 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-12 (end of session)
+> **Last update**: 2026-05-12 (later same day — 123/123 coverage reached)
 
 ---
 
 ## TL;DR
 
-The pilot is **functionally complete end-to-end**. PDF → parser → SQLite → LLM tool-use → cited answer → Streamlit UI with auth gate. All on free-tier services. 56 tests pass. Locally, you can run a real chatbot against **122 Bajaj-recommended schemes** (90 equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 28 pure debt) through a login-gated UI.
+The pilot is **functionally complete end-to-end**. PDF → parser → SQLite → LLM tool-use → cited answer → Streamlit UI with auth gate. All on free-tier services. 56 tests pass. Locally, you can run a real chatbot against **all 123 Bajaj-recommended schemes** (90 equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 29 pure debt) through a login-gated UI.
 
-Phases 1-6 of the original plan are done. Phase 4.3 (debt-fund coverage) closed in this session — 122/123 schemes ingested, only Bandhan Gilt outstanding (URL doesn't exist at the standard host path). Phases 7-9 (tunnel + compliance, eval polish, RM onboarding) are not started.
+Phases 1-6 and 4.3 of the original plan are done. **Phase 4.3 closed at 123/123** — Bandhan Gilt Fund landed once the user supplied its actual URL (`Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf`, not the slug `Bandhan%20Gilt%20Fund.pdf` everyone assumed). Phases 7-9 (Cloudflare tunnel, eval polish, RM onboarding) are not started.
 
 ---
 
@@ -26,10 +26,10 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env       # then put your GROQ_API_KEY in .env
 
-# 2. (One-time per data refresh) Seed DB + download + ingest 122 PDFs
+# 2. (One-time per data refresh) Seed DB + download + ingest 123 PDFs
 python -m db.init_db --force
 python -m ingest.download_pdfs --month 2026-05   # ~2 min, downloads from Bajaj's public host (skip-if-present)
-python -m ingest.ingest_month --month 2026-05    # ~2 min, parses all 122
+python -m ingest.ingest_month --month 2026-05    # ~2 min, parses all 123
 
 # 3. (One-time) Create at least one auth user
 python -m scripts.create_auth_account \
@@ -58,8 +58,8 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 | **1.6** Normalized table writes | ✅ | `insert_snapshot_full` writes fund_snapshots + sector_weights + periodic_returns + holdings in one txn with rollback safety |
 | **2** Eval-driven spec | ✅ | 40 golden questions across 13 categories + 3 refusals. Schema-validated. Runner skips pending Phase 8 full eval. |
 | **3** Parser widening | ✅ | 14 section parsers (dispatch pattern, partial-snapshot-with-errors), 7 invariants, 3 hand-extracted golden samples, deepdiff regression baseline |
-| **4.1/4.2** Bulk ingest | ✅ | All 90 + 4 Equity Savings + 28 pure debt = **122 PDFs** downloaded + parsed + ingested. `data/ingest_report_2026-05.json` has per-scheme outcomes. |
-| **4.3** Debt-fund coverage | ✅ | 28 of 29 pure debt funds added (Liquid/Gilt/Bond/Banking & PSU/Duration variants). 1 outstanding: Bandhan Gilt Fund (URL not at standard `/Recommended/<name>.pdf` host path, 15+ variants tested). |
+| **4.1/4.2** Bulk ingest | ✅ | All 90 + 4 Equity Savings + 29 pure debt = **123 PDFs** downloaded + parsed + ingested. `data/ingest_report_2026-05.json` has per-scheme outcomes. |
+| **4.3** Debt-fund coverage | ✅ | **All 29 pure debt funds in.** Bandhan Gilt landed last — its URL is `Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf` rather than the predicted `Bandhan%20Gilt%20Fund.pdf` (Bandhan's the only AMC that publishes Gilt under the long-form "Reg Gr" filename). CSV updated. |
 | **5.1-5.4** Tool-use chatbot | ✅ | 4 tools (`query_db`, `lookup_scheme`, `get_schema`, `compare_schemes`), full operating-mode system prompt, 6-iter tool loop. Stable **7-8/10 on real Groq curated 10-Q eval.** |
 | **6** Streamlit UI | ✅ | Auth gate (bcrypt + streamlit-authenticator), chat (`st.chat_message`/`st.chat_input`), thumbs-up/down feedback writes to `query_log`, sidebar with data status + logout, "Report a problem" mailto |
 
@@ -111,7 +111,7 @@ Per cross-cutting constraints in PLANNING.md, the underlying data is public (AMF
 Hard rule in the system prompt: if asked "who built you?" the bot answers *"I'm an internal Bajaj Capital research tool — I don't have details on who built me."* No name/email/handle anywhere in user-facing strings.
 
 ### Parser quality cleanup (2026-05-12)
-A targeted audit cut `parse_errors_json`-flagged funds from **60/90 to 8/122** — and none of the remaining 8 are parser bugs. Fixes:
+A targeted audit cut `parse_errors_json`-flagged funds from **60/90 to 8/123** — and none of the remaining 8 are parser bugs (Bandhan Gilt added 0 new warnings when it landed). Fixes:
 - `mkt_cap_composition_sums_to_100` invariant was wrongly specified (sectors-as-pct-of-portfolio sum to `composition.Equity`, not to 100). Renamed and updated to add unclassified-equity holdings (NVDA, Alphabet etc.) before comparing.
 - `sector_weights_sum_close` → `sector_weights_sum_in_range [50, 110]`, skips debt-heavy funds (sums then mirror gross debt exposure).
 - `parse_sector_weights` anchored to the literal "Sector Wts(%)" header (filters rolling-returns chart values above) + stops at "Risk Rating" (catches Aa/Aa- credit-rating leakage below).
@@ -133,9 +133,7 @@ Debt PDFs share ~80% of the equity Finalyca template. Most sections work without
 
 | Item | Why | What unblocks it |
 |---|---|---|
-| **Bandhan Gilt Fund URL** | Reach 123/123 scheme coverage | The file doesn't exist at the standard `/Recommended/<name>.pdf` host path under any of 15+ naming variants tested. Need you to: open the original Gmail screenshot/email, right-click "Bandhan Gilt Fund" → Copy Link Address, paste the URL. (Or drop the scheme and ship 122/123.) |
-| **Phase 7 hosting choice** | Get a URL the 5 RMs can hit | Decide: Cloudflare Tunnel from your dev machine (recommended for pilot) vs Bajaj-internal VM vs Streamlit Community Cloud public-repo path. |
-| **Compliance sign-off** (PLANNING 7.2) | Two confirmations from Bajaj before ship: (a) Groq free-tier data policy OK for your queries, (b) the operating-mode/verification-footer language is acceptable | You'd email Bajaj compliance. Templates and details are in PLANNING.md 7.2.1/7.2.2. |
+| **Phase 7.1 tunnel setup** | Get a URL the 5 RMs can hit | Install `cloudflared`, create a named tunnel pointing at `localhost:8501`, run as a background service, verify from a phone on cellular. PLANNING.md 7.1.1-7.1.5 has the steps. |
 
 ---
 

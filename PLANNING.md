@@ -29,7 +29,7 @@
 | [Phase 4](#phase-4--bulk-ingest--debt-discovery-day-6) | 6 | Ingest all 90 + locate 33 debt schemes | All 90 in DB; debt-circular URL identified |
 | [Phase 5](#phase-5--tool-use-chatbot-day-78) | 7-8 | Chatbot answers golden questions | ≥80% golden Qs pass on first run |
 | [Phase 6](#phase-6--streamlit-ui-day-9) | 9 | Working UI with citations and feedback | Localhost UI accepts query, shows answer, captures thumbs |
-| [Phase 7](#phase-7--cloudflare-tunnel--compliance-day-10) | 10 | Public URL + Bajaj compliance sign-off | Tunnel URL accessible from phone; Groq policy confirmed (or contingency to another remote free provider) |
+| [Phase 7](#phase-7--cloudflare-tunnel-day-10) | 10 | Public URL the 5 RMs can hit | Tunnel URL accessible from a phone (not on dev WiFi) |
 | [Phase 8](#phase-8--eval--polish-day-1112) | 11-12 | Pass all golden questions | 100% pass or each failure has a documented "why acceptable" note |
 | [Phase 9](#phase-9--pilot-onboarding-day-1314) | 13-14 | 5 RMs trained, baseline data | 5 RM accounts created, ≥1 hour shadowing per RM done |
 
@@ -226,19 +226,17 @@
 
 **Acceptance:** 90 rows in `fund_snapshots` for `report_month='2026-05'`. Triaged list of any schemes with parse errors. Debt circular source documented.
 
-**Status (2026-05-12):** **122 rows in `fund_snapshots`** for `report_month='2026-05'` (90 original equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 28 pure debt). 8/122 funds carry warnings, all legitimate source-data edge cases (no parser bugs remain). See "Phase 4.3 outcome" below.
+**Status (2026-05-12):** **123 rows in `fund_snapshots`** for `report_month='2026-05'` (90 original equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 29 pure debt). 8/123 funds carry warnings, all legitimate source-data edge cases (no parser bugs remain). See "Phase 4.3 outcome" below.
 
 ### Phase 4.3 outcome (2026-05-12)
 
 **Source CSV:** The user provided the 33 missing schemes via a separate CSV (`schemes_debt_additional.csv` at the repo root) covering 4 Equity Savings + 29 pure debt. The forwarded .eml turned out to only contain 90 URLs (not ~180 as initially estimated); the debt URLs came from a separate source the user provided directly.
 
-**URL pattern:** Same `https://research-host.example/Recommended/<Scheme Name>.pdf` pattern as the original 90, with the same per-AMC quirks already known (lowercase 'kotak' on one entry, "(G)" suffix on some ICICI rows, "Pru" abbreviation vs full "Prudential" in CSV-vs-URL, `&` → `and` swap on Bandhan Banking & PSU). 28/29 debt URLs resolved on the mechanical or one-variant rule.
-
-**Unresolved (1):** **Bandhan Gilt Fund** does not exist at the standard `/Recommended/<name>.pdf` path under any tested naming variant (12 candidates HEAD-checked, all 403). Either Bandhan's gilt fund isn't published on the Bajaj research host, or the scheme has been recently rebranded/retired. Documented here; user can supply a working URL or remove from the recommended list.
+**URL pattern:** Same `https://research-host.example/Recommended/<Scheme Name>.pdf` pattern as the original 90, with the same per-AMC quirks already known (lowercase 'kotak' on one entry, "(G)" suffix on some ICICI rows, "Pru" abbreviation vs full "Prudential" in CSV-vs-URL, `&` → `and` swap on Bandhan Banking & PSU). 28/29 debt URLs resolved on the mechanical or one-variant rule. The 29th — Bandhan Gilt — turned out to be the long-form filename `Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf` (Bandhan publishes the Regular Growth plan under the verbose filename rather than the short scheme name). CSV updated to the working URL; on re-seed this causes a slug collision warning if old display variants are still present, so an existing-DB user re-seeding needs to also clean any orphan rows.
 
 **Parser readiness:** Debt PDFs share ~80% of the equity Finalyca template — most sections (Risk Analysis, Top Holdings, Composition, Detailed Portfolio, Sector Wts, Risk Rating with credit-quality buckets) work out of the box. Two new schema fields added for the debt-specific Portfolio Characteristics: `avg_maturity_years` and `yield_to_maturity`. `sector_weights_sum_in_range` invariant made debt-aware (skips when `composition.Equity < 30`).
 
-**Coverage:** 122 of the target 123 schemes are ingested (28 debt + 4 equity savings + 90 original). Bandhan Gilt is the lone outstanding scheme.
+**Coverage:** **123 / 123 schemes ingested** (29 debt + 4 equity savings + 90 original). Bandhan Gilt verified end-to-end (parse_errors_json empty, all header/return fields match the PDF including AUM 1852.66, avg_maturity_years 19.50, modified_duration 7.46, yield_to_maturity 7.44).
 
 ---
 
@@ -325,11 +323,13 @@
 
 ---
 
-## [ ] Phase 7 — Cloudflare Tunnel & compliance [Day 10]
+## [ ] Phase 7 — Cloudflare Tunnel [Day 10]
 
-**Goal:** External URL the 5 RMs can hit. Bajaj compliance signed off on Groq free-tier data policy.
+**Goal:** External URL the 5 RMs can hit.
 
-**Exit criterion:** Tunnel URL accessible from a phone (not on dev network); compliance has confirmed Groq free-tier usage in writing OR the LLM has been swapped to another remote free provider (Gemini Flash / Cerebras).
+**Exit criterion:** Tunnel URL accessible from a phone on cellular (not on dev WiFi).
+
+> Compliance sign-off was scoped out of the pilot (2026-05-12): this is an informal 5-RM trial of an internal tool over public-derivable data, not a regulated-advice channel. The verification-footer language and operating-mode rules already in the system prompt are the controls. Revisit before scaling past the pilot.
 
 ### [ ] 7.1 Tunnel setup
 - [ ] **7.1.1** Install `cloudflared`. Authenticate with a Cloudflare account (free).
@@ -338,18 +338,12 @@
 - [ ] **7.1.4** Run tunnel as a background service (launchd or `nohup`): `cloudflared tunnel --url http://localhost:8501 run bajaj-mf-bot`.
 - [ ] **7.1.5** Verify external access from phone on cellular (not on dev WiFi).
 
-### [ ] 7.2 Compliance check (run in parallel, not blocking 7.1) — TWO sign-offs needed
-- [ ] **7.2.1** **Sign-off A — Groq data policy.** Email Bajaj compliance with: Groq's privacy policy URL + free-tier ToS URL + a one-paragraph summary of what data flows through Groq (RM questions, scheme names, public market numbers — never PII or client data). Note: data is public-derivable per cross-cutting framing, so this should be procedural. If denied or revoked: implement a `_GeminiClient` (or `_CerebrasClient`) backend in `LLMClient` (~30 min) and switch `LLM_PROVIDER` env var. Re-run Phase 5 evals. Both alternatives are remote, free, and have similar tool-use quality on 70B-class models.
-- [ ] **7.2.2** **Sign-off B — operating-mode language.** Send compliance the system prompt (`app/prompts.py`), the verification footer text, and 5 representative bot outputs (one shortlist, one recommendation, one conditional advice, one extrapolation, one refusal). Ask them to confirm: (a) the verification-footer language is sufficient to put research-vs-advice responsibility on the RM, (b) the extrapolation framing is acceptable, (c) the no-client-specific-refusal stance is OK. **This stance is more permissive than typical regulated-product advisory tools — explicit sign-off is required, not implied.**
-- [ ] **7.2.3** Document both sign-offs (date, approver, scope) in a `PLANNING.md` appendix section "Phase 7.2 outcome." Keep the email thread for audit.
-- [ ] **7.2.4** If sign-off B is denied or modified: tighten the system prompt accordingly (more refusals, stricter footer, etc.) and re-run Phase 5 evals before launch.
-
 ### [ ] 7.3 Operational hardening
 - [ ] **7.3.1** Set up structured JSON logging (Python `logging.config`) writing to `logs/app.log`. Rotate weekly via logrotate or a simple cron.
 - [ ] **7.3.2** Add a `/health` route (or Streamlit equivalent — a separate small page) returning DB row counts and latest `ingested_at`.
 - [ ] **7.3.3** Document the runbook in `README.md`: how to restart Streamlit, how to restart the tunnel, how to ingest next month's data.
 
-**Acceptance:** Phone access works. Compliance status documented.
+**Acceptance:** Phone access works.
 
 ---
 
@@ -412,8 +406,7 @@
 
 ## Cross-cutting risks (review every Friday)
 
-- **R1a — Compliance: Groq data policy.** Groq free-tier ToS might preclude internal Bajaj data (lower-stakes than typical because data is public-derivable, but still wants procedural sign-off). Mitigation: implement `_GeminiClient` or `_CerebrasClient` in `LLMClient` and flip the env var — ~30 min, because the interface is provider-agnostic. **Owner: Day 10 must-resolve (sign-off A).**
-- **R1b — Compliance: operating-mode language.** The bot's permissive stance (gives recommendations, extrapolates, doesn't refuse client-conditional advice) is more aggressive than typical regulated tools. Bajaj compliance must explicitly approve the system prompt and verification-footer language. Mitigation if denied: tighten prompt (more refusals, stricter footer), re-run evals — ~1 day. **Owner: Day 10 must-resolve (sign-off B).**
+- **R1 — Provider lock-in / outage.** If Groq goes down or the free tier changes, the pilot stalls. Mitigation: implement `_GeminiClient` or `_CerebrasClient` in `LLMClient` and flip the `LLM_PROVIDER` env var — ~30 min, because the interface is provider-agnostic. **Owner: contingency.**
 - **R2 — Mid-month republished PDF.** Schema (`revision` + `superseded_at`) handles it; ingest script must check `pdf_sha256` before insert. **Owner: Phase 4.2.2.**
 - **R3 — Scheme rename / AMC merger mid-pilot.** `scheme_aliases` table handles it; document the runbook. **Owner: deferred to phase-2 unless triggered during pilot.**
 - **R4 — PDF download breakage.** Add monthly URL health check (HEAD all 90 → 123 URLs). **Owner: Phase 7.3 nice-to-have.**
