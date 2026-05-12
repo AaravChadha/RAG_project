@@ -630,6 +630,14 @@ def _parse_holdings_page(
         if not any(c.isalpha() for c in security_name):
             continue
         weight_pct = _to_float(_join_col("weight_pct"))
+        # Weight sanity bound: real holdings are in [-25, 105] (negative for
+        # arbitrage derivative margins; ~100 for Gold FoFs holding one ETF
+        # slightly over 100% due to rounding). Anything outside this range
+        # is almost certainly a chart x-axis year label (e.g. 2023, 2024)
+        # whose security_name happens to contain alphabetic month tokens
+        # like "Apr"/"Jul"/"Jan" and so survived the alphabetic guard above.
+        if weight_pct is None or weight_pct < -25.0 or weight_pct > 105.0:
+            continue
         sector = _na_to_none(_join_col("sector"))
         market_cap = _na_to_none(_join_col("market_cap"))
         instrument_type = _na_to_none(_join_col("instrument_type"))

@@ -1,6 +1,6 @@
 {
   "month": "2026-05",
-  "generated_at": "2026-05-12T09:22:46.628092+00:00",
+  "generated_at": "2026-05-12T09:34:47.931507+00:00",
   "pdf_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
   "db_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/db/bajaj_mf.db",
   "totals": {
@@ -9,7 +9,7 @@
     "skipped_no_change": 0,
     "superseded": 0,
     "failed": 0,
-    "elapsed_seconds": 90.9
+    "elapsed_seconds": 90.5
   },
   "entries": [
     {
@@ -105,7 +105,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 44,
-        "holdings": 5
+        "holdings": 3
       }
     },
     {
@@ -121,7 +121,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 58,
-        "holdings": 7
+        "holdings": 5
       }
     },
     {
@@ -169,7 +169,7 @@
       "normalized_counts": {
         "sector_weights": 14,
         "periodic_returns": 19,
-        "holdings": 51
+        "holdings": 48
       }
     },
     {
@@ -185,7 +185,7 @@
       "normalized_counts": {
         "sector_weights": 11,
         "periodic_returns": 18,
-        "holdings": 48
+        "holdings": 45
       }
     },
     {
@@ -201,7 +201,7 @@
       "normalized_counts": {
         "sector_weights": 14,
         "periodic_returns": 24,
-        "holdings": 36
+        "holdings": 33
       }
     },
     {
@@ -339,7 +339,7 @@
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 18,
-        "holdings": 79
+        "holdings": 76
       }
     },
     {
@@ -488,7 +488,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 44,
-        "holdings": 6
+        "holdings": 3
       }
     },
     {
@@ -536,7 +536,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 24,
-        "holdings": 21
+        "holdings": 20
       }
     },
     {
@@ -568,7 +568,7 @@
       "normalized_counts": {
         "sector_weights": 16,
         "periodic_returns": 19,
-        "holdings": 69
+        "holdings": 66
       }
     },
     {
@@ -584,7 +584,7 @@
       "normalized_counts": {
         "sector_weights": 15,
         "periodic_returns": 18,
-        "holdings": 48
+        "holdings": 45
       }
     },
     {
@@ -824,7 +824,7 @@
       "normalized_counts": {
         "sector_weights": 16,
         "periodic_returns": 22,
-        "holdings": 59
+        "holdings": 56
       }
     },
     {
@@ -888,7 +888,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 22,
-        "holdings": 13
+        "holdings": 12
       }
     },
     {
@@ -984,7 +984,7 @@
       "normalized_counts": {
         "sector_weights": 21,
         "periodic_returns": 19,
-        "holdings": 86
+        "holdings": 83
       }
     },
     {
@@ -1016,7 +1016,7 @@
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 22,
-        "holdings": 142
+        "holdings": 139
       }
     },
     {
@@ -1032,7 +1032,7 @@
       "normalized_counts": {
         "sector_weights": 17,
         "periodic_returns": 21,
-        "holdings": 90
+        "holdings": 87
       }
     },
     {
@@ -1069,7 +1069,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 22,
-        "holdings": 6
+        "holdings": 4
       }
     },
     {
@@ -1138,7 +1138,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 45,
-        "holdings": 7
+        "holdings": 4
       }
     },
     {
@@ -1234,7 +1234,7 @@
       "normalized_counts": {
         "sector_weights": 12,
         "periodic_returns": 24,
-        "holdings": 110
+        "holdings": 107
       }
     },
     {
@@ -1335,7 +1335,7 @@
       "normalized_counts": {
         "sector_weights": 1,
         "periodic_returns": 16,
-        "holdings": 8
+        "holdings": 6
       }
     },
     {
@@ -1415,7 +1415,7 @@
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 21,
-        "holdings": 145
+        "holdings": 143
       }
     },
     {
@@ -1431,7 +1431,7 @@
       "normalized_counts": {
         "sector_weights": 19,
         "periodic_returns": 22,
-        "holdings": 165
+        "holdings": 162
       }
     },
     {
@@ -1447,7 +1447,7 @@
       "normalized_counts": {
         "sector_weights": 20,
         "periodic_returns": 20,
-        "holdings": 190
+        "holdings": 187
       }
     },
     {
@@ -1479,7 +1479,7 @@
       "normalized_counts": {
         "sector_weights": 5,
         "periodic_returns": 19,
-        "holdings": 53
+        "holdings": 50
       }
     },
     {
