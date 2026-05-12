@@ -64,6 +64,8 @@ FUND_SNAPSHOTS_COLUMNS: tuple[str, ...] = (
     "portfolio_pb",
     "portfolio_div_yield",
     "modified_duration",
+    "avg_maturity_years",
+    "yield_to_maturity",
     # Drawdown
     "drawdown_pct",
     "drawdown_duration_days",
@@ -166,6 +168,10 @@ class Snapshot:
     portfolio_pb: Optional[float] = None
     portfolio_div_yield: Optional[float] = None
     modified_duration: Optional[float] = None
+    # Debt-specific: NULL for pure-equity funds (Finalyca lists these labels
+    # in the Portfolio Characteristics block only for debt/liquid/gilt funds).
+    avg_maturity_years: Optional[float] = None
+    yield_to_maturity: Optional[float] = None
 
     # Drawdown
     drawdown_pct: Optional[float] = None

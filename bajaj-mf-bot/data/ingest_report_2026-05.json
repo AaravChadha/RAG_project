@@ -1,15 +1,15 @@
 {
   "month": "2026-05",
-  "generated_at": "2026-05-12T09:41:04.668792+00:00",
+  "generated_at": "2026-05-12T09:52:50.955178+00:00",
   "pdf_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
   "db_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/db/bajaj_mf.db",
   "totals": {
-    "parsed": 94,
+    "parsed": 96,
     "inserted": 94,
     "skipped_no_change": 0,
     "superseded": 0,
-    "failed": 0,
-    "elapsed_seconds": 94.1
+    "failed": 2,
+    "elapsed_seconds": 94.7
   },
   "entries": [
     {
@@ -107,6 +107,22 @@
         "periodic_returns": 44,
         "holdings": 3
       }
+    },
+    {
+      "scheme_uid": "axis-liquid-fund",
+      "scheme_name": null,
+      "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/axis-liquid-fund.pdf",
+      "status": "failed",
+      "snapshot_id": null,
+      "revision": null,
+      "errors": [
+        {
+          "section": "lookup",
+          "error": "scheme_uid 'axis-liquid-fund' not in schemes table"
+        }
+      ],
+      "invariant_warnings": [],
+      "parse_errors_json": null
     },
     {
       "scheme_uid": "bandhan-income-plus-arbitrage-fund-of-funds",
@@ -682,6 +698,22 @@
         "periodic_returns": 38,
         "holdings": 124
       }
+    },
+    {
+      "scheme_uid": "icici-pru-gilt-fund",
+      "scheme_name": null,
+      "pdf_path": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05/icici-pru-gilt-fund.pdf",
+      "status": "failed",
+      "snapshot_id": null,
+      "revision": null,
+      "errors": [
+        {
+          "section": "lookup",
+          "error": "scheme_uid 'icici-pru-gilt-fund' not in schemes table"
+        }
+      ],
+      "invariant_warnings": [],
+      "parse_errors_json": null
     },
     {
       "scheme_uid": "icici-pru-large-mid-cap-fund",

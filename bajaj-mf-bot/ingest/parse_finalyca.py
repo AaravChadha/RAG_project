@@ -1179,6 +1179,10 @@ def parse_top_holdings(doc: "fitz.Document", pl: "pdfplumber.PDF", snap: Snapsho
 #   Modified Duration      0E-9       ← pure equity; arbitrage/hybrid ≠ 0
 
 # Label substring (lower-cased, joined row text) → (attr, is_int).
+# Equity rows + debt rows live in the same block; the debt labels populate
+# only when the fund's Portfolio Characteristics block carries them
+# (Liquid / Gilt / Bond / Banking & PSU etc.). Equity funds leave the
+# debt-side attrs as None and vice versa.
 _PORTFOLIO_CHAR_LABELS: tuple[tuple[str, str, bool], ...] = (
     ("total securities", "total_securities", True),
     ("avg mkt cap", "avg_mkt_cap_cr", False),
@@ -1194,6 +1198,14 @@ _PORTFOLIO_CHAR_LABELS: tuple[tuple[str, str, bool], ...] = (
     ("div yield", "portfolio_div_yield", False),
     ("modified duration", "modified_duration", False),
     ("mod duration", "modified_duration", False),
+    # Debt-side fields (Liquid, Gilt, Bond, Banking & PSU, etc.).
+    # Order matters: "average maturity years" must match before the shorter
+    # "average maturity" fallback would, so it's listed first.
+    ("average maturity years", "avg_maturity_years", False),
+    ("average maturity", "avg_maturity_years", False),
+    ("avg maturity", "avg_maturity_years", False),
+    ("yield to maturity", "yield_to_maturity", False),
+    ("ytm", "yield_to_maturity", False),
 )
 
 
@@ -1542,8 +1554,19 @@ EXPECTED_SECTIONS_BY_FUND_TYPE: dict[str, list[str]] = {
         "market_cap_composition", "investment_style",
     ],
     "debt": [
+        # Debt-template Finalyca PDFs (Liquid / Gilt / Bond / Banking & PSU /
+        # Ultra Short / Short / Medium / Long Duration / Dynamic Bond / Low
+        # Duration / Medium-to-Long Duration). Verified end-to-end on Axis
+        # Liquid (16pp) and ICICI Pru Gilt (15pp). Sections present include
+        # bond-issuer "Sector Wts", top_holdings, portfolio_characteristics
+        # (debt fields: Avg Maturity Years, YTM, Modified Duration), and
+        # risk_rating with credit-quality buckets (A1+, Aaa, Sovereign…).
+        # Absent in debt: mkt_cap_composition (header may render with no
+        # rows), investment_style (same), drawdown (header present but
+        # all values NA per Finalyca's debt template).
         "header", "fund_managers", "trailing_returns", "risk_metrics",
-        "composition", "drawdown", "risk_rating",
+        "sector_weights", "top_holdings", "portfolio_characteristics",
+        "composition", "risk_rating",
     ],
     "hybrid": [
         "header", "fund_managers", "trailing_returns", "risk_metrics",

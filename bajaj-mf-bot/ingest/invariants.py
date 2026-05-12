@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 from dataclasses import fields
 from datetime import date
-from typing import Callable, List, Tuple
+from typing import Callable, List, Optional, Tuple
 
 from ingest.models import Snapshot
 
@@ -83,13 +83,38 @@ def sector_weights_sum_in_range(snap: Snapshot) -> Tuple[bool, str]:
       * Hybrid/debt funds with row-extraction contamination: sectors
         can exceed 110 when credit-rating buckets (Aa, Government, A1+)
         leak in from the adjacent Risk Rating block on page 2.
+      * Pure-debt funds (Liquid, Gilt, Bond) ALSO have a "Sector Wts"
+        block, but those rows are bond *issuer* sectors (Government,
+        Telecommunication, Others, …) and the sum mirrors gross debt
+        exposure — for a leveraged liquid fund this is comfortably >110.
+        Skip the invariant for debt-heavy funds (composition.Equity < 30
+        or missing entirely) because the [50, 110] range was calibrated
+        against equity-template accounting, not debt-template accounting.
 
     The invariant therefore flags only the two bug-shaped extremes —
     row loss (<<50) and credit-rating contamination (>110) — and stays
-    silent on the legitimate-variability middle band.
+    silent on the legitimate-variability middle band, and is skipped
+    entirely for pure-debt funds where the sum semantics differ.
     """
     if not snap.sector_weights:
         return True, "n/a — field missing"
+
+    # Skip pure-debt funds: their sector_weights sum mirrors gross debt
+    # exposure, not equity exposure, so the equity-calibrated range
+    # doesn't apply.
+    equity_pct: Optional[float] = None
+    if snap.composition_json:
+        try:
+            comp = json.loads(snap.composition_json)
+            if isinstance(comp, dict):
+                eq = comp.get("Equity")
+                if isinstance(eq, (int, float)):
+                    equity_pct = float(eq)
+        except (TypeError, ValueError):
+            pass
+    if equity_pct is None or equity_pct < 30.0:
+        return True, "n/a — debt-heavy or no-equity fund (range calibrated for equity)"
+
     total = 0.0
     for row in snap.sector_weights:
         w = row.get("weight_pct") if isinstance(row, dict) else None

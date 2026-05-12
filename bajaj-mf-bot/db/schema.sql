@@ -93,6 +93,9 @@ CREATE TABLE IF NOT EXISTS fund_snapshots (
     portfolio_pb         REAL,
     portfolio_div_yield  REAL,
     modified_duration    REAL,
+    -- Debt-specific (NULL for pure equity funds)
+    avg_maturity_years   REAL,
+    yield_to_maturity    REAL,
 
     -- Drawdown
     drawdown_pct           REAL,
