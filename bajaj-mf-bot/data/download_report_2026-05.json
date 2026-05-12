@@ -1,12 +1,12 @@
 {
   "month": "2026-05",
-  "generated_at": "2026-05-12T09:39:16.090378+00:00",
+  "generated_at": "2026-05-12T09:57:13.928375+00:00",
   "csv_source": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/schemes_master.csv",
   "out_dir": "/Users/aaravchadha/Documents/Bajaj_RAG_mutual_funds/RAG_project/bajaj-mf-bot/data/pdfs/2026-05",
   "totals": {
-    "rows": 94,
-    "downloaded": 4,
-    "skipped": 90,
+    "rows": 122,
+    "downloaded": 26,
+    "skipped": 96,
     "failed": 0
   },
   "entries": [
@@ -735,7 +735,7 @@
       "scheme_name": "DSP Equity Savings Fund",
       "category": "Equity Savings Fund",
       "url": "https://research-host.example/Recommended/DSP%20Equity%20Savings%20Fund.pdf",
-      "outcome": "downloaded",
+      "outcome": "skipped",
       "size_bytes": 227130
     },
     {
@@ -743,7 +743,7 @@
       "scheme_name": "Edelweiss Equity Savings Fund",
       "category": "Equity Savings Fund",
       "url": "https://research-host.example/Recommended/Edelweiss%20Equity%20Savings%20Fund.pdf",
-      "outcome": "downloaded",
+      "outcome": "skipped",
       "size_bytes": 242329
     },
     {
@@ -751,7 +751,7 @@
       "scheme_name": "ICICI Pru Equity Savings Fund",
       "category": "Equity Savings Fund",
       "url": "https://research-host.example/Recommended/ICICI%20Pru%20Equity%20Savings%20Fund.pdf",
-      "outcome": "downloaded",
+      "outcome": "skipped",
       "size_bytes": 236510
     },
     {
@@ -759,8 +759,232 @@
       "scheme_name": "Kotak Equity Savings Fund",
       "category": "Equity Savings Fund",
       "url": "https://research-host.example/Recommended/Kotak%20Equity%20Savings%20Fund.pdf",
-      "outcome": "downloaded",
+      "outcome": "skipped",
       "size_bytes": 242950
+    },
+    {
+      "scheme_uid": "axis-liquid-fund",
+      "scheme_name": "Axis Liquid Fund",
+      "category": "Liquid Fund",
+      "url": "https://research-host.example/Recommended/Axis%20Liquid%20Fund.pdf",
+      "outcome": "skipped",
+      "size_bytes": 202606
+    },
+    {
+      "scheme_uid": "canara-robeco-liquid-fund",
+      "scheme_name": "Canara Robeco Liquid Fund",
+      "category": "Liquid Fund",
+      "url": "https://research-host.example/Recommended/Canara%20Robeco%20Liquid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 191454
+    },
+    {
+      "scheme_uid": "icici-pru-liquid-fund",
+      "scheme_name": "ICICI Pru Liquid Fund",
+      "category": "Liquid Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Liquid%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 207142
+    },
+    {
+      "scheme_uid": "bandhan-ultra-short-duration-fund",
+      "scheme_name": "Bandhan Ultra Short Duration Fund",
+      "category": "Debt - Ultra Short Term",
+      "url": "https://research-host.example/Recommended/Bandhan%20Ultra%20Short%20Duration%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 203806
+    },
+    {
+      "scheme_uid": "pgim-india-ultra-short-duration-fund",
+      "scheme_name": "PGIM India Ultra Short Duration Fund",
+      "category": "Debt - Ultra Short Term",
+      "url": "https://research-host.example/Recommended/PGIM%20India%20Ultra%20Short%20Duration%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 202057
+    },
+    {
+      "scheme_uid": "sbi-ultra-short-duration-fund",
+      "scheme_name": "SBI Ultra Short Duration Fund",
+      "category": "Debt - Ultra Short Term",
+      "url": "https://research-host.example/Recommended/SBI%20Ultra%20Short%20Duration%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 204791
+    },
+    {
+      "scheme_uid": "hdfc-short-term-debt-fund",
+      "scheme_name": "HDFC Short Term Debt Fund",
+      "category": "Debt - Short Duration",
+      "url": "https://research-host.example/Recommended/HDFC%20Short%20Term%20Debt%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 223119
+    },
+    {
+      "scheme_uid": "icici-pru-short-term-fund",
+      "scheme_name": "ICICI Pru Short Term Fund",
+      "category": "Debt - Short Duration",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Short%20Term%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 229768
+    },
+    {
+      "scheme_uid": "aditya-birla-sl-dynamic-bond-fund",
+      "scheme_name": "Aditya Birla SL Dynamic Bond Fund",
+      "category": "Dynamic Bond Fund",
+      "url": "https://research-host.example/Recommended/Aditya%20Birla%20SL%20Dynamic%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 216126
+    },
+    {
+      "scheme_uid": "dsp-strategic-bond-fund",
+      "scheme_name": "DSP Strategic Bond Fund",
+      "category": "Dynamic Bond Fund",
+      "url": "https://research-host.example/Recommended/DSP%20Strategic%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 201219
+    },
+    {
+      "scheme_uid": "icici-pru-all-seasons-bond-fund",
+      "scheme_name": "ICICI Pru All Seasons Bond Fund",
+      "category": "Dynamic Bond Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20All%20Seasons%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 217438
+    },
+    {
+      "scheme_uid": "kotak-dynamic-bond-fund",
+      "scheme_name": "Kotak Dynamic Bond Fund",
+      "category": "Dynamic Bond Fund",
+      "url": "https://research-host.example/Recommended/Kotak%20Dynamic%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 215847
+    },
+    {
+      "scheme_uid": "nippon-india-dynamic-bond-fund",
+      "scheme_name": "Nippon India Dynamic Bond Fund",
+      "category": "Dynamic Bond Fund",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Dynamic%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 212580
+    },
+    {
+      "scheme_uid": "aditya-birla-sl-long-duration-fund",
+      "scheme_name": "Aditya Birla SL Long Duration Fund",
+      "category": "Long Duration Fund",
+      "url": "https://research-host.example/Recommended/Aditya%20Birla%20SL%20Long%20Duration%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 185827
+    },
+    {
+      "scheme_uid": "nippon-india-nivesh-lakshya-long-duration-fund",
+      "scheme_name": "Nippon India Nivesh Lakshya Long Duration Fund",
+      "category": "Long Duration Fund",
+      "url": "https://research-host.example/Recommended/Nippon%20India%20Nivesh%20Lakshya%20Long%20Duration%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 192462
+    },
+    {
+      "scheme_uid": "axis-treasury-advantage-fund",
+      "scheme_name": "Axis Treasury Advantage Fund",
+      "category": "Low Duration Fund",
+      "url": "https://research-host.example/Recommended/Axis%20Treasury%20Advantage%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 209152
+    },
+    {
+      "scheme_uid": "bandhan-low-duration-fund",
+      "scheme_name": "Bandhan Low Duration Fund",
+      "category": "Low Duration Fund",
+      "url": "https://research-host.example/Recommended/Bandhan%20Low%20Duration%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 209035
+    },
+    {
+      "scheme_uid": "icici-pru-savings-fund",
+      "scheme_name": "ICICI Pru Savings Fund",
+      "category": "Low Duration Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Savings%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 220732
+    },
+    {
+      "scheme_uid": "hdfc-income-fund",
+      "scheme_name": "HDFC Income Fund",
+      "category": "Medium to Long Duration Fund",
+      "url": "https://research-host.example/Recommended/HDFC%20Income%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 215281
+    },
+    {
+      "scheme_uid": "icici-pru-bond-fund",
+      "scheme_name": "ICICI Pru Bond Fund",
+      "category": "Medium to Long Duration Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 212281
+    },
+    {
+      "scheme_uid": "axis-strategic-bond-fund",
+      "scheme_name": "Axis Strategic Bond Fund",
+      "category": "Medium Duration Fund",
+      "url": "https://research-host.example/Recommended/Axis%20Strategic%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 215043
+    },
+    {
+      "scheme_uid": "dsp-bond-fund",
+      "scheme_name": "DSP Bond Fund",
+      "category": "Medium Duration Fund",
+      "url": "https://research-host.example/Recommended/DSP%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 205899
+    },
+    {
+      "scheme_uid": "icici-pru-medium-term-bond-fund",
+      "scheme_name": "ICICI Pru Medium Term Bond Fund",
+      "category": "Medium Duration Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Medium%20Term%20Bond%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 220126
+    },
+    {
+      "scheme_uid": "bandhan-banking-psu-fund",
+      "scheme_name": "Bandhan Banking & PSU Fund",
+      "category": "Banking and PSU Fund",
+      "url": "https://research-host.example/Recommended/Bandhan%20Banking%20%26%20PSU%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 212182
+    },
+    {
+      "scheme_uid": "icici-pru-banking-psu-debt-fund",
+      "scheme_name": "ICICI Pru Banking & PSU Debt Fund",
+      "category": "Banking and PSU Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Banking%20%26%20PSU%20Debt%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 216235
+    },
+    {
+      "scheme_uid": "kotak-banking-psu-debt-fund",
+      "scheme_name": "Kotak Banking & PSU Debt Fund",
+      "category": "Banking and PSU Fund",
+      "url": "https://research-host.example/Recommended/Kotak%20Banking%20%26%20PSU%20Debt%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 217820
+    },
+    {
+      "scheme_uid": "axis-gilt-fund",
+      "scheme_name": "Axis Gilt Fund",
+      "category": "GILT Fund",
+      "url": "https://research-host.example/Recommended/Axis%20Gilt%20Fund.pdf",
+      "outcome": "downloaded",
+      "size_bytes": 198246
+    },
+    {
+      "scheme_uid": "icici-pru-gilt-fund",
+      "scheme_name": "ICICI Pru Gilt Fund",
+      "category": "GILT Fund",
+      "url": "https://research-host.example/Recommended/ICICI%20Pru%20Gilt%20Fund.pdf",
+      "outcome": "skipped",
+      "size_bytes": 209504
     }
   ]
 }

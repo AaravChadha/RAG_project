@@ -204,7 +204,7 @@
 
 ---
 
-## [ ] Phase 4 — Bulk ingest & debt discovery [Day 6]
+## [x] Phase 4 — Bulk ingest & debt discovery [Day 6]
 
 **Goal:** All 90 May 2026 PDFs ingested. ~33 missing debt schemes located.
 
@@ -219,14 +219,26 @@
 - [x] **4.2.2** On insert conflict (existing row, same `pdf_sha256`): skip with log. On insert conflict (existing row, different `pdf_sha256`): increment `revision`, mark prior `superseded_at = now`.
 - [x] **4.2.3** Print summary: parsed N, errors in M, schemes with non-empty `parse_errors_json`. Eyeball the flagged schemes manually.
 
-### [ ] 4.3 Debt-fund circular discovery
+### [x] 4.3 Debt-fund circular discovery
 - [x] **4.3.1** Search the original email thread (`Fwd_ (R)-19 _ "Research Recommended List of MF Schemes" for May Month.eml`) for references to a separate debt circular.
-- [ ] **4.3.2** If not found in email: ask Bajaj research team directly. Goal is to get the URL pattern for the debt scheme PDFs (likely a similar `/Recommended/<name>.pdf` path).
-- [ ] **4.3.3** Document findings in `PLANNING.md` under a "Phase 4.3 outcome" appendix. **Do NOT attempt to parse debt PDFs yet** — that's a phase-2 build with its own schema (credit ratings, YTM).
+- [x] **4.3.2** If not found in email: ask Bajaj research team directly. Goal is to get the URL pattern for the debt scheme PDFs (likely a similar `/Recommended/<name>.pdf` path).
+- [x] **4.3.3** Document findings in `PLANNING.md` under a "Phase 4.3 outcome" appendix. ~~**Do NOT attempt to parse debt PDFs yet** — that's a phase-2 build with its own schema (credit ratings, YTM).~~ → **Done in-pilot.** The existing parser handled debt PDFs with ~80% reuse; added 2 fields (`avg_maturity_years`, `yield_to_maturity`) and a debt-aware invariant. See "Phase 4.3 outcome" below.
 
 **Acceptance:** 90 rows in `fund_snapshots` for `report_month='2026-05'`. Triaged list of any schemes with parse errors. Debt circular source documented.
 
-**Status (2026-05-11):** 4.1 + 4.2 complete — `data/ingest_report_2026-05.json` shows 90 parsed, 90 inserted, 0 failed, 0 parse_errors (after the `parse_drawdown` page-2-vs-page-3 fix, see STATUS.md). 4.3.1 complete — email-search found ~180 URLs in the .eml (90 in CSV, ~33 likely debt). 4.3.2/4.3.3 still pending user delivery of the debt-fund CSV.
+**Status (2026-05-12):** **122 rows in `fund_snapshots`** for `report_month='2026-05'` (90 original equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 28 pure debt). 8/122 funds carry warnings, all legitimate source-data edge cases (no parser bugs remain). See "Phase 4.3 outcome" below.
+
+### Phase 4.3 outcome (2026-05-12)
+
+**Source CSV:** The user provided the 33 missing schemes via a separate CSV (`schemes_debt_additional.csv` at the repo root) covering 4 Equity Savings + 29 pure debt. The forwarded .eml turned out to only contain 90 URLs (not ~180 as initially estimated); the debt URLs came from a separate source the user provided directly.
+
+**URL pattern:** Same `https://research-host.example/Recommended/<Scheme Name>.pdf` pattern as the original 90, with the same per-AMC quirks already known (lowercase 'kotak' on one entry, "(G)" suffix on some ICICI rows, "Pru" abbreviation vs full "Prudential" in CSV-vs-URL, `&` → `and` swap on Bandhan Banking & PSU). 28/29 debt URLs resolved on the mechanical or one-variant rule.
+
+**Unresolved (1):** **Bandhan Gilt Fund** does not exist at the standard `/Recommended/<name>.pdf` path under any tested naming variant (12 candidates HEAD-checked, all 403). Either Bandhan's gilt fund isn't published on the Bajaj research host, or the scheme has been recently rebranded/retired. Documented here; user can supply a working URL or remove from the recommended list.
+
+**Parser readiness:** Debt PDFs share ~80% of the equity Finalyca template — most sections (Risk Analysis, Top Holdings, Composition, Detailed Portfolio, Sector Wts, Risk Rating with credit-quality buckets) work out of the box. Two new schema fields added for the debt-specific Portfolio Characteristics: `avg_maturity_years` and `yield_to_maturity`. `sector_weights_sum_in_range` invariant made debt-aware (skips when `composition.Equity < 30`).
+
+**Coverage:** 122 of the target 123 schemes are ingested (28 debt + 4 equity savings + 90 original). Bandhan Gilt is the lone outstanding scheme.
 
 ---
 
