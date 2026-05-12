@@ -332,10 +332,13 @@
 > Compliance sign-off was scoped out of the pilot (2026-05-12): this is an informal 5-RM trial of an internal tool over public-derivable data, not a regulated-advice channel. The verification-footer language and operating-mode rules already in the system prompt are the controls. Revisit before scaling past the pilot.
 
 ### [ ] 7.1 Tunnel setup
-- [ ] **7.1.1** Install `cloudflared`. Authenticate with a Cloudflare account (free).
-- [ ] **7.1.2** Create a named tunnel: `cloudflared tunnel create bajaj-mf-bot`.
-- [ ] **7.1.3** Configure DNS: get a `<name>.trycloudflare.com` (free, no domain needed) OR use a Cloudflare-hosted domain if available.
-- [ ] **7.1.4** Run tunnel as a background service (launchd or `nohup`): `cloudflared tunnel --url http://localhost:8501 run bajaj-mf-bot`.
+
+> **Decision (2026-05-12):** Pilot uses Cloudflare *quick tunnel*, not a named tunnel. Quick tunnel needs no Cloudflare account and no custom domain — `cloudflared tunnel --url http://127.0.0.1:8501` returns an ephemeral random `*.trycloudflare.com` URL on each start. Tradeoff: URL changes whenever cloudflared restarts; mitigated by laptop staying awake (`caffeinate -d`) and ~5 RM scale where a Slack-the-new-URL fallback is fine. Named tunnel revisited when we move off the laptop (see "Future hosting" open item).
+
+- [x] **7.1.1** Install `cloudflared` via `brew install cloudflared`. (Done 2026-05-12, version 2026.3.0.)
+- [x] **7.1.2** Run quick tunnel: `cloudflared tunnel --url http://127.0.0.1:8501 --no-autoupdate`. Returns a `https://<random>.trycloudflare.com` URL after ~5s.
+- [x] **7.1.3** Local verification: tunnel URL returns HTTP 200 and serves the Streamlit auth-gated page. Streamlit hot-reloads `app/auth_config.yaml`, so swapping accounts requires no restart.
+- [ ] **7.1.4** Make the tunnel survive a logout / laptop reboot. Two options: (a) launchd plist that runs `cloudflared tunnel --url http://127.0.0.1:8501` on boot, paired with `caffeinate -d` while plugged in; (b) move hosting off the laptop (see open item). Currently both processes are foreground bash jobs that die with the shell.
 - [ ] **7.1.5** Verify external access from phone on cellular (not on dev WiFi).
 
 ### [ ] 7.3 Operational hardening
@@ -420,6 +423,7 @@
 - [ ] Where does the code live? GitHub free private repo (recommended) or Bajaj-internal Git?
 - [ ] Backup destination for `bajaj_mf.db` — local-only is fine for the pilot, but think about offsite (e.g., encrypted to iCloud Drive).
 - [ ] Whether to expose a "raw SQL" mode to power-user RMs in phase 2 (probably yes, but not in pilot).
+- [ ] **Future hosting: move off the laptop.** Quick tunnel works for the pilot but the laptop must stay on, awake, and on the network — and the URL changes on every restart. Three paths to a stable always-on URL: (a) **Streamlit Community Cloud** (free, stable `*.streamlit.app` URL, deploys from GitHub; DB either checked in or rebuilt at boot from PDFs); (b) **Bajaj-internal VM** + Cloudflare named tunnel (zero-spend if Bajaj provides the VM; long-term answer); (c) **Fly.io / Render free tier** (persistent volume, stable URL, idle-spindown cold-start of ~10-30s). Recommend (a) as the next step at $0; revisit when scaling past 5 RMs.
 
 ---
 

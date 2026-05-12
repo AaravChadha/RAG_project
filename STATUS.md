@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-12 (later same day — 123/123 coverage reached)
+> **Last update**: 2026-05-12 (evening — 123/123 coverage + Phase 7.1 quick-tunnel POC)
 
 ---
 
@@ -10,7 +10,7 @@
 
 The pilot is **functionally complete end-to-end**. PDF → parser → SQLite → LLM tool-use → cited answer → Streamlit UI with auth gate. All on free-tier services. 56 tests pass. Locally, you can run a real chatbot against **all 123 Bajaj-recommended schemes** (90 equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 29 pure debt) through a login-gated UI.
 
-Phases 1-6 and 4.3 of the original plan are done. **Phase 4.3 closed at 123/123** — Bandhan Gilt Fund landed once the user supplied its actual URL (`Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf`, not the slug `Bandhan%20Gilt%20Fund.pdf` everyone assumed). Phases 7-9 (Cloudflare tunnel, eval polish, RM onboarding) are not started.
+Phases 1-6 and 4.3 of the original plan are done. **Phase 4.3 closed at 123/123** — Bandhan Gilt Fund landed once the user supplied its actual URL (`Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf`, not the slug `Bandhan%20Gilt%20Fund.pdf` everyone assumed). **Phase 7.1 partially done** — Cloudflare quick tunnel works locally; the URL still needs a phone-on-cellular smoke test and a launchd plist for unattended hosting. Phases 7.3, 8, 9 (ops hardening, eval polish, RM onboarding) are not started.
 
 ---
 
@@ -50,7 +50,7 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 
 ---
 
-## What's been built (Phases 1-6)
+## What's been built (Phases 1-6, plus partial 7.1)
 
 | Phase | Status | Highlights |
 |---|---|---|
@@ -62,6 +62,7 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 | **4.3** Debt-fund coverage | ✅ | **All 29 pure debt funds in.** Bandhan Gilt landed last — its URL is `Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf` rather than the predicted `Bandhan%20Gilt%20Fund.pdf` (Bandhan's the only AMC that publishes Gilt under the long-form "Reg Gr" filename). CSV updated. |
 | **5.1-5.4** Tool-use chatbot | ✅ | 4 tools (`query_db`, `lookup_scheme`, `get_schema`, `compare_schemes`), full operating-mode system prompt, 6-iter tool loop. Stable **7-8/10 on real Groq curated 10-Q eval.** |
 | **6** Streamlit UI | ✅ | Auth gate (bcrypt + streamlit-authenticator), chat (`st.chat_message`/`st.chat_input`), thumbs-up/down feedback writes to `query_log`, sidebar with data status + logout, "Report a problem" mailto |
+| **7.1** Cloudflare tunnel | 🟡 | `cloudflared` 2026.3.0 installed via Homebrew. Quick-tunnel path chosen (no Cloudflare account, no domain). Successfully serves Streamlit on a `*.trycloudflare.com` URL; verified locally with HTTP 200. **Outstanding**: phone-on-cellular check (7.1.5) and a launchd plist so the tunnel survives reboots (7.1.4). |
 
 **Test status**: `pytest tests/ -v` → **56 passed, 40 skipped** (40 are Phase-2 golden questions waiting on full Phase-8 eval).
 
@@ -133,7 +134,8 @@ Debt PDFs share ~80% of the equity Finalyca template. Most sections work without
 
 | Item | Why | What unblocks it |
 |---|---|---|
-| **Phase 7.1 tunnel setup** | Get a URL the 5 RMs can hit | Install `cloudflared`, create a named tunnel pointing at `localhost:8501`, run as a background service, verify from a phone on cellular. PLANNING.md 7.1.1-7.1.5 has the steps. |
+| **Phase 7.1 finish-up** | Local tunnel works; pilot-readiness needs two more steps | (a) Open the trycloudflare URL on a phone over cellular to confirm external reachability (7.1.5). (b) Wrap `cloudflared` + Streamlit in launchd plists so they survive a reboot — or pick a hosting move per the "Future hosting" open item in PLANNING.md. |
+| **Future hosting choice** (open item) | Stable URL + always-on, off your laptop | Three free-ish paths in PLANNING.md "Open items": Streamlit Community Cloud (recommended next step at $0), Bajaj-internal VM + named tunnel, or Fly.io / Render free tier. |
 
 ---
 
