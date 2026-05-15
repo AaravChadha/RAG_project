@@ -407,6 +407,60 @@
 
 ---
 
+## Post-pilot scaling notes (Phase 10+)
+
+> **What this section is.** Forward-looking decisions for the scale-from-5-to-300-RMs phase. Not part of pilot exit criteria. None of this should drive pilot-phase tradeoffs — pilot stays on laptop + Groq free tier + Streamlit + SQLite. Recorded here so the production roadmap is in one place once the pilot validates value.
+
+### Hosting at 300-RM scale
+- **Pick: Oracle Cloud Free Tier**, Mumbai region. 4 OCPU / 24 GB RAM ARM Ampere A1 + 200 GB block storage + 10 TB/month outbound — forever free, India residency for Bajaj compliance comfort.
+- **Capacity**: ~150-200 concurrent Streamlit sessions; 300 total RMs at realistic 10-20% peak concurrency fits with massive headroom. Bottleneck is LLM tokens, not the VM.
+- **Signup gotchas**: credit card required for identity verification (not billed unless you manually upgrade to Pay-As-You-Go); use a credit card not debit; enable international transactions; set a $1 budget alert in OCI Console as a paranoia tripwire.
+- **Keep-alive**: ARM A1 instances get reclaimed after 7 days <20% CPU. Daily RM traffic keeps the box safe; a never-used demo doesn't.
+- **Not Streamlit Community Cloud**: requires public repos (auth_config.yaml + bajaj_mf.db are sensitive), US data residency, 1 GB RAM cap. Disqualified at production scale.
+
+### LLM choice (decide via eval, not vibes)
+- **Pilot baseline**: `openai/gpt-oss-120b` on Groq free tier — 7-8/10 on curated 10-Q eval.
+- **Production candidates to A/B test** via the existing provider-agnostic `LLMClient`:
+  - **GPT-4o-mini** (OpenAI) — best tool-calling spec, automatic 50% prompt caching, ~$100-120/month at 300 RMs.
+  - **Claude Haiku 4.5** (Anthropic) — aggressive 90% prompt caching, excellent instruction-following on strict refusal/footer rules, ~$80-150/month.
+  - **gpt-oss-120b paid** (Groq) — fallback if eval shows pilot baseline is good enough; ~$130/month.
+- **Avoid**: Llama-3.3-70b (pseudo-XML tool-call malformation, documented in STATUS.md); DeepSeek (China-hosted, likely Bajaj compliance blocker); GPT-4o / Claude Sonnet (overkill).
+- **Decision gate**: run the full 40-Q golden eval against all 3 production candidates; pick by eval-score-per-dollar.
+
+### Caching (the cost-saver)
+Two layers, both built before production launch.
+
+**Layer 1 — Provider prompt caching.** Low effort, automatic dollar savings on the ~2500-token static prefix (system prompt + tool schemas) that repeats on every call.
+- OpenAI: automatic on prefixes ≥1024 tokens. Zero code change — just keep the static prefix first.
+- Anthropic: explicit `cache_control` markers on the system prompt and tool definitions. ~10 LOC in the Anthropic backend of `LLMClient`.
+
+**Layer 2 — App-level query caching.** ~100 LOC, biggest dollar savings.
+- New `query_cache` table: `(question_hash, report_month, answer, citations_json, tool_calls_json, created_at)`.
+- Normalize the question (lowercase, strip whitespace, canonicalize scheme names via `lookup_scheme`) before hashing.
+- Check cache before the LLM call. Hit → return cached answer + log to `query_log` with `cache_hit=true`.
+- TTL: 1 hour for factual lookups; invalidate everything on monthly re-ingest (new `report_month`).
+- **Don't cache**: shortlist / recommendation / extrapolation queries (small variations matter), or refusals.
+- Expected hit rate: 30-50%. Estimated savings: ~$50-100/month on LLM tokens + faster responses for cached hits.
+
+### Cost floor at 300 RMs
+- Hosting: $0 (Oracle Free Tier)
+- LLM tokens: $80-200/month depending on model choice + cache hit rate
+- Domain (if using named tunnel): ~$12/year
+- **Total floor: ~$100-220/month.**
+
+### API surface (enables video-startup integration)
+- Expose `chatbot.ask()` as a FastAPI HTTP endpoint returning `{answer, citations, refusal_reason, tool_calls, query_id}`. ~50 LOC.
+- Streamlit UI calls the same internal API (don't entangle UI logic with chat logic). Makes the video integration trivial — same contract for both consumers.
+- Auth: shared bearer token or short-lived JWT issued to the video service. `query_log` still records the caller for audit.
+
+### What blocks scaling past pilot (in order)
+1. **Eval quality ≥9/10 on full 40-Q** (Phase 8). Non-negotiable before letting 300 RMs hit it.
+2. **Bajaj compliance sign-off**. Verification footer is fine at 5 RMs; at 300 RMs delivering buy/sell views, you're in SEBI investment-advice territory.
+3. **SSO migration**. `streamlit-authenticator` YAML is fine to ~50 users; past that, integrate Bajaj's identity provider.
+4. **Postgres migration**. SQLite is fine to ~50 concurrent users; past that, switch. `db/migrations/001_initial.sql` is already written with this migration in mind.
+
+---
+
 ## Cross-cutting risks (review every Friday)
 
 - **R1 — Provider lock-in / outage.** If Groq goes down or the free tier changes, the pilot stalls. Mitigation: implement `_GeminiClient` or `_CerebrasClient` in `LLMClient` and flip the `LLM_PROVIDER` env var — ~30 min, because the interface is provider-agnostic. **Owner: contingency.**
@@ -423,7 +477,7 @@
 - [ ] Where does the code live? GitHub free private repo (recommended) or Bajaj-internal Git?
 - [ ] Backup destination for `bajaj_mf.db` — local-only is fine for the pilot, but think about offsite (e.g., encrypted to iCloud Drive).
 - [ ] Whether to expose a "raw SQL" mode to power-user RMs in phase 2 (probably yes, but not in pilot).
-- [ ] **Future hosting: move off the laptop.** Quick tunnel works for the pilot but the laptop must stay on, awake, and on the network — and the URL changes on every restart. Three paths to a stable always-on URL: (a) **Streamlit Community Cloud** (free, stable `*.streamlit.app` URL, deploys from GitHub; DB either checked in or rebuilt at boot from PDFs); (b) **Bajaj-internal VM** + Cloudflare named tunnel (zero-spend if Bajaj provides the VM; long-term answer); (c) **Fly.io / Render free tier** (persistent volume, stable URL, idle-spindown cold-start of ~10-30s). Recommend (a) as the next step at $0; revisit when scaling past 5 RMs.
+- [ ] **Future hosting: move off the laptop.** Quick tunnel works for the pilot but the laptop must stay on, awake, and on the network — and the URL changes on every restart. See "Post-pilot scaling notes → Hosting" above for the production answer (Oracle Cloud Free Tier, Mumbai). For an interim 10-30 RM expansion stage, Streamlit Community Cloud or Fly.io are workable.
 
 ---
 
