@@ -341,6 +341,62 @@
 - [ ] **7.1.4** Make the tunnel survive a logout / laptop reboot. Two options: (a) launchd plist that runs `cloudflared tunnel --url http://127.0.0.1:8501` on boot, paired with `caffeinate -d` while plugged in; (b) move hosting off the laptop (see open item). Currently both processes are foreground bash jobs that die with the shell.
 - [ ] **7.1.5** Verify external access from phone on cellular (not on dev WiFi).
 
+## [x] Phase 7.2 — Pre-pilot capability additions (post real-RM input) [Day 10-11]
+
+**Goal:** Address gaps surfaced by real RM input received on 2026-05-15 (20 question patterns across PAN India). The original Phase 1–6 build was eval-driven against synthetic 40-Q golden questions; once real-RM-reported client queries arrived, three gaps were obvious: theory/education questions had no answer path, market-timing questions were being refused as `out_of_scope`, and the bot had no Gemini fallback for an inevitable Groq outage.
+
+**Exit criterion:** Bot answers the four real-RM question families — return/performance, market timing (with confidence note), theory/education (with verified/disclaimer/pending modes), fund recommendations — with no silent refusals on theory or market-timing.
+
+### [x] 7.2.1 Gemini backend in LLMClient
+- [x] **7.2.1.1** New `_GeminiClient` in `retrieval/llm_client.py` mirrors `_GroqClient`. Translates OpenAI-style messages and tools to Gemini's native shape (system_instruction out-of-band, role=`model` for assistant, `function_call`/`function_response` parts).
+- [x] **7.2.1.2** Retry-with-backoff on 429 RESOURCE_EXHAUSTED honours the SDK's `retryDelay`; caps at 5 attempts with exponential fallback at 30 s.
+- [x] **7.2.1.3** `LLMClient.__init__` gains a `gemini` branch; defaults to `gemini-2.5-flash` if `LLM_MODEL` is not Gemini-shaped.
+- [x] **7.2.1.4** `GEMINI_API_KEY` added to `.env.example`; `google-genai>=0.7.0` pinned in requirements.
+- [x] **7.2.1.5** Pilot default stays `LLM_PROVIDER=groq`; Gemini is opt-in via env var for A/B eval and contingency.
+
+**Acceptance:** Smoke test `LLM_PROVIDER=gemini LLM_MODEL=gemini-2.5-flash python -m app.chatbot "..."` returns a correct answer with citation and verification footer. Confirmed on 2026-05-14.
+
+### [x] 7.2.2 Prompt grafts (eval-driven)
+Three additions to `SYSTEM_PROMPT` after curated 10-Q comparison runs:
+- [x] **7.2.2.1** Category norms reference table (per-category SD / horizon / Direct ER ranges) — bot reaches for this when answering "is this reasonable?" questions.
+- [x] **7.2.2.2** Strengthen NULL-metric discipline ("DATA UNAVAILABLE" phrasing) — no silent dropping or estimation.
+- [x] **7.2.2.3** Plain-language SD and Sharpe labels alongside raw numbers (e.g. "Std Dev (1Y): 1.03% (typical for arbitrage)").
+
+**Acceptance:** Curated 10-Q Groq baseline 5–6/10 → 7/10, confirmed across two re-runs. Q19 (recommendation) is the clean causal win — bot now reaches for the norms table to frame buy/sell views, which forces it to surface the expense ratio it had previously dropped.
+
+### [x] 7.2.3 Live market-state tool (Q2/Q8/Q9/Q10 family)
+- [x] **7.2.3.1** New `retrieval/market_data.py` — `yfinance` wrapper for NIFTY 50, Sensex, NIFTY 500. Returns current level + 1d/5d/1m/3m/6m/1y % moves + distance from 52-week high/low. 15-min in-memory cache per process.
+- [x] **7.2.3.2** New tool `get_market_state(indices?)` wired into `tools.py` dispatch + TOOLS schema. Tool count: 4 → 5.
+- [x] **7.2.3.3** `SYSTEM_PROMPT` gets a "Market state and timing rules" section: bot synthesises an explicit buy / wait / redeem call, supported by data + historical-recovery context, paired with fund-level down-capture where relevant.
+- [x] **7.2.3.4** New `MARKET_CONFIDENCE_NOTE` constant — mandatory disclaimer that the view rests on price action alone (no RBI policy / earnings / news context). Placed after citation, before the universal verification footer.
+- [x] **7.2.3.5** Refusal rule revised: market-timing is **NO LONGER** `out_of_scope`.
+
+**Acceptance:** Smoke test "Is now a good time to invest in equities?" → bot called `get_market_state`, returned explicit "Buy-on-dip with staggered entry" call with NIFTY -10.2% off 52w-high context, both mandatory disclaimers present. Confirmed 2026-05-15.
+
+**Open follow-up:** Ingest Bajaj's monthly market outlook note (if it exists) as a complementary input layer to enrich the market view. User to confirm doc availability. See Open Items.
+
+### [x] 7.2.4 Theory / education layer (Q12 family + Q3 + Q4)
+- [x] **7.2.4.1** New `data/theory.json` — 10 FAQ entries: `about_bajaj`, `what_is_mf`, `what_is_sip`, `mf_risks`, `mf_taxation`, `investment_horizon`, `redemption_exit_load`, `mf_vs_fd`, `direct_vs_regular`, `research_process`. Each carries `bajaj_verified`, `pending`, `disclaimer`, `pending_message` flags.
+- [x] **7.2.4.2** New `retrieval/theory.py` — loads + caches the JSON, fuzzy-matches topic queries against title + aliases (substring match in either direction). Returns the entry payload or a no-match envelope listing available topics.
+- [x] **7.2.4.3** New tool `get_education_content(topic)` wired into `tools.py` dispatch + TOOLS schema. Tool count: 5 → 6.
+- [x] **7.2.4.4** `SYSTEM_PROMPT` gets a "Theory and education rules" section with three response-mode rules: verified (verbatim with normal citation), generic-with-disclaimer (surface content + prepend disclaimer), pending (surface `pending_message` verbatim, do NOT hallucinate Bajaj-specific positioning).
+- [x] **7.2.4.5** Current state: 1 verified entry (`about_bajaj`, supplied by user 2026-05-15), 7 generic-with-disclaimer entries (MF/SIP basics, risks, taxation, horizon, redemption, MF vs FD), 2 pending entries (`direct_vs_regular` advisory pitch, `research_process`).
+
+**Acceptance:** Smoke-tested all four paths on 2026-05-15:
+- "Tell me about Bajaj" → verified content, no disclaimer
+- "What is SIP?" → generic content with "Bajaj-verified pending" source line
+- "Research process?" → `pending_message` verbatim, no hallucination
+- "Expense ratio of Canara Robeco" → still routes to `query_db` (no 6-tool regression)
+
+**Open follow-up:** Replace 7 generic entries + 2 pending entries with Bajaj-verified versions when content team supplies them. Update is a JSON edit; no code change.
+
+### [x] 7.2.5 Real-RM input captured as eval target
+- [x] **7.2.5.1** 20 client-question patterns received from RMs PAN India on 2026-05-15. Categorised into three buckets: already-handled (returns, comparisons, fund recommendations), wrongly-refused (market-timing — fixed by 7.2.3), pure theory (fixed by 7.2.4).
+- [ ] **7.2.5.2** Build `tests/golden_rm_questions.json` from this list as the real eval target. Replace / supplement the synthetic 40-Q.
+- [ ] **7.2.5.3** Dogfood pass: ask the bot all 20 questions, note what feels wrong in `query_log`.
+
+---
+
 ### [ ] 7.3 Operational hardening
 - [ ] **7.3.1** Set up structured JSON logging (Python `logging.config`) writing to `logs/app.log`. Rotate weekly via logrotate or a simple cron.
 - [ ] **7.3.2** Add a `/health` route (or Streamlit equivalent — a separate small page) returning DB row counts and latest `ingested_at`.
@@ -478,6 +534,10 @@ Two layers, both built before production launch.
 - [ ] Backup destination for `bajaj_mf.db` — local-only is fine for the pilot, but think about offsite (e.g., encrypted to iCloud Drive).
 - [ ] Whether to expose a "raw SQL" mode to power-user RMs in phase 2 (probably yes, but not in pilot).
 - [ ] **Future hosting: move off the laptop.** Quick tunnel works for the pilot but the laptop must stay on, awake, and on the network — and the URL changes on every restart. See "Post-pilot scaling notes → Hosting" above for the production answer (Oracle Cloud Free Tier, Mumbai). For an interim 10-30 RM expansion stage, Streamlit Community Cloud or Fly.io are workable.
+- [ ] **Bajaj-verified content for theory layer pending entries.** Two entries in `data/theory.json` (`direct_vs_regular` advisory pitch, `research_process`) return pending stubs. When Bajaj content team supplies the canonical text: flip `bajaj_verified` to `true` and paste content into the JSON. No code change required. Seven other entries (generic MF education) similarly benefit from a Bajaj-voiced rewrite when content is available.
+- [ ] **Monthly market outlook ingestion.** If Bajaj publishes a monthly outlook note, ingest it as a complementary input to `get_market_state`. Pair the bot's price-action view with Bajaj's research-team view for richer market-timing answers. User to confirm whether the note exists; if yes, same parser pattern as the fund PDFs.
+- [ ] **Future stocks-research as a sibling module (same project).** ~200 stocks reusing the same codebase, Streamlit UI, auth gate, and hosting. New parser + DB schema (P/E, ROE, market cap, sector, target price, earnings calendar) + per-stock tools (`lookup_stock`, `get_latest_price`, `compare_stocks`) + vector store for concalls / news + live-price feed (NSE/BSE free API or Yahoo Finance). Treated as a sibling module **inside this repo**, not a separate project. Roughly 50-70% of MF-pilot effort. Start AFTER MF pilot validates value with 5 RMs.
+- [ ] **Video-startup integration (Phase 2+).** External partner renders bot answers as a virtual-RM avatar. Need a clean HTTP API (FastAPI wrapping `chatbot.ask` returning `{answer, citations, refusal_reason, query_id, tool_calls}`). Same contract for both Streamlit UI and avatar service so they stay decoupled. Pre-requisites: eval ≥9/10 on full 40-Q golden set + Bajaj compliance sign-off (especially since spoken-avatar delivery raises the regulatory bar above text chat).
 
 ---
 

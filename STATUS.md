@@ -2,15 +2,15 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-12 (evening — 123/123 coverage + Phase 7.1 quick-tunnel POC)
+> **Last update**: 2026-05-15 (afternoon — Phase 7.2 pre-pilot capability additions: Gemini backend, prompt grafts (5.5→7/10), live market-state tool, theory/education layer)
 
 ---
 
 ## TL;DR
 
-The pilot is **functionally complete end-to-end**. PDF → parser → SQLite → LLM tool-use → cited answer → Streamlit UI with auth gate. All on free-tier services. 56 tests pass. Locally, you can run a real chatbot against **all 123 Bajaj-recommended schemes** (90 equity/hybrid/arbitrage/multi-asset/gold/intl + 4 Equity Savings + 29 pure debt) through a login-gated UI.
+The pilot is **functionally complete end-to-end** with significant capability expansion this week. PDF → parser → SQLite → LLM tool-use (now 6 tools) → cited answer → Streamlit UI with auth gate. All on free-tier services. Locally, you can run a real chatbot against **all 123 Bajaj-recommended schemes** through a login-gated UI, with live NIFTY/Sensex market context for market-timing questions and a Bajaj-verified theory FAQ for "what is SIP" / "about Bajaj" style queries.
 
-Phases 1-6 and 4.3 of the original plan are done. **Phase 4.3 closed at 123/123** — Bandhan Gilt Fund landed once the user supplied its actual URL (`Bandhan%20Gilt%20Fund%20Reg%20Gr.pdf`, not the slug `Bandhan%20Gilt%20Fund.pdf` everyone assumed). **Phase 7.1 partially done** — Cloudflare quick tunnel works locally; the URL still needs a phone-on-cellular smoke test and a launchd plist for unattended hosting. Phases 7.3, 8, 9 (ops hardening, eval polish, RM onboarding) are not started.
+Phases 1-6 and 4.3 of the original plan are done. **Phase 7.2 added** in response to real RM input received PAN India on 2026-05-15 — adds Gemini backend (provider-agnostic fallback), three eval-driven prompt grafts (curated 10-Q score 5.5→7/10), a live market-state tool via yfinance, and a theory/education layer. **Phase 7.1 still partial** — Cloudflare quick tunnel works locally; needs a phone-on-cellular smoke test and a launchd plist for unattended hosting. Phases 7.3, 8, 9 (ops hardening, eval polish, RM onboarding) not started.
 
 ---
 
@@ -50,7 +50,7 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 
 ---
 
-## What's been built (Phases 1-6, plus partial 7.1)
+## What's been built (Phases 1-6, plus partial 7.1, plus Phase 7.2)
 
 | Phase | Status | Highlights |
 |---|---|---|
@@ -63,8 +63,12 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 | **5.1-5.4** Tool-use chatbot | ✅ | 4 tools (`query_db`, `lookup_scheme`, `get_schema`, `compare_schemes`), full operating-mode system prompt, 6-iter tool loop. Stable **7-8/10 on real Groq curated 10-Q eval.** |
 | **6** Streamlit UI | ✅ | Auth gate (bcrypt + streamlit-authenticator), chat (`st.chat_message`/`st.chat_input`), thumbs-up/down feedback writes to `query_log`, sidebar with data status + logout, "Report a problem" mailto |
 | **7.1** Cloudflare tunnel | 🟡 | `cloudflared` 2026.3.0 installed via Homebrew. Quick-tunnel path chosen (no Cloudflare account, no domain). Successfully serves Streamlit on a `*.trycloudflare.com` URL; verified locally with HTTP 200. **Outstanding**: phone-on-cellular check (7.1.5) and a launchd plist so the tunnel survives reboots (7.1.4). |
+| **7.2.1** Gemini backend | ✅ | `_GeminiClient` in `retrieval/llm_client.py` mirrors `_GroqClient` (message + tool shape translation, system_instruction out-of-band). Retry-with-backoff on 429 RESOURCE_EXHAUSTED. `LLMClient.__init__` gains a `gemini` branch; pilot default stays `groq`. |
+| **7.2.2** Prompt grafts | ✅ | Three additions: category norms reference table (per-category SD / horizon / Direct ER), `DATA UNAVAILABLE` discipline for NULL metrics, plain-language SD/Sharpe labels. **Curated 10-Q Groq eval: 5–6/10 → 7/10**, confirmed across two re-runs. Q19 is the causal win. |
+| **7.2.3** Live market-state tool | ✅ | `retrieval/market_data.py` wraps `yfinance` for NIFTY 50 / Sensex / NIFTY 500 (current level + 1d/5d/1m/3m/6m/1y moves + 52w high/low distance, 15-min cache). New tool `get_market_state(indices?)`. SYSTEM_PROMPT gains "Market state and timing rules" + `MARKET_CONFIDENCE_NOTE` (mandatory disclaimer for market-timing answers). Market-timing **no longer refused** as `out_of_scope`. |
+| **7.2.4** Theory / education layer | ✅ | `data/theory.json` (10 entries — 1 Bajaj-verified, 7 generic-with-disclaimer, 2 pending) + `retrieval/theory.py` (load + fuzzy match) + new tool `get_education_content(topic)`. SYSTEM_PROMPT gains "Theory and education rules" with three response-mode rules (verified, disclaimer, pending). Brings tool count to **6**. |
 
-**Test status**: `pytest tests/ -v` → **56 passed, 40 skipped** (40 are Phase-2 golden questions waiting on full Phase-8 eval).
+**Test status**: `pytest tests/ -v` → **56 passed, 40 skipped** (40 are Phase-2 golden questions waiting on full Phase-8 eval). Phase 7.2 work was smoke-tested manually against representative questions; eval target shifts to `tests/golden_rm_questions.json` once built from real RM input.
 
 ---
 
@@ -120,6 +124,34 @@ A targeted audit cut `parse_errors_json`-flagged funds from **60/90 to 8/123** �
 - `parse_fund_managers` role regex broadened to match any `<prefix> - EQUITY/DEBT/FOREIGN INV.` line (was anchored to "Fund Manager - " literally) — fixed 9 funds with varied titles like "Senior Fund Manager", "Research Analyst", "Chief Dealer - Equities", etc.
 - `holdings_min_count` invariant made fund-type-aware: Gold/FoF funds use min=1, diversified funds use min=5.
 
+### Phase 7.2 pre-pilot capability additions (2026-05-15)
+
+Real RM input received from RMs PAN India on 2026-05-15: 20 client-question patterns covering returns, market outlook, fund recommendations, risk management, theory/education, and Bajaj-specific positioning. The synthetic 40-Q golden set was clearly the wrong proxy for several of these — three gaps:
+
+1. **Market-timing questions** ("is this right time to invest?", "should I redeem during this fall?") were being refused as `out_of_scope`. RMs need an answer.
+2. **Theory/education questions** ("what is SIP?", "MF taxation?", "About Bajaj?") had no path — bot would refuse or hallucinate.
+3. **Single-provider dependency** on Groq with no Gemini fallback for the inevitable outage.
+
+Built in response:
+
+- **`_GeminiClient` backend** in `LLMClient` — opt-in via `LLM_PROVIDER=gemini`. Pilot default stays Groq; Gemini is for A/B eval + outage contingency. SDK is `google-genai`. Tool-call shape and message-role translation are done in the backend; downstream code stays provider-agnostic.
+
+- **Three eval-driven prompt grafts** (category norms reference, DATA UNAVAILABLE phrasing, plain-language SD/Sharpe labels). Curated 10-Q score moved from 5–6/10 to a stable 7/10. The category norms graft caused the clearest causal win on Q19 ("Is ABSL Arbitrage a buy?") — bot now writes a "Comment vs. arbitrage norm" column that forces it to surface the expense ratio it had previously dropped.
+
+- **`get_market_state` tool** (`retrieval/market_data.py`, yfinance, 15-min cache). Returns current NIFTY 50 / Sensex / NIFTY 500 levels + 1d/5d/1m/3m/6m/1y moves + 52w high/low distance. SYSTEM_PROMPT gives the bot explicit permission to synthesize a buy / wait / redeem call on the broad market, BUT mandates `MARKET_CONFIDENCE_NOTE` ("this view rests on price action alone — no RBI / earnings / news context") on every such answer. Universal verification footer still applies. Market-timing removed from `out_of_scope` refusal list.
+
+- **`get_education_content` tool + `data/theory.json`** with 10 FAQ entries. Three response modes:
+  - `bajaj_verified=true`: content used verbatim, normal citation. (1 entry — `about_bajaj`, supplied 2026-05-15.)
+  - `bajaj_verified=false, disclaimer=...`: generic education content surfaced with a "Bajaj-verified version pending" disclaimer. (7 entries — what_is_mf, what_is_sip, mf_risks, mf_taxation, investment_horizon, redemption_exit_load, mf_vs_fd.)
+  - `pending=true, pending_message=...`: bot surfaces a "consult your team lead" stub, does NOT hallucinate Bajaj positioning. (2 entries — `direct_vs_regular` advisory pitch, `research_process`.)
+
+Tool count went 4 → 6. SYSTEM_PROMPT gained ~500 tokens (category norms table + market-state rules + theory rules), still well within budget.
+
+**Open follow-ups from this work** (all in PLANNING.md Open Items):
+- Replace generic theory entries with Bajaj-voiced content when content team supplies it (no code change, just JSON edits).
+- Ingest Bajaj's monthly market outlook note alongside `get_market_state` (if it exists — user to confirm).
+- Build `tests/golden_rm_questions.json` from the 20 real RM patterns and run a fresh eval.
+
 ### Debt-template support (2026-05-12)
 Debt PDFs share ~80% of the equity Finalyca template. Most sections work without changes; only Portfolio Characteristics differs (debt: Avg Maturity Years + YTM + Modified Duration vs equity: P/E, P/B, Mkt Cap fields).
 - Schema additions: `avg_maturity_years REAL` + `yield_to_maturity REAL` (migration 002).
@@ -135,7 +167,10 @@ Debt PDFs share ~80% of the equity Finalyca template. Most sections work without
 | Item | Why | What unblocks it |
 |---|---|---|
 | **Phase 7.1 finish-up** | Local tunnel works; pilot-readiness needs two more steps | (a) Open the trycloudflare URL on a phone over cellular to confirm external reachability (7.1.5). (b) Wrap `cloudflared` + Streamlit in launchd plists so they survive a reboot — or pick a hosting move per the "Future hosting" open item in PLANNING.md. |
-| **Future hosting choice** (open item) | Stable URL + always-on, off your laptop | Three free-ish paths in PLANNING.md "Open items": Streamlit Community Cloud (recommended next step at $0), Bajaj-internal VM + named tunnel, or Fly.io / Render free tier. |
+| **Bajaj-verified theory content** | Two `data/theory.json` entries (`direct_vs_regular` advisory pitch, `research_process`) return pending stubs. Seven other entries are generic-with-disclaimer | Bajaj content team supplies canonical text → flip `bajaj_verified` to `true` and paste into JSON. No code change. |
+| **Monthly market outlook note** | If Bajaj publishes one, ingest it alongside `get_market_state` for richer market-timing answers (price action + research-team view) | User to ask Bajaj research team whether the note exists. If yes, parse it via the same Finalyca-style pattern. |
+| **Build real-RM eval** | The synthetic 40-Q is a stale proxy; the 20 real RM-input patterns are the actual workload | Convert the 20 patterns into `tests/golden_rm_questions.json` with `expected_answer_contains` / `must_refuse` / `expected_refusal_reason` for each. Then run eval. |
+| **Future hosting choice** (open item) | Stable URL + always-on, off your laptop | Production answer is Oracle Cloud Free Tier (Mumbai). See "Post-pilot scaling notes" in PLANNING.md for details. |
 
 ---
 
@@ -143,19 +178,23 @@ Debt PDFs share ~80% of the equity Finalyca template. Most sections work without
 
 These are deliberately deferred — they're real but non-blocking, and Phase 8 is the right place to address them as a batch.
 
-1. **Tool-format recovery in `_GroqClient`** — Q19/Q32 fail flakily because gpt-oss-120b occasionally emits a malformed tool call that escapes existing recovery logic. ~30-60 min to extend recovery for additional shapes.
+1. **Tool-format recovery in `_GroqClient`** — Q32 still fails flakily because gpt-oss-120b occasionally emits a malformed tool call that escapes existing recovery logic. Q19 was fixed by the 2026-05-15 prompt grafts. ~30-60 min to extend recovery for additional shapes.
 
-2. **System prompt improvements** — reduce ambiguity refusals (Q05 "rank our 3 funds" → bot asks for clarification; should pick a sensible default and disclose). Also sharpen tool routing for client-conditional + shortlist questions.
+2. **Q05 ambiguity** — "Rank our 3 recommended funds" still triggers a clarifying question on both Groq and Gemini. Needs system-prompt rule for "pick a sensible default + disclose" rather than asking back. ~30 min prompt tweak.
 
-3. **Full 40-question eval** — we only ran the curated 10. Full run uses ~330K tokens, exceeds 200K daily cap, so needs 2 calendar days to spread across token quota OR a model swap.
+3. **Q22 judgment** — "Risk-averse client, 1Y horizon" still picks ICICI Liquid over ABSL Arbitrage on both providers; the category-norms graft didn't redirect it. Likely needs an explicit rule that arbitrage funds match "low-vol + short-horizon" profiles. ~30 min prompt tweak.
 
-4. ~~**Remaining parser quirks** — `parse_fund_managers` fails on 9 funds (different role-line wording), `parse_holdings_full` on 10 (FoF/arbitrage table geometry), `parse_portfolio_characteristics` on 2. All caught by `parse_errors_json`, none fatal.~~ → **Closed in 2026-05-12 session.** Holdings and fund-manager bugs fixed; only `parse_portfolio_characteristics` still fails on 2 funds (Franklin US Opps FoF + SBI Income Plus Arbitrage FoF) and those are legitimate — the section is literally absent from the source PDF for those FoFs.
+4. **Full 40-question eval** — curated 10-Q runs are stable. Full run uses ~330K tokens, exceeds Groq free-tier 200K daily cap, needs paid Groq OR a 2-day split. Gemini Flash free tier is 20 req/day — also insufficient for the full eval without a paid upgrade.
 
-5. **`EXPECTED_SECTIONS_BY_FUND_TYPE` enforcement** — map exists in `parse_finalyca.py` and the `debt` entry was corrected in 2026-05-12, but isn't yet used to distinguish "section missing because fund type doesn't have it" from "section missing because parser broke."
+5. ~~**Remaining parser quirks**~~ → **Closed 2026-05-12.** Only `parse_portfolio_characteristics` still fails on 2 FoFs (Franklin US Opps, SBI Income Plus Arbitrage) where the section is literally absent from the PDF.
 
-6. **UX polish** (PLANNING 8.2): slow-query status messages, long-answer truncation with expander, friendlier error states.
+6. **`EXPECTED_SECTIONS_BY_FUND_TYPE` enforcement** — map exists in `parse_finalyca.py`; not yet used to distinguish "section missing because fund type doesn't have it" from "section missing because parser broke."
 
-7. **Daily backups** (PLANNING 8.3.1) of `bajaj_mf.db`.
+7. **UX polish** (PLANNING 8.2): slow-query status messages, long-answer truncation with expander, friendlier error states, streaming output via `st.write_stream` (latency-perception win).
+
+8. **Daily backups** (PLANNING 8.3.1) of `bajaj_mf.db`.
+
+9. **App-level query cache** — promoted from PLANNING Phase 10 as a candidate latency/cost win. Hash `(question_normalized, report_month)` → cached answer + tool trace. Expected 30-50% hit rate on RM-asked questions. ~100 LOC. Build AFTER pilot launches so the cache is sized against real `query_log` data, not synthetic guesses.
 
 ---
 
@@ -172,9 +211,12 @@ These are deliberately deferred — they're real but non-blocking, and Phase 8 i
 | `bajaj-mf-bot/ingest/parse_finalyca.py` | Main parser (header + manager + returns) |
 | `bajaj-mf-bot/ingest/_section_parsers.py` | Section parsers split out: mkt_cap, investment_style, periodic_returns, full_holdings |
 | `bajaj-mf-bot/app/streamlit_app.py` | The UI |
-| `bajaj-mf-bot/app/prompts.py` | System prompt (operating mode + tool routing + refusal rules) |
-| `bajaj-mf-bot/retrieval/tools.py` | 4 tool implementations + OpenAI-style TOOLS schema |
-| `bajaj-mf-bot/retrieval/llm_client.py` | Provider-agnostic LLMClient (Groq + Mock backends, tool-call normalization, Llama-pseudo-XML recovery) |
+| `bajaj-mf-bot/app/prompts.py` | System prompt (identity, 6-tool workflow, operating mode, category norms, market-state rules, theory rules, refusal rules) + `VERIFICATION_FOOTER` + `MARKET_CONFIDENCE_NOTE` constants |
+| `bajaj-mf-bot/retrieval/tools.py` | **6** tool implementations + OpenAI-style TOOLS schema (query_db, lookup_scheme, get_schema, compare_schemes, get_market_state, get_education_content) |
+| `bajaj-mf-bot/retrieval/llm_client.py` | Provider-agnostic LLMClient (Groq + Gemini + Mock backends, tool-call normalization, Llama-pseudo-XML recovery, 429 retry-with-backoff on Gemini) |
+| `bajaj-mf-bot/retrieval/market_data.py` | yfinance wrapper for NIFTY 50 / Sensex / NIFTY 500. 15-min in-memory cache. Used by `get_market_state` tool. |
+| `bajaj-mf-bot/retrieval/theory.py` | Loads + fuzzy-matches `data/theory.json` for the `get_education_content` tool. |
+| `bajaj-mf-bot/data/theory.json` | 10 FAQ entries (1 Bajaj-verified, 7 generic-with-disclaimer, 2 pending) for theory / education / Bajaj-positioning questions. Update by editing JSON; no code change required. |
 | `bajaj-mf-bot/tests/golden_questions.json` | 40 Q+A specification |
 | `bajaj-mf-bot/tests/golden/*.json` | Hand-extracted ground-truth for 3 sample PDFs |
 | `bajaj-mf-bot/tests/snapshots/*.json` | Parser regression baselines (deepdiff target) |
