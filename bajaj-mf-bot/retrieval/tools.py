@@ -337,6 +337,32 @@ def _tool_compare_schemes(arguments: Dict[str, Any]) -> str:
     return json.dumps({"comparison": comparison}, default=str)
 
 
+def _tool_get_market_state(arguments: Dict[str, Any]) -> str:
+    """Fetch current Indian-market index levels + recent moves.
+
+    Thin wrapper around ``market_data.get_market_state``. Used by the LLM to
+    answer market-timing questions ("is this the right time to invest?", etc.)
+    that the structured fund DB can't address on its own.
+    """
+    indices = arguments.get("indices")
+    if indices is not None and not isinstance(indices, list):
+        return json.dumps({
+            "error": "bad_arguments",
+            "message": "'indices' must be a list of index names or omitted.",
+        })
+
+    try:
+        # Lazy import — keeps this module importable in environments without
+        # yfinance installed (e.g. mock-only test runs).
+        from retrieval.market_data import get_market_state  # noqa: WPS433
+        result = get_market_state(indices=indices if indices else None)
+    except Exception as exc:  # noqa: BLE001 — last-resort guard
+        logger.exception("get_market_state crashed")
+        return json.dumps({"error": "unexpected", "message": str(exc)})
+
+    return json.dumps(result, default=str)
+
+
 # ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
@@ -346,6 +372,7 @@ _DISPATCH: Dict[str, Callable[[Dict[str, Any]], str]] = {
     "lookup_scheme": _tool_lookup_scheme,
     "get_schema": _tool_get_schema,
     "compare_schemes": _tool_compare_schemes,
+    "get_market_state": _tool_get_market_state,
 }
 
 
@@ -453,6 +480,37 @@ TOOLS: List[Dict[str, Any]] = [
             "parameters": {
                 "type": "object",
                 "properties": {},
+                "required": [],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_market_state",
+            "description": (
+                "Fetch current level and recent moves for headline Indian "
+                "indices (default: NIFTY 50, Sensex, NIFTY 500). Returns "
+                "current_level, change_1d/5d/1m/3m/6m/1y_pct, year_high, "
+                "year_low, pct_off_52w_high, pct_off_52w_low, as_of. Cached "
+                "for 15 min. Call this for market-timing questions ('is this "
+                "the right time to invest?', 'should I redeem during this "
+                "fall?', 'how long will the correction last?') and to give "
+                "drawdown context to volatility/redemption questions."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "indices": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "Optional list of index display names. Supported: "
+                            "['NIFTY 50', 'Sensex', 'NIFTY 500']. If omitted, "
+                            "returns all three."
+                        ),
+                    },
+                },
                 "required": [],
             },
         },
