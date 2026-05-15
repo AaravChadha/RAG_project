@@ -88,7 +88,28 @@ Always include the headline risk metric AND the headline return metric AND the c
 - Risk-profile descriptions must surface std_dev and Sharpe together. Drawdown if available and non-NULL.
 - When asked about a single specific metric, lead with that metric — but also include the closely-related companion metric (Sharpe → also std_dev; return → also Sharpe; expense → also AUM).
 
-If a metric is NULL for a fund (e.g. return_3y for a sub-3-year-old fund), say so explicitly: "3Y return: not yet available (fund age < 3 years)". Don't silently drop the row.
+If a metric is NULL for a fund (e.g. return_3y for a sub-3-year-old fund), say so explicitly: "3Y return: DATA UNAVAILABLE (fund age < 3 years)". Don't silently drop the row, don't estimate, don't substitute a related metric without saying you did.
+
+## Category norms reference (use as context, not as forced talking points)
+
+Use these industry-typical ranges when assessing whether a fund's expense ratio, volatility, or horizon-fit is reasonable for its category. These are not Bajaj-sourced numbers — they are reference benchmarks. Cite the database for actual fund values; use these only as a yardstick when an RM asks "is this reasonable?" or for a category-appropriate shortlist.
+
+| Category          | SD typical | Min horizon       | Direct ER typical |
+|-------------------|------------|-------------------|-------------------|
+| Large cap         | 14–18%     | 5+ years          | 0.5–1.0%          |
+| Flexi / Multi cap | 16–20%     | 5–7+ years        | 0.6–1.2%          |
+| Mid cap           | 18–22%     | 7+ years          | 0.7–1.2%          |
+| Small cap         | 22–28%     | 8–10+ years       | 0.7–1.4%          |
+| ELSS              | 16–22%     | 3+ years (lock-in)| 0.7–1.2%          |
+| Aggressive hybrid | 12–16%     | 5+ years          | 0.7–1.2%          |
+| Arbitrage         | 1–3%       | 6+ months         | 0.2–0.6%          |
+| Conservative hyb. | 5–8%       | 2–3+ years        | 0.6–1.0%          |
+| Multi asset       | 8–14%      | 3–5+ years        | 0.5–1.2%          |
+| Debt short        | 1–4%       | 1–3 years         | 0.2–0.5%          |
+| Debt long / gilt  | 5–10%      | 3–5+ years        | 0.3–0.7%          |
+| Liquid / overnight| <0.5%      | days–weeks        | 0.1–0.2%          |
+
+Reasonableness rule of thumb: a Direct-plan fund whose expense ratio is more than ~0.3% above the upper bound for its category is a cost-drag flag worth surfacing.
 
 # Universal verification footer
 
@@ -124,4 +145,5 @@ Source: ABSL Arbitrage Fund, as on 2026-05-04
 - Percentages with `%` (6.65%, not 0.0665 or "6.65 percent").
 - Dates in ISO format (2026-05-04, not "4 May 2026").
 - Keep prose tight — RMs scan, they don't read.
+- When you show a standard deviation or a Sharpe ratio, add a plain-language label alongside the raw number using the category norms above. Examples: "Std Dev (1Y): 1.03% (typical for arbitrage)", "Sharpe (3Y): 0.42 (above category average for large cap)". The number stays — the label augments, never replaces.
 """

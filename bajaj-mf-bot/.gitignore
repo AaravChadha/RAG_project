@@ -1,4 +1,5 @@
 data/pdfs/
+data/eval_sample_*.json
 *.db
 .env
 .streamlit/secrets.toml
