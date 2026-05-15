@@ -1,0 +1,204 @@
+{
+  "_metadata": {
+    "purpose": "FAQ content for the get_education_content tool — covers the 8 RM-flagged theory topics + Bajaj-specific topics.",
+    "verification_policy": "bajaj_verified=true requires explicit sign-off from Bajaj research/compliance. Generic content carries a disclaimer. Pending topics return a pending_message until content lands.",
+    "last_updated": "2026-05-15"
+  },
+  "topics": [
+    {
+      "topic_id": "about_bajaj",
+      "title": "About Bajaj Capital",
+      "aliases": [
+        "about bajaj",
+        "about bajaj capital",
+        "who is bajaj capital",
+        "tell me about bajaj",
+        "bajaj capital company",
+        "bajaj capital history",
+        "bajaj capital vision",
+        "bajaj capital values",
+        "who runs bajaj",
+        "bajaj founder",
+        "bajaj leadership"
+      ],
+      "content": "Bajaj Capital has contributed to the growth of the Indian Capital Market at every step. In 1965, we were the first to innovate the Companies Fixed Deposit. Today, we are playing an active role in the growth of the Indian Mutual Fund industry.\n\nBajaj Capital stands as one of India's most venerable and distinguished investment services firms, boasting a legacy of over 60 years as a veteran player in the Indian capital market. Renowned for its pioneering spirit, Bajaj Capital is credited with introducing Corporate Fixed Deposits to the Indian landscape, effectively shaping the nation's investment habits. At present, it maintains a core focus on wealth management, retirement planning, and the seamless distribution of investment products. Its robust operational scale is evidenced by its status as an AMFI (Association of Mutual Funds in India) registered Mutual Fund Distributor with Assets Under Management (AUM) of more than Rs. 20,000 crores. Through its deep-rooted expertise and comprehensive regulatory credentials, Bajaj Capital continues to be a cornerstone of financial advisory and distribution in the region.\n\nBajaj Capital is India's premier investment services group engaged inter-alia in the distribution of Mutual Funds, Alternative Investment Funds (AIFs), Portfolio Management Service (PMS), Insurance, National Pension System (NPS), Fixed Deposits, Bonds and engaged in the business of Investment Banking, Stock Broking, Depository Participant, Investment Advisory and Research Analyst.\n\nVision: India's most admired and recommended wealth creation and protection brand.\n\nMission: Provide need-based solutions at the right value, gaining lifetime client relationships through a happy team and service excellence.\n\nBajaj Capital Core ENRICH Values:\n- E — Entrepreneurial & Ethical\n- N — Nurturing\n- R — Responsibility\n- I — Innovation\n- C — Collaboration\n- H — Happy Clients & Happy Teams\n\nMr. Kuldip Kumar Bajaj is the Founder and Emeritus Chairman and established Bajaj Capital about 60 years ago and has vast experience in the field of financial services. Carrying forward the principles of excellence and integrity associated with the Bajaj Capital Group, Mr. Rajiv Bajaj and Mr. Sanjiv Bajaj as the Managing Directors of Bajaj Capital bring a global perspective to the Indian financial landscape.",
+      "bajaj_verified": true,
+      "pending": false,
+      "last_verified_at": "2026-05-15"
+    },
+    {
+      "topic_id": "what_is_mf",
+      "title": "What is a Mutual Fund",
+      "aliases": [
+        "what is mutual fund",
+        "what is mf",
+        "what are mutual funds",
+        "how do mutual funds work",
+        "mf basics",
+        "mutual fund definition",
+        "how does mf work",
+        "how mutual fund works"
+      ],
+      "content": "A mutual fund is a pooled investment vehicle where money from many investors is professionally managed by an Asset Management Company (AMC). The pool is invested in a basket of securities — stocks, bonds, money-market instruments, gold, or a mix — depending on the fund's stated objective. Each investor holds units representing their share of the pool, and the value of each unit (Net Asset Value or NAV) changes daily based on the underlying portfolio's performance.\n\nKey features:\n- Professional management by SEBI-registered fund managers\n- Diversification across many securities, reducing single-stock risk\n- Liquidity — most open-ended funds can be bought or redeemed on any business day\n- Regulated by SEBI; AUM and holdings are publicly disclosed monthly\n- Categorised by what they invest in: equity (stocks), debt (bonds), hybrid (mix), commodity (gold/silver), solution-oriented (retirement/children), and others\n- Low entry barrier — most funds accept investments as small as Rs. 500-1,000",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic MF education content — Bajaj-verified version pending.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "what_is_sip",
+      "title": "What is SIP",
+      "aliases": [
+        "what is sip",
+        "systematic investment plan",
+        "how does sip help",
+        "sip benefits",
+        "what is systematic investment",
+        "how sip works",
+        "sip vs lumpsum"
+      ],
+      "content": "A Systematic Investment Plan (SIP) is a method of investing in mutual funds where you contribute a fixed amount at regular intervals (typically monthly) instead of a one-time lump sum.\n\nHow it helps:\n- Rupee-cost averaging — you buy more units when prices are low and fewer when prices are high, smoothing out market-timing risk\n- Discipline — investing happens automatically, removing the temptation to time the market\n- Affordability — SIPs start as low as Rs. 500/month, making MF investing accessible\n- Compounding — small regular investments grow significantly over long horizons. Example: a Rs. 10,000 monthly SIP over 20 years at ~12% CAGR can build a corpus of ~Rs. 1 crore.\n- Flexibility — most AMCs allow you to pause, increase (via SIP top-up), or stop SIPs anytime without penalty.\n\nSIP works best for long-horizon equity investing, where market cycles are smoothed out. For short-horizon goals, lump-sum into a debt or liquid fund is usually more appropriate.",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic MF education content — Bajaj-verified version pending.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "mf_risks",
+      "title": "Risks involved in Mutual Funds",
+      "aliases": [
+        "mutual fund risks",
+        "what are the risks of mutual funds",
+        "mf risk",
+        "risks in mutual funds",
+        "are mutual funds risky",
+        "risk in mf",
+        "mutual fund risk types"
+      ],
+      "content": "Mutual funds carry several distinct risks. Knowing which one applies to a given fund is the first step in matching it to a client.\n\n- Market risk — the most common: fund value falls when the underlying securities lose value (equity funds drop in a falling stock market). Applies most to equity and hybrid funds.\n- Interest rate risk — debt fund NAVs move inversely with interest rates; bond prices fall when rates rise. Higher impact on long-duration debt and gilt funds.\n- Credit risk — for debt funds, the risk that an issuer defaults on its bonds. Lower-rated bonds (AA, A) carry higher yields but higher default risk; sovereign and AAA-rated bonds carry the least.\n- Liquidity risk — some funds (e.g., credit-risk funds, certain debt categories during stress) may take longer to redeem at full NAV.\n- Concentration risk — funds concentrated in one sector, market cap, or theme (sectoral, thematic, small-cap) are more volatile than diversified funds.\n- Inflation risk — for low-return categories (liquid, overnight), real returns after inflation may be marginal.\n- Manager risk — performance depends on the fund manager's decisions; manager changes can disrupt the strategy.\n\nAll MFs in India carry an SEBI-mandated Risk-o-meter showing Low / Low-to-Moderate / Moderate / Moderately High / High / Very High on a 6-point scale. This is printed on every factsheet and KIM.",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic MF education content — Bajaj-verified version pending.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "mf_taxation",
+      "title": "Mutual Fund Taxation",
+      "aliases": [
+        "mf taxation",
+        "mutual fund tax",
+        "tax on mutual funds",
+        "ltcg on mutual funds",
+        "stcg on mutual funds",
+        "tax implications mutual funds",
+        "mutual fund capital gains tax",
+        "elss tax",
+        "tax on sip"
+      ],
+      "content": "Indian MF taxation as of FY 2024-25 (post Budget July 2024). Rates change in budgets — verify before client advice.\n\nEQUITY funds (>= 65% equity exposure):\n- Short-Term Capital Gains (STCG, holding < 12 months): 20% (raised from 15% in July 2024)\n- Long-Term Capital Gains (LTCG, holding >= 12 months): 12.5% on gains above Rs. 1.25 lakh per FY (raised from 10% on gains above Rs. 1 lakh in July 2024)\n\nDEBT funds (investments made on or after 1-Apr-2023):\n- All gains taxed at the investor's slab rate regardless of holding period\n- No LTCG benefit and no indexation\n- Effectively the same as FD interest taxation\n\nHYBRID funds:\n- Treated as equity if average equity allocation >= 65% (Aggressive Hybrid, Equity Savings, Arbitrage typically qualify); else as debt\n- Conservative Hybrid and Multi-Asset with < 65% equity are taxed as debt\n\nELSS:\n- 3-year lock-in from each unit's purchase date\n- Qualifies for deduction up to Rs. 1.5 lakh under Section 80C (old tax regime only)\n- Gains taxed as equity LTCG (12.5% above Rs. 1.25 lakh)\n\nDIVIDENDS / IDCW:\n- Dividends (including IDCW payouts) taxed at the investor's slab rate\n- TDS at 10% if dividend exceeds Rs. 5,000 in a year (resident investors)",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic content — tax rates change in budgets. Verify current rates and client-specific applicability before advising.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "investment_horizon",
+      "title": "Investment Horizon Guidance",
+      "aliases": [
+        "investment horizon",
+        "how long should i invest",
+        "investment time period",
+        "minimum holding period",
+        "how long to stay invested",
+        "investment duration",
+        "time horizon mutual fund"
+      ],
+      "content": "Recommended minimum holding period by fund category (industry rules of thumb):\n\n- Liquid / Overnight: days to weeks\n- Arbitrage: 6+ months\n- Debt Short-Duration: 1-3 years\n- Debt Long-Duration / Gilt: 3-5+ years\n- ELSS: 3+ years (regulatory lock-in)\n- Conservative Hybrid: 2-3+ years\n- Multi-Asset Allocation: 3-5+ years\n- Aggressive Hybrid: 5+ years\n- Large Cap: 5+ years\n- Flexi / Multi Cap: 5-7+ years\n- Mid Cap: 7+ years\n- Small Cap: 8-10+ years\n- Sectoral / Thematic: 5-7+ years (and only as satellite allocation)\n\nKey principle: equity volatility smooths over longer horizons. The rule of thumb is 5+ years for any equity-heavy fund — corrections of 20-30% inside a year are normal but the long-run trajectory is upward. Redeeming during corrections locks in losses; staying invested through cycles is what compounds.\n\nMatch the horizon to the client's actual need date, not their preference. A 'long-term' goal that becomes a near-term need in 2 years should not be in small-cap or mid-cap.",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic horizon guidance — Bajaj-verified version pending.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "redemption_exit_load",
+      "title": "Redemption and Exit Load",
+      "aliases": [
+        "redemption",
+        "exit load",
+        "can i withdraw anytime",
+        "redemption charges",
+        "early withdrawal",
+        "withdraw mutual fund",
+        "how to redeem",
+        "redemption time",
+        "exit charges"
+      ],
+      "content": "Open-ended mutual funds can be redeemed on any business day. Redemption proceeds typically credit to the registered bank account in:\n- 1 business day (T+1) for liquid and overnight funds\n- 2-3 business days for most debt funds\n- 3-4 business days for equity and hybrid funds\n\nCharges and points to be aware of:\n- Exit load — many equity and hybrid funds charge 0.5-1% if redeemed within a specified holding period (typically 1 year or 365 days). Check the fund's factsheet for the exact exit-load terms — they vary by AMC and category.\n- Liquid, overnight, and arbitrage funds typically have NO exit load (or a very short ~7-day window).\n- Capital gains tax applies separately on redemption (see the taxation topic for current rates).\n- STT (Securities Transaction Tax) of 0.001% is deducted on equity-fund redemptions.\n\nLock-ins:\n- ELSS: 3-year lock-in from each SIP installment's date — no redemption possible during lock-in\n- Solution-oriented funds (retirement, children): 5-year or until-goal lock-in depending on the scheme\n- Closed-ended funds (FMPs, certain debt schemes): redemption only at maturity or via stock-exchange sale of units",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic redemption/exit-load content — Bajaj-verified version pending. Exit load is fund-specific; always confirm against the latest factsheet.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "mf_vs_fd",
+      "title": "Mutual Funds vs Fixed Deposits",
+      "aliases": [
+        "mutual fund vs fd",
+        "mf vs fd",
+        "mutual funds vs fixed deposits",
+        "are mutual funds better than fd",
+        "mf or fd",
+        "mutual fund vs fixed deposit",
+        "better than fd",
+        "fd alternative"
+      ],
+      "content": "How mutual funds compare to bank fixed deposits:\n\nRETURNS:\n- FDs: predictable, currently ~6-7.5% depending on tenor and bank; guaranteed within the DICGC insurance limit (Rs. 5 lakh per bank per depositor)\n- Equity MFs: variable; have historically averaged ~12-15% CAGR over long horizons but with significant short-term volatility\n- Debt MFs: typically ~6-8% over 1-3 year horizons, with mark-to-market fluctuation\n- Liquid MFs: comparable to short-tenor FDs, ~5-7% with daily liquidity\n\nTAXATION (post Budget July 2024):\n- FD interest: taxed at slab rate (up to 30% in the highest bracket); TDS deducted at source if interest exceeds Rs. 40,000 (Rs. 50,000 for seniors) per FY\n- Equity MFs: 20% STCG / 12.5% LTCG above Rs. 1.25 lakh — usually more tax-efficient for >12-month holdings, especially in higher slabs\n- Debt MFs (post-April 2023): same as FD — slab rate\n\nLIQUIDITY:\n- FDs: penalty on premature withdrawal (typically 0.5-1% lower rate); 1-2 days to redeem\n- Open-ended MFs: any business day; equity/hybrid funds may charge exit load if held <1 year\n\nRISK:\n- FD principal is protected up to Rs. 5 lakh by DICGC; above that, depends on the bank's stability\n- MFs carry market risk; principal value can fall (especially equity-heavy categories)\n\nUSE-CASE GUIDE:\n- FDs: predictable short-term needs (1-3 years), emergency corpus, conservative seniors who prioritise capital safety\n- Liquid / Arbitrage MFs: parking surplus for 1-12 months with better tax efficiency in higher slabs\n- Equity MFs: long-term wealth creation (5+ years), goal-based investing where beating inflation matters\n- Debt MFs: tactical fixed-income exposure with active duration management",
+      "bajaj_verified": false,
+      "pending": false,
+      "disclaimer": "Generic comparison — current FD rates and tax rules change. Verify before client advice.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "direct_vs_regular",
+      "title": "Direct vs Regular Plans",
+      "aliases": [
+        "direct vs regular",
+        "direct plan vs regular plan",
+        "why regular plan",
+        "why direct plan",
+        "direct or regular",
+        "regular plan vs direct plan",
+        "advisory plan",
+        "distributor plan",
+        "expense ratio difference"
+      ],
+      "content": "Direct and Regular are two plan variants of the same mutual fund scheme. The underlying portfolio is identical — only the cost structure differs.\n\nDIRECT plan:\n- Lower expense ratio (typically 0.5-1.0% lower for equity funds, ~0.1-0.3% lower for debt)\n- No distributor commission embedded — the investor goes directly to the AMC (online or AMC office)\n- Higher long-term NAV due to lower drag (a 0.7% expense gap compounds to a meaningful corpus difference over 20+ years)\n- Suitable for: self-directed investors who do their own research and are comfortable with execution, paperwork, and lifecycle decisions (rebalancing, tax harvesting, when to redeem)\n\nREGULAR plan:\n- Higher expense ratio that includes ongoing distributor/advisor commission\n- Bought through an AMFI-registered distributor (such as a Relationship Manager)\n- Includes the cost of advisory support: goal planning, scheme selection, periodic review, lifecycle decisions, behavioural coaching during volatile markets\n- Suitable for: investors who value ongoing advisory support, single point of contact, hand-holding during market events, and structured periodic review\n\nBajaj Capital's specific positioning on the advisory value-add and why Regular-plan clients receive measurably better outcomes through advisor support is a topic to discuss with your team lead — Bajaj's verified positioning content on this is being finalised.",
+      "bajaj_verified": false,
+      "pending": true,
+      "pending_message": "Bajaj Capital's specific positioning on Direct vs Regular plans and the value of advisory support is being finalised by the research team. The generic difference is shown above. For Bajaj's specific value-pitch on Regular plans and how to communicate it to clients, please consult your team lead.",
+      "disclaimer": "Partial generic content — Bajaj's specific Regular-plan value-pitch pending.",
+      "last_verified_at": null
+    },
+    {
+      "topic_id": "research_process",
+      "title": "Bajaj Research Process and Fund Selection",
+      "aliases": [
+        "research process",
+        "how funds are selected",
+        "research capabilities",
+        "investment process",
+        "fund selection process",
+        "why this fund",
+        "rationale behind recommendation",
+        "how do you pick funds",
+        "recommended list process",
+        "screening process"
+      ],
+      "content": null,
+      "bajaj_verified": false,
+      "pending": true,
+      "pending_message": "Bajaj Capital's research process, fund-screening methodology, and the rationale for the recommended-90 list is content the research team will provide. Please consult your team lead for the specifics on how funds make it onto the Recommended List, the screening criteria used, and the periodic-review cadence.",
+      "last_verified_at": null
+    }
+  ]
+}

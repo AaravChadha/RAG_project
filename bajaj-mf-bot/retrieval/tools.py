@@ -337,6 +337,33 @@ def _tool_compare_schemes(arguments: Dict[str, Any]) -> str:
     return json.dumps({"comparison": comparison}, default=str)
 
 
+def _tool_get_education_content(arguments: Dict[str, Any]) -> str:
+    """Wrapper around theory.get_education_content for the LLM tool surface.
+
+    Returns the matched FAQ entry as JSON. On no match, returns a
+    'matched=False' envelope with the available topic list so the model
+    can refine the query or refuse cleanly.
+    """
+    topic = arguments.get("topic", "")
+    if not isinstance(topic, str) or not topic.strip():
+        return json.dumps({
+            "error": "bad_arguments",
+            "message": "'topic' must be a non-empty string",
+        })
+
+    try:
+        # Lazy import keeps tools.py importable even if data/theory.json
+        # is missing — the tool just always returns 'no match' instead
+        # of breaking import.
+        from retrieval.theory import get_education_content  # noqa: WPS433
+        result = get_education_content(topic)
+    except Exception as exc:  # noqa: BLE001 — last-resort guard
+        logger.exception("get_education_content crashed")
+        return json.dumps({"error": "unexpected", "message": str(exc)})
+
+    return json.dumps(result, default=str)
+
+
 def _tool_get_market_state(arguments: Dict[str, Any]) -> str:
     """Fetch current Indian-market index levels + recent moves.
 
@@ -373,6 +400,7 @@ _DISPATCH: Dict[str, Callable[[Dict[str, Any]], str]] = {
     "get_schema": _tool_get_schema,
     "compare_schemes": _tool_compare_schemes,
     "get_market_state": _tool_get_market_state,
+    "get_education_content": _tool_get_education_content,
 }
 
 
@@ -481,6 +509,41 @@ TOOLS: List[Dict[str, Any]] = [
                 "type": "object",
                 "properties": {},
                 "required": [],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_education_content",
+            "description": (
+                "Retrieve FAQ-style theory/education content for "
+                "non-fund-specific questions: 'what is a mutual fund', "
+                "'what is SIP', 'MF risks', 'MF taxation', 'investment "
+                "horizon', 'redemption / exit load', 'MF vs FD', "
+                "'About Bajaj Capital', 'Direct vs Regular plans', and "
+                "'Bajaj research process'. Returns content + flags: "
+                "'bajaj_verified' (true only for officially-verified "
+                "Bajaj content), 'pending' (true when no content exists "
+                "yet — surface the 'pending_message'), 'disclaimer' "
+                "(prepend this when content is generic-but-unverified). "
+                "Do NOT use this for fund-specific numeric questions — "
+                "those go to query_db / lookup_scheme / compare_schemes."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "topic": {
+                        "type": "string",
+                        "description": (
+                            "Topic keywords from the user's question. "
+                            "Examples: 'what is SIP', 'mutual fund "
+                            "taxation', 'Direct vs Regular', 'About "
+                            "Bajaj'."
+                        ),
+                    },
+                },
+                "required": ["topic"],
             },
         },
     },
