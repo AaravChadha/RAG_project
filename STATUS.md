@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-16 (latency optimization #2: `get_full_snapshot` tool + category-shaped-queries rule. Tool count 5 → 6.)
+> **Last update**: 2026-05-16 (latency optimization #2 + v1 streaming. `get_full_snapshot` tool, category-shaped-queries rule, `st.write_stream` typewriter in Streamlit UI.)
 
 ---
 
@@ -190,6 +190,20 @@ Bundled with the same commit: new **"Category-shaped queries"** section in SYSTE
 Expected payoff: single-fund questions drop from 4 round-trips to 2 (one for get_full_snapshot, one for the final answer). On Q01-shape questions (already 71s post-#1), this should land in the ~40-50s range. Validation pending clean Groq run (still rate-limited from earlier today).
 
 Unit tests added: 4 new tests in `tests/test_tools.py` cover all-sections, include filter, no-match envelope, and bad-arguments path. Updated `test_tools_schema_well_formed` for `len(TOOLS) == 6` and the new name set. Full suite: **60 passed, 40 skipped** (was 56/40; +4 new tests, no regressions).
+
+### v1 streaming: typewriter via `st.write_stream` (2026-05-16)
+
+UX polish, NOT a wall-time win. The Streamlit chat-input handler previously did `st.markdown(answer)` — full answer pops in after the entire tool-use loop completes. Replaced with `st.write_stream(_typewriter(answer))` where `_typewriter` yields 15-char chunks at ~50/s.
+
+What it changes: the answer animates in as the user watches. Long table answers (~500 chars) finish typing in <1s; long prose answers (~1500 chars) in ~2s. By the time typing completes, the user has read the leading content. Perceptual latency drops modestly.
+
+What it does NOT change:
+- Total wall time from question submit to final answer visible — same as before. The model still does its 2-N round-trips silently behind a spinner; the typewriter only begins after `ask()` returns.
+- Token spend, eval scores, API behaviour.
+
+Why this is v1 not v2: real LLM streaming (tokens flowing as the model generates) requires modifying `_GroqClient.chat` to support `stream=True` and accumulating `tool_calls` deltas across chunks separately from content deltas. ~2-3 hours of work plus edge cases (tool_use_failed recovery in streaming mode, finish_reason handling, mid-stream errors). Deferred until we have a clean post-#1/#2 eval baseline to compare against — don't want streaming-bugs and tool-routing-bugs entangled if the eval regresses.
+
+Scope: ~50 LOC added to `app/streamlit_app.py` (typewriter helper + the one-line UI swap). No backend changes. Fully revertible by reverting the file.
 
 ### Debt-template support (2026-05-12)
 Debt PDFs share ~80% of the equity Finalyca template. Most sections work without changes; only Portfolio Characteristics differs (debt: Avg Maturity Years + YTM + Modified Duration vs equity: P/E, P/B, Mkt Cap fields).

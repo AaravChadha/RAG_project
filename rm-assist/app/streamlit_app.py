@@ -23,8 +23,9 @@ from __future__ import annotations
 import logging
 import sqlite3
 import sys
+import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 import streamlit as st
 
@@ -42,6 +43,38 @@ from app.chatbot import ask  # noqa: E402
 from retrieval.db_query import update_query_feedback  # noqa: E402
 
 logger = logging.getLogger(__name__)
+
+
+# v1 streaming (fake typewriter). Real LLM streaming is a v2 — would
+# require modifying _GroqClient to use stream=True + accumulate tool_calls
+# across chunked deltas. This v1 wraps the already-complete answer in a
+# generator that yields fixed-size chunks with a small delay; `st.write_stream`
+# animates the display. Wall-time is unchanged but the user sees text flow
+# in instead of a pop-in after the full latency. Pure UX polish, zero
+# backend risk.
+#
+# Tuning:
+# - 15 chars per chunk × 20 ms delay  -> ~750 chars/sec, ~120 wps. Snappy
+#   without being so fast that markdown re-rendering flickers on partial
+#   table rows. Long table answers (~500 chars) finish in <1 s; long prose
+#   answers (~1500 chars) finish in ~2 s.
+_TYPEWRITER_CHUNK_CHARS: int = 15
+_TYPEWRITER_DELAY_S: float = 0.02
+
+
+def _typewriter(text: str) -> Iterator[str]:
+    """Yield ``text`` in fixed-size chunks with a small delay between each.
+
+    Designed for ``st.write_stream``. The generator is consumed once;
+    after exhaustion Streamlit returns the concatenated string. Sleep is
+    important here — without it, Streamlit yields every chunk before the
+    first paint and the user sees a single pop-in, defeating the purpose.
+    """
+    if not text:
+        return
+    for i in range(0, len(text), _TYPEWRITER_CHUNK_CHARS):
+        yield text[i : i + _TYPEWRITER_CHUNK_CHARS]
+        time.sleep(_TYPEWRITER_DELAY_S)
 
 
 # Mailto target for the sidebar's "Report a problem" link. For the
@@ -250,7 +283,9 @@ if prompt:
                     "Please try rephrasing or retry shortly."
                 )
                 query_id = 0
-        st.markdown(answer)
+        # v1 streaming: animate the already-complete answer via st.write_stream
+        # so the user sees text flow in. Real API streaming is a v2.
+        st.write_stream(_typewriter(answer))
 
     st.session_state["messages"].append(
         {
