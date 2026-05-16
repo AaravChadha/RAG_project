@@ -89,11 +89,11 @@
     "category": "benchmark-alpha",
     "source_client_query": "6",
     "question": "How does Canara Robeco Multi Cap perform vs its benchmark over 1Y and 3Y?",
-    "expected_answer_contains": ["Canara Robeco", "1Y", "benchmark", "verify against your own"],
+    "expected_answer_contains": ["Canara Robeco", "alpha", "benchmark", "verify against your own"],
     "expected_sql_contains": "fund_snapshots",
     "must_refuse": false,
     "expected_refusal_reason": null,
-    "verification_notes": "Direct benchmark-alpha question. Post-graft the bot should surface fund return AND benchmark return AND alpha for 1Y (and 3Y if available — Canara Robeco fund may be <3yr old). Lenient: requires 'benchmark' + 1Y mention."
+    "verification_notes": "Direct benchmark-alpha question. Post-graft the bot must surface fund return AND benchmark return AND alpha for 1Y (and 3Y if available — Canara Robeco fund may be <3yr old). 'alpha' (case-insensitive via grader normalize) is the load-bearing assertion — confirms the benchmark-alpha graft computed alpha, not just that a period was named. Earlier version asserted literal '1Y' but the bot writes '1-Year' / '1Y' interchangeably (2026-05-16 Gemini eval showed this brittleness)."
   },
   {
     "id": "RM09",
