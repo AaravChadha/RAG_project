@@ -1,0 +1,230 @@
+[
+  {
+    "_metadata": {
+      "purpose": "Real-RM eval target — 20 questions covering 12 common client-query patterns (with the 8 sub-questions in #12 expanded). Replaces / supplements the synthetic golden_questions.json as the pilot-readiness bar.",
+      "source": "Compiled 2026-05-16 from common client-query patterns; this file converts the queries into bot-facing prompts as an RM would phrase them.",
+      "grader": "Substring-AND match via scripts/run_eval_sample.py:_normalize (case-insensitive, unicode-space + dash normalised). Refusals checked against query_log.refusal_reason.",
+      "post_prompt_graft": "Authored AFTER the 2026-05-16 prompt grafts (Treynor/IR labels, benchmark-alpha framing, return_*_bm in metric completeness). Pre-graft answers may fail benchmark-alpha questions (RM07, RM08)."
+    }
+  },
+  {
+    "id": "RM01",
+    "category": "single-fund-perf",
+    "source_client_query": "1",
+    "question": "What is the 1Y return for Canara Robeco Multi Cap Fund?",
+    "expected_answer_contains": ["Canara Robeco", "6.65", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Simple performance lookup. return_1y=6.65 from canara_robeco_multi_cap.json golden."
+  },
+  {
+    "id": "RM02",
+    "category": "extrapolation",
+    "source_client_query": "1",
+    "question": "If DSP Multi Asset Allocation's recent return pattern continues, what return can a client expect over the next year?",
+    "expected_answer_contains": ["DSP Multi Asset", "21.99", "verify against your own"],
+    "expected_sql_contains": "return",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Extrapolation anchored on return_1y=21.99 from dsp_multi_asset.json. Bot should hedge with variability + footer."
+  },
+  {
+    "id": "RM03",
+    "category": "market-timing",
+    "source_client_query": "2",
+    "question": "Is now a good time to invest in equity mutual funds?",
+    "expected_answer_contains": ["nifty", "this view rests on price action", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Market-timing question. Bot MUST call get_market_state (NIFTY appears in output) + MARKET_CONFIDENCE_NOTE mandatory ('this view rests on price action') + universal footer. Pre-fix this was wrongly refused as out_of_scope."
+  },
+  {
+    "id": "RM04",
+    "category": "theory-pending",
+    "source_client_query": "3",
+    "question": "What's the difference between Direct and Regular plans, and why should clients invest through Regular plans with advisory support?",
+    "expected_answer_contains": ["direct", "regular", "consult your team lead", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:direct_vs_regular (partial-generic + Bajaj-positioning pending). Bot should surface generic difference + pending_message routing to team lead. Footer still applies (non-refusal)."
+  },
+  {
+    "id": "RM05",
+    "category": "theory-verified",
+    "source_client_query": "4",
+    "question": "Tell me about Bajaj Capital — how does Bajaj differentiate from other wealth management firms?",
+    "expected_answer_contains": ["bajaj capital", "60", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:about_bajaj (the ONLY currently bajaj_verified=true entry). Content includes 60-year legacy. NOTE: current content covers 'who is Bajaj' strongly but does NOT punch on competitive differentiation; question stresses 'differentiate'. Expected to pass on identity content but content gap worth flagging."
+  },
+  {
+    "id": "RM06",
+    "category": "theory-pending",
+    "source_client_query": "5",
+    "question": "What is Bajaj's research process for selecting the recommended funds?",
+    "expected_answer_contains": ["research", "consult your team lead", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:research_process (pending=true). pending_message says 'please consult your team lead'. Bot should NOT hallucinate Bajaj-specific positioning."
+  },
+  {
+    "id": "RM07",
+    "category": "recommendation-rationale",
+    "source_client_query": "5",
+    "question": "What's the rationale for keeping Canara Robeco Multi Cap on our recommended list right now?",
+    "expected_answer_contains": ["Canara Robeco", "1.85", "Sharpe", "benchmark", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Recommendation rationale — exercises metric-completeness (expense=1.85, Sharpe, std_dev) + the NEW benchmark-alpha framing (must include 'benchmark' word and surface return_*_bm). Pre-graft this likely fails on 'benchmark' substring."
+  },
+  {
+    "id": "RM08",
+    "category": "benchmark-alpha",
+    "source_client_query": "6",
+    "question": "How does Canara Robeco Multi Cap perform vs its benchmark over 1Y and 3Y?",
+    "expected_answer_contains": ["Canara Robeco", "1Y", "benchmark", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Direct benchmark-alpha question. Post-graft the bot should surface fund return AND benchmark return AND alpha for 1Y (and 3Y if available — Canara Robeco fund may be <3yr old). Lenient: requires 'benchmark' + 1Y mention."
+  },
+  {
+    "id": "RM09",
+    "category": "shortlist-conditional",
+    "source_client_query": "7",
+    "question": "Suggest 3 recommended funds for a moderate-risk client with a 5-year horizon.",
+    "expected_answer_contains": ["expense", "Sharpe", "as on", "verify against your own"],
+    "expected_sql_contains": "fund_snapshots",
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Shortlist with profile reasoning. Structural check: at least 3 funds (no name pinned since the cross-123-scheme answer varies), Sharpe + expense surfaced per metric-completeness rule, footer present."
+  },
+  {
+    "id": "RM10",
+    "category": "market-timing-falling",
+    "source_client_query": "8",
+    "question": "A client wants to redeem during this market fall — what should I tell them?",
+    "expected_answer_contains": ["this view rests on price action", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Falling-market question. Bot calls get_market_state + MARKET_CONFIDENCE_NOTE mandatory. RM playbook is 'calm + top-up via SIP = opportunity' — would be ideal to see 'SIP' or 'top up' or 'discipline' in answer but not strictly required for the substring check. Worth eyeballing the answer text for tone match."
+  },
+  {
+    "id": "RM11",
+    "category": "market-timing",
+    "source_client_query": "9",
+    "question": "How long is this market correction likely to last?",
+    "expected_answer_contains": ["this view rests on price action", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Correction-duration question. Bot has price action only (no macro). Should still answer with a view + MARKET_CONFIDENCE_NOTE + historical-pattern context where natural."
+  },
+  {
+    "id": "RM12",
+    "category": "market-timing-sector",
+    "source_client_query": "10",
+    "question": "Which sector funds look well-positioned in the current bull market?",
+    "expected_answer_contains": ["sector", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Sector + market-timing hybrid. May or may not call get_market_state depending on framing. If it synthesizes a market view, MARKET_CONFIDENCE_NOTE required; if it answers purely from sector_weights, just the footer. Lenient substring set."
+  },
+  {
+    "id": "RM13",
+    "category": "category-comparison",
+    "source_client_query": "11",
+    "question": "Which category is better to invest in right now — Large Cap, Mid Cap, or Small Cap?",
+    "expected_answer_contains": ["large cap", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Category-comparison + market-timing. Bot should lean using category norms + market state. Substring is lenient — at minimum the bot should mention at least one category. Worth checking the actual lean direction by eye."
+  },
+  {
+    "id": "RM14",
+    "category": "theory-disclaimer",
+    "source_client_query": "12a",
+    "question": "What is a mutual fund and how does it work?",
+    "expected_answer_contains": ["mutual fund", "pending", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:what_is_mf (generic-with-disclaimer). 'pending' is in the disclaimer text 'Bajaj-verified version pending'. Bot prepends ⚠️ disclaimer per system prompt rule B."
+  },
+  {
+    "id": "RM15",
+    "category": "theory-disclaimer",
+    "source_client_query": "12b",
+    "question": "What is SIP and how does it help in investing?",
+    "expected_answer_contains": ["sip", "rupee-cost", "pending", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:what_is_sip. 'rupee-cost' (averaging) is a distinctive content marker."
+  },
+  {
+    "id": "RM16",
+    "category": "theory-disclaimer",
+    "source_client_query": "12c",
+    "question": "What are the risks involved in mutual funds?",
+    "expected_answer_contains": ["risk", "pending", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:mf_risks. Content covers market/interest-rate/credit/liquidity/concentration/inflation/manager risks."
+  },
+  {
+    "id": "RM17",
+    "category": "theory-disclaimer",
+    "source_client_query": "12e",
+    "question": "Can clients withdraw their mutual fund money anytime? What are the redemption charges?",
+    "expected_answer_contains": ["exit load", "pending", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:redemption_exit_load. 'exit load' is a distinctive content marker."
+  },
+  {
+    "id": "RM18",
+    "category": "theory-disclaimer",
+    "source_client_query": "12f",
+    "question": "What are the taxation implications of mutual funds?",
+    "expected_answer_contains": ["ltcg", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:mf_taxation. LTCG / STCG are universal markers. Disclaimer text says 'Verify current rates' rather than 'Bajaj-verified pending' so 'pending' is NOT required here."
+  },
+  {
+    "id": "RM19",
+    "category": "theory-disclaimer",
+    "source_client_query": "12g",
+    "question": "What investment horizon should be considered for better mutual fund returns?",
+    "expected_answer_contains": ["horizon", "pending", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:investment_horizon. 'horizon' is universal; disclaimer carries 'pending'."
+  },
+  {
+    "id": "RM20",
+    "category": "theory-disclaimer",
+    "source_client_query": "12h",
+    "question": "Can mutual funds give better returns than fixed deposits?",
+    "expected_answer_contains": ["fd", "verify against your own"],
+    "expected_sql_contains": null,
+    "must_refuse": false,
+    "expected_refusal_reason": null,
+    "verification_notes": "Maps to theory.json:mf_vs_fd. 'FD' appears throughout the content. Disclaimer talks about 'Verify before client advice', does NOT use 'pending', so it's NOT required."
+  }
+]

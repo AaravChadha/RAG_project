@@ -1,14 +1,22 @@
-"""Run a curated 10-question sample from golden_questions.json against the real bot.
+"""Run a curated sample (or full set) of questions from a golden-questions JSON against the real bot.
 
 Usage:
+    # Default — curated 10-question sample from golden_questions.json
     LLM_PROVIDER=groq python -m scripts.run_eval_sample
 
+    # Run all questions in a different file (e.g. the real-RM eval)
+    LLM_PROVIDER=groq python -m scripts.run_eval_sample --file tests/golden_rm_questions.json --all
+
+    # Run a specific subset of ids in any file
+    LLM_PROVIDER=groq python -m scripts.run_eval_sample --file tests/golden_rm_questions.json --ids RM01,RM03,RM05
+
 Prints per-question PASS/FAIL with reason, then summary. Saves full transcripts
-(answer + tool trace) to data/eval_sample_<timestamp>.json for review.
+to data/eval_<source-stem>_<timestamp>.json for review.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 import os
@@ -101,12 +109,45 @@ def grade(q: dict[str, Any], answer: str) -> tuple[bool, str]:
 
 
 def main() -> int:
-    questions_path = BASE / "tests" / "golden_questions.json"
-    all_questions = json.loads(questions_path.read_text())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--file",
+        default=str(BASE / "tests" / "golden_questions.json"),
+        help="Questions JSON file (default: tests/golden_questions.json)",
+    )
+    parser.add_argument(
+        "--ids",
+        default=None,
+        help="Comma-separated question ids to run (default: curated SAMPLE_IDS for golden_questions.json, all questions otherwise)",
+    )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Run every question in the file (overrides --ids and SAMPLE_IDS)",
+    )
+    args = parser.parse_args()
+
+    questions_path = Path(args.file)
+    if not questions_path.is_absolute():
+        questions_path = BASE / questions_path
+    raw = json.loads(questions_path.read_text())
+    # Filter out non-question items (e.g. _metadata header objects)
+    all_questions = [q for q in raw if isinstance(q, dict) and "id" in q]
     by_id = {q["id"]: q for q in all_questions}
 
-    sample = [by_id[i] for i in SAMPLE_IDS if i in by_id]
+    if args.all:
+        sample = all_questions
+    elif args.ids:
+        wanted = [i.strip() for i in args.ids.split(",") if i.strip()]
+        sample = [by_id[i] for i in wanted if i in by_id]
+    elif questions_path.name == "golden_questions.json":
+        sample = [by_id[i] for i in SAMPLE_IDS if i in by_id]
+    else:
+        # Non-default file with no --ids and no --all → run everything in the file
+        sample = all_questions
+
     print(f"Running eval against LLM_PROVIDER={os.environ.get('LLM_PROVIDER', 'groq')}")
+    print(f"Source: {questions_path.name}")
     print(f"Questions: {len(sample)}")
     print("=" * 80)
 
@@ -156,10 +197,21 @@ def main() -> int:
         f"elapsed: {total:.1f}s"
     )
 
-    # Save full transcripts
-    out_path = BASE / "data" / f"eval_sample_{datetime.now():%Y%m%d_%H%M%S}.json"
+    # Save full transcripts — embed source-file stem so RM-eval runs don't
+    # overwrite curated-sample runs in the data/ folder.
+    stem = questions_path.stem
+    out_path = BASE / "data" / f"eval_{stem}_{datetime.now():%Y%m%d_%H%M%S}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps({"sample_ids": SAMPLE_IDS, "results": results}, indent=2))
+    out_path.write_text(
+        json.dumps(
+            {
+                "source_file": str(questions_path),
+                "sample_ids": [q["id"] for q in sample],
+                "results": results,
+            },
+            indent=2,
+        )
+    )
     print(f"Full transcripts saved to {out_path}")
 
     return 0 if pass_count == len(sample) else 1

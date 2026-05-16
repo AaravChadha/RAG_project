@@ -70,27 +70,11 @@ def test_lookup_scheme_no_match(seeded_db) -> None:
     assert "No scheme found" in payload.get("message", "")
 
 
-def test_get_schema_returns_tables(seeded_db) -> None:
-    """get_schema returns a JSON dict with the five tables the LLM needs."""
+def test_get_schema_is_retired(seeded_db) -> None:
+    """get_schema is no longer a tool — schema is embedded in SYSTEM_PROMPT."""
     raw = execute_tool("get_schema", {})
     payload = json.loads(raw)
-
-    assert isinstance(payload, dict)
-    tables = payload.get("tables", {})
-    expected_tables = {
-        "schemes", "fund_snapshots", "holdings",
-        "sector_weights", "periodic_returns",
-    }
-    assert expected_tables.issubset(tables.keys()), (
-        f"missing tables in schema description: "
-        f"{expected_tables - set(tables.keys())}"
-    )
-    # Each table entry must list its columns — useful_joins and rules also
-    # need to be present so the LLM has the rule-of-thumb context.
-    for name in expected_tables:
-        assert tables[name].get("columns"), f"no columns listed for {name}"
-    assert payload.get("useful_joins"), "expected useful_joins block"
-    assert payload.get("rules"), "expected rules block"
+    assert payload.get("error") == "unknown_tool"
 
 
 def test_compare_schemes_returns_metrics(seeded_db) -> None:
@@ -131,7 +115,7 @@ def test_compare_schemes_default_metrics(seeded_db) -> None:
 def test_tools_schema_well_formed() -> None:
     """TOOLS is a list of OpenAI-style function-tool descriptors."""
     assert isinstance(TOOLS, list)
-    assert len(TOOLS) == 4
+    assert len(TOOLS) == 5
 
     names = set()
     for entry in TOOLS:
@@ -147,4 +131,10 @@ def test_tools_schema_well_formed() -> None:
         assert "required" in params
         names.add(fn["name"])
 
-    assert names == {"query_db", "lookup_scheme", "get_schema", "compare_schemes"}
+    assert names == {
+        "query_db",
+        "lookup_scheme",
+        "compare_schemes",
+        "get_market_state",
+        "get_education_content",
+    }

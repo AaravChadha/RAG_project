@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-15 (afternoon — Phase 7.2 pre-pilot capability additions: Gemini backend, prompt grafts (5.5→7/10), live market-state tool, theory/education layer)
+> **Last update**: 2026-05-16 (post-RM-input prompt grafts + latency optimization #1: retired get_schema tool, schema embedded in SYSTEM_PROMPT)
 
 ---
 
@@ -152,6 +152,27 @@ Tool count went 4 → 6. SYSTEM_PROMPT gained ~500 tokens (category norms table 
 - Ingest Bajaj's monthly market outlook note alongside `get_market_state` (if it exists — user to confirm).
 - Build `tests/golden_rm_questions.json` from the 20 real RM patterns and run a fresh eval.
 
+### Latency optimization #1: retired `get_schema` tool (2026-05-16)
+
+The tool-use loop was making 3-4 inference round-trips per question, with each Groq inference on `openai/gpt-oss-120b` taking 5-15s. On a simple expense-ratio lookup (Q01) that totalled ~94s. One of those round-trips was the model calling `get_schema()` to discover column names — but the schema never changes between questions, so the round-trip was waste.
+
+Change:
+- `_build_schema_description`, `_tool_get_schema`, and `_SCHEMA_DESCRIPTION_CACHE` deleted from `retrieval/tools.py`.
+- `get_schema` removed from `_DISPATCH` and `TOOLS`. Tool count: **6 → 5**.
+- New `# Database schema` section added to `SYSTEM_PROMPT` (~600-800 tokens of curated DDL: schemes / fund_snapshots / holdings / sector_weights / periodic_returns + useful joins + rules of the road). Expanded vs the old `get_schema` output to explicitly include benchmark return columns (`return_*_bm` for 1M through since_inception) — these are needed by the 2026-05-16 benchmark-alpha prompt graft.
+- `query_db` tool description now points to "the schema is provided in the system prompt" instead of "call get_schema first."
+- `MAX_ITERATIONS` left at 6; the comment updated to reflect new "lookup_scheme → query_db → answer" canonical flow (2-3 turns typical, headroom for one tool-call failure).
+
+Also incidentally fixed: `tests/test_tools.py::test_tools_schema_well_formed` was **already stale** before this change — it asserted `len(TOOLS) == 4` and a 4-name set, but `TOOLS` had grown to 6 entries during Phase 7.2 (added `get_market_state` + `get_education_content`) without the test being updated. Now correctly asserts `len(TOOLS) == 5` with the post-retirement name set. The `test_get_schema_returns_tables` test was repurposed to verify `get_schema` now returns the `unknown_tool` error envelope.
+
+Validation:
+- `pytest tests/test_tools.py` — 8/8 pass.
+- Curated 10-Q smoke test post-graft hit the 200K Groq daily TPD cap at Q15 (we were already at 199K from earlier runs in the day). Only 3 of 10 questions executed cleanly: Q01 PASS, Q05 FAIL (pre-existing ambiguity), Q11 PASS. **Q01 latency 94.2s → 71.2s (~25% reduction)** — directionally validates the round-trip-saved hypothesis. Full 10-Q re-run pending daily quota reset.
+
+Two more optimizations on deck (from the same diagnosis, not yet built):
+- **#2** — `get_full_snapshot(scheme_hint)` tool that does fuzzy-match + returns the full per-fund picture (fund_snapshots + holdings + sector_weights + benchmark returns) in one tool call. Collapses lookup_scheme + 1-2 query_db calls into one. ~1-2 hours.
+- **#3** — Streaming the final answer via `st.write_stream` for perceived-latency win. Already on Phase 8 UX-polish list.
+
 ### Debt-template support (2026-05-12)
 Debt PDFs share ~80% of the equity Finalyca template. Most sections work without changes; only Portfolio Characteristics differs (debt: Avg Maturity Years + YTM + Modified Duration vs equity: P/E, P/B, Mkt Cap fields).
 - Schema additions: `avg_maturity_years REAL` + `yield_to_maturity REAL` (migration 002).
@@ -169,7 +190,8 @@ Debt PDFs share ~80% of the equity Finalyca template. Most sections work without
 | **Phase 7.1 finish-up** | Local tunnel works; pilot-readiness needs two more steps | (a) Open the trycloudflare URL on a phone over cellular to confirm external reachability (7.1.5). (b) Wrap `cloudflared` + Streamlit in launchd plists so they survive a reboot — or pick a hosting move per the "Future hosting" open item in PLANNING.md. |
 | **Bajaj-verified theory content** | Two `data/theory.json` entries (`direct_vs_regular` advisory pitch, `research_process`) return pending stubs. Seven other entries are generic-with-disclaimer | Bajaj content team supplies canonical text → flip `bajaj_verified` to `true` and paste into JSON. No code change. |
 | **Monthly market outlook note** | If Bajaj publishes one, ingest it alongside `get_market_state` for richer market-timing answers (price action + research-team view) | User to ask Bajaj research team whether the note exists. If yes, parse it via the same Finalyca-style pattern. |
-| **Build real-RM eval** | The synthetic 40-Q is a stale proxy; the 20 real RM-input patterns are the actual workload | Convert the 20 patterns into `tests/golden_rm_questions.json` with `expected_answer_contains` / `must_refuse` / `expected_refusal_reason` for each. Then run eval. |
+| **Run RM eval against tuned bot** | `tests/golden_rm_questions.json` was built 2026-05-16 (20 real-world client questions) but eval run was blocked when Groq 200K daily TPD cap hit mid-smoke-test | Wait for Groq daily reset OR switch `LLM_PROVIDER=gemini` and rerun. Command: `python -m scripts.run_eval_sample --file tests/golden_rm_questions.json --all`. |
+| **Re-verify curated 10-Q post-graft baseline** | Two prompt grafts + get_schema retirement landed 2026-05-16. Smoke test was contaminated by Groq TPD cap — only 3 of 10 questions executed cleanly (2 PASS, 1 FAIL on known Q05 ambiguity). Q01 latency dropped 94s → 71s (~25%) — directionally validates optimization #1 | Same as above — needs a clean 10-Q Groq run to confirm we're still ≥7/10 against the STATUS.md baseline. |
 | **Future hosting choice** (open item) | Stable URL + always-on, off your laptop | Production answer is Oracle Cloud Free Tier (Mumbai). See "Post-pilot scaling notes" in PLANNING.md for details. |
 
 ---

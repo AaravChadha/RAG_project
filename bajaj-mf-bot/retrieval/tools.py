@@ -1,6 +1,6 @@
-"""Tool definitions and dispatcher for the Phase 5 LLM tool-use loop.
+"""Tool definitions and dispatcher for the LLM tool-use loop.
 
-The chatbot LLM doesn't talk to SQLite directly. Instead, it picks from four
+The chatbot LLM doesn't talk to SQLite directly. Instead, it picks from five
 named tools and the dispatcher in this module runs them. Each tool returns a
 JSON-encoded string so the result can be embedded verbatim in the next
 ``tool`` message without further marshalling.
@@ -13,17 +13,21 @@ Public surface:
   a string; never raises (failures are encoded as ``{"error": ...}`` JSON so
   the model can read and react to them).
 
-The four tools:
+The five tools:
 
 * ``query_db`` — thin wrapper over the read-only ``db_query.query_db``.
 * ``lookup_scheme`` — fuzzy substring search over ``schemes`` so the LLM can
   canonicalise names before constructing SQL.
-* ``get_schema`` — a curated, model-friendly description of the relevant
-  tables (NOT raw DDL — raw DDL is too verbose and the LLM doesn't need every
-  column). Cached at module load so we don't rebuild it per call.
 * ``compare_schemes`` — purpose-built side-by-side comparison so the model
   doesn't have to hand-roll the same join + filter SQL each time it sees a
   "compare X vs Y" question.
+* ``get_market_state`` — current Indian-index levels + recent moves; for
+  market-timing questions.
+* ``get_education_content`` — FAQ-style theory/Bajaj-positioning content.
+
+Schema is NOT a tool. The full curated schema lives in the SYSTEM_PROMPT
+(see ``app/prompts.py``); embedding it there saves one inference round-trip
+per question vs. fetching it via a tool call.
 """
 
 from __future__ import annotations
@@ -142,107 +146,6 @@ def _tool_lookup_scheme(arguments: Dict[str, Any]) -> str:
             {"matches": [], "message": f"No scheme found matching '{needle}'"}
         )
     return json.dumps(rows, default=str)
-
-
-# Cached at import time — get_schema's output is static across the process.
-_SCHEMA_DESCRIPTION_CACHE: Optional[str] = None
-
-
-def _build_schema_description() -> Dict[str, Any]:
-    """Construct the curated schema description handed to the LLM.
-
-    We deliberately do NOT dump the raw DDL. Reasons:
-
-    * The DDL has ~80 columns on ``fund_snapshots`` alone; sending all of
-      them on every prompt is expensive and pushes useful instructions out
-      of the context window.
-    * Some columns (parser_version, parse_errors_json, source_pdf_path) are
-      operational metadata the LLM should never query against.
-
-    We instead expose ~25 of the most-asked-about columns plus inline notes
-    on the JSON-text columns and the ``superseded_at`` invariant that's
-    easy for the model to forget.
-    """
-    return {
-        "tables": {
-            "schemes": {
-                "columns": [
-                    "scheme_id", "scheme_name", "amc", "category",
-                    "sub_category", "scheme_uid", "source_url",
-                ],
-                "description": "Master list of mutual fund schemes.",
-            },
-            "fund_snapshots": {
-                "columns": [
-                    "snapshot_id", "scheme_id", "as_of_date", "report_month",
-                    "revision", "superseded_at",
-                    "benchmark", "expense_ratio", "fund_aum_cr",
-                    "return_1y", "return_3y", "return_5y",
-                    "sharpe_1y", "sharpe_3y",
-                    "std_dev_1y", "std_dev_3y",
-                    "beta_1y", "beta_3y",
-                    "up_capture_1y", "down_capture_1y",
-                    "large_cap_pct", "mid_cap_pct", "small_cap_pct",
-                    "portfolio_pe", "portfolio_pb", "modified_duration",
-                    "drawdown_pct",
-                    "composition_json", "risk_rating_json",
-                    "investment_style_json", "fund_managers_json",
-                ],
-                "description": (
-                    "Monthly snapshot of fund metrics. Filter "
-                    "WHERE superseded_at IS NULL for current data."
-                ),
-                "notes": (
-                    "JSON columns are SQLite TEXT containing JSON strings; "
-                    "use json_extract() if needed."
-                ),
-            },
-            "holdings": {
-                "columns": [
-                    "holding_id", "scheme_id", "report_month",
-                    "security_name", "weight_pct", "sector",
-                    "market_cap", "instrument_type", "risk_rating",
-                    "held_since",
-                ],
-                "description": (
-                    "Full holdings per scheme per month. "
-                    "Cardinality: ~50-200 rows per snapshot."
-                ),
-            },
-            "sector_weights": {
-                "columns": ["snapshot_id", "sector", "weight_pct"],
-                "description": "Normalized sector exposures per snapshot.",
-            },
-            "periodic_returns": {
-                "columns": [
-                    "snapshot_id", "period_type", "period_label", "return_pct",
-                ],
-                "description": (
-                    "Returns by period. period_type in {monthly, fy, cy}."
-                ),
-            },
-        },
-        "useful_joins": [
-            "Join schemes <-> fund_snapshots ON scheme_id",
-            "Join fund_snapshots <-> sector_weights ON snapshot_id",
-            "Join fund_snapshots <-> periodic_returns ON snapshot_id",
-            "Join schemes <-> holdings ON scheme_id",
-        ],
-        "rules": [
-            "Always filter fund_snapshots WHERE superseded_at IS NULL for "
-            "current data.",
-            "report_month is 'YYYY-MM' (current month: '2026-05').",
-            "Returns are percentages (e.g., 6.65 means 6.65%, not 0.0665).",
-        ],
-    }
-
-
-def _tool_get_schema(arguments: Dict[str, Any]) -> str:
-    """Return the cached curated schema description as a JSON string."""
-    global _SCHEMA_DESCRIPTION_CACHE
-    if _SCHEMA_DESCRIPTION_CACHE is None:
-        _SCHEMA_DESCRIPTION_CACHE = json.dumps(_build_schema_description())
-    return _SCHEMA_DESCRIPTION_CACHE
 
 
 def _fetch_latest_snapshot(scheme_id: int) -> Optional[Dict[str, Any]]:
@@ -397,7 +300,6 @@ def _tool_get_market_state(arguments: Dict[str, Any]) -> str:
 _DISPATCH: Dict[str, Callable[[Dict[str, Any]], str]] = {
     "query_db": _tool_query_db,
     "lookup_scheme": _tool_lookup_scheme,
-    "get_schema": _tool_get_schema,
     "compare_schemes": _tool_compare_schemes,
     "get_market_state": _tool_get_market_state,
     "get_education_content": _tool_get_education_content,
@@ -446,10 +348,10 @@ TOOLS: List[Dict[str, Any]] = [
                 "Execute a read-only SELECT against the mutual fund database "
                 "and get back up to 100 rows as JSON. Use this for any "
                 "question that doesn't fit compare_schemes — rankings, "
-                "filters, sector tilts, holdings lookups, etc. Call "
-                "get_schema first if you're unsure about column names. "
-                "DDL/DML keywords (INSERT, UPDATE, DELETE, DROP, ALTER, "
-                "CREATE) are rejected."
+                "filters, sector tilts, holdings lookups, etc. The full "
+                "schema is provided in the system prompt; refer to it "
+                "directly when writing SQL. DDL/DML keywords (INSERT, "
+                "UPDATE, DELETE, DROP, ALTER, CREATE) are rejected."
             ),
             "parameters": {
                 "type": "object",
@@ -491,24 +393,6 @@ TOOLS: List[Dict[str, Any]] = [
                     },
                 },
                 "required": ["name_substring"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_schema",
-            "description": (
-                "Return a compact description of the database schema: "
-                "tables, the columns the model is most likely to need, and "
-                "rules of the road (e.g. always filter on superseded_at "
-                "IS NULL). Call this BEFORE writing SQL when you're unsure "
-                "what columns exist."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {},
-                "required": [],
             },
         },
     },

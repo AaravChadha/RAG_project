@@ -47,8 +47,8 @@ logger = logging.getLogger(__name__)
 
 
 # Hard cap on tool-use turns. 6 is generous — a typical workflow is
-# lookup_scheme -> get_schema -> query_db -> answer (3-4 turns). The
-# extra headroom lets the model recover from one failed tool call.
+# lookup_scheme -> query_db -> answer (2-3 turns; schema is in the system
+# prompt so no get_schema round-trip). Headroom for one failed tool call.
 MAX_ITERATIONS: int = 6
 
 
