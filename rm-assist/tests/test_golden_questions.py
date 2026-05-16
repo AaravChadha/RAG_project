@@ -1,11 +1,15 @@
 """Parametrized golden-question test runner.
 
-Phase 2 deliverable: this file is the SPEC for the chatbot.
 Each entry in `golden_questions.json` becomes one parametrized test.
-The tests SKIP for now because the tool-use chatbot loop is not built
-until Phase 5. Once Phase 5 lands, the body of `test_golden_question`
-will be replaced with a real call to `app.chatbot.ask` and the
-expected_answer_contains / refusal_reason assertions.
+The tests SKIP intentionally: a full 40-question run consumes ~320K
+Groq tokens (~8K per question × 40), well over the 200K free-tier
+daily cap. Running the goldens as pytest cases would either burn the
+daily quota mid-test or fail mid-run with a 429.
+
+The de facto eval surface is `scripts/run_eval_sample.py`, which is
+invoked deliberately with the token budget in mind. The parametrize
+wiring here is preserved so Phase 8 can flip these on for a CI hook
+once we move off the free tier.
 """
 
 from __future__ import annotations
@@ -23,13 +27,13 @@ with open(GOLDEN_PATH) as f:
 
 @pytest.mark.parametrize("q", QUESTIONS, ids=[q["id"] for q in QUESTIONS])
 def test_golden_question(q):
-    """Phase 2 spec — these tests will pass once Phase 5 (tool-use chatbot) is built.
+    """Spec: chatbot must produce expected_answer_contains substrings or the
+    expected refusal_reason. Skipped at pytest level — see module docstring.
 
-    For now they are a SPEC: the chatbot must produce answers containing the
-    expected substrings (and the universal verification footer) or trigger the
-    expected refusal_reason.
-
-    Marked skip in Phase 2; will be flipped to a real assertion once the
-    Phase 5 chatbot tool-use loop is wired up.
+    To actually exercise the goldens, use:
+        python -m scripts.run_eval_sample --all
     """
-    pytest.skip("Phase 2 spec - chatbot tool-use loop comes in Phase 5")
+    pytest.skip(
+        "Token-heavy real-LLM eval; run via "
+        "`python -m scripts.run_eval_sample --all` instead of pytest."
+    )
