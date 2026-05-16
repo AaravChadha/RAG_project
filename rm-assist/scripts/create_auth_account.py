@@ -31,7 +31,7 @@ from pathlib import Path
 
 import yaml
 
-# Make the bajaj-mf-bot package root importable regardless of cwd.
+# Make the rm-assist package root importable regardless of cwd.
 _THIS_DIR = Path(__file__).resolve().parent
 _PROJECT_DIR = _THIS_DIR.parent
 if str(_PROJECT_DIR) not in sys.path:

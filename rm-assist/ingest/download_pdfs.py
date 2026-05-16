@@ -12,13 +12,13 @@ Reads `RAG_project/schemes_master.csv` (the same CSV the DB was seeded
 from), slugifies the scheme name with the *exact* same rule as
 `db.init_db.seed_schemes._slugify`, and downloads each URL to:
 
-    bajaj-mf-bot/data/pdfs/<month>/<scheme_uid>.pdf
+    rm-assist/data/pdfs/<month>/<scheme_uid>.pdf
 
 Skipped if the target file already exists with non-zero size — re-running
 the script is idempotent.
 
 Errors (4xx/5xx HTTP, timeouts, network blips) are logged to
-`bajaj-mf-bot/data/download_report_<month>.json` and the loop continues
+`rm-assist/data/download_report_<month>.json` and the loop continues
 with the remaining URLs. The summary line at the end is:
 
     Downloaded N, Skipped M (already present), Failed K. Report saved to <path>.

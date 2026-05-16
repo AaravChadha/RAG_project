@@ -1,6 +1,6 @@
-# bajaj-mf-bot
+# RM Assist
 
-Internal Bajaj Capital research assistant for Relationship Managers. Answers structured questions about mutual fund schemes from monthly research reports.
+Internal Bajaj Capital research assistant for Relationship Managers — RM Assist answers structured questions about mutual fund schemes from monthly research reports.
 
 ## Architecture
 

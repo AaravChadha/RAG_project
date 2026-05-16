@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pytest
 
-# Make the bajaj-mf-bot package root importable.
+# Make the rm-assist package root importable.
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))

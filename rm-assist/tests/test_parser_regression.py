@@ -24,7 +24,7 @@ from pathlib import Path
 import pytest
 from deepdiff import DeepDiff
 
-# Make the bajaj-mf-bot package root importable regardless of where pytest
+# Make the rm-assist package root importable regardless of where pytest
 # is invoked from.
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:

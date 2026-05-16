@@ -1,4 +1,4 @@
-"""Bajaj Capital MF Research — Streamlit UI (Phase 6).
+"""RM Assist — Streamlit UI (Phase 6).
 
 Top-level structure:
 
@@ -28,7 +28,7 @@ from typing import Any, Dict, List, Optional
 
 import streamlit as st
 
-# Make the bajaj-mf-bot package root importable when launched via
+# Make the rm-assist package root importable when launched via
 # `streamlit run app/streamlit_app.py` (Streamlit doesn't put the parent
 # on sys.path).
 _THIS_DIR = Path(__file__).resolve().parent
@@ -49,7 +49,7 @@ logger = logging.getLogger(__name__)
 # replaced with a real `feedback` table writer.
 _FEEDBACK_MAILTO: str = (
     "mailto:research-bot-ops@bajajcapital.in"
-    "?subject=Bajaj%20MF%20Research%20Bot%20-%20Problem%20report"
+    "?subject=RM%20Assist%20-%20Problem%20report"
 )
 
 
@@ -57,7 +57,7 @@ _FEEDBACK_MAILTO: str = (
 # Page-level config — MUST be the first Streamlit call.
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Bajaj MF Research",
+    page_title="RM Assist",
     page_icon=":bar_chart:",
     layout="centered",
 )
@@ -208,7 +208,7 @@ def _render_feedback_controls(msg_index: int, message: Dict[str, Any]) -> None:
 # ---------------------------------------------------------------------------
 # Title + chat history.
 # ---------------------------------------------------------------------------
-st.title("Bajaj Capital Research Bot")
+st.title("RM Assist")
 st.caption(
     "Internal research assistant. Every answer is research output — "
     "verify against your own analysis before advising clients."

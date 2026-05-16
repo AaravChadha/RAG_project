@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for the bajaj-mf-bot test suite.
+"""Shared pytest fixtures for the rm-assist test suite.
 
 The flagship fixture is `seeded_db`: it forces a fresh DB, inserts one
 known scheme, parses the Canara Robeco sample PDF to produce a real
@@ -18,8 +18,8 @@ from typing import Iterator
 
 import pytest
 
-# Make the bajaj-mf-bot package root importable regardless of where pytest
-# is invoked from (e.g. `pytest tests/` vs `pytest bajaj-mf-bot/tests/`).
+# Make the rm-assist package root importable regardless of where pytest
+# is invoked from (e.g. `pytest tests/` vs `pytest rm-assist/tests/`).
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -55,7 +55,7 @@ def seeded_db(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Path]
     (pytest's per-test temp directory) and monkeypatches `config.DB_PATH`
     so every other module that reads it at call time (db_query.query_db,
     db_query.log_query, chatbot.ask, etc.) sees the temp file. The
-    production DB at `bajaj-mf-bot/db/bajaj_mf.db` is never touched by
+    production DB at `rm-assist/db/bajaj_mf.db` is never touched by
     the test suite — you can run `pytest` between bulk ingests without
     wiping your 90-scheme dataset.
 

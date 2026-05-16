@@ -1,4 +1,4 @@
-# PLANNING.md — Bajaj Capital MF Research Chatbot Pilot
+# PLANNING.md — RM Assist (Bajaj Capital MF Research) Pilot
 
 > **Purpose of this document.** Hierarchical breakdown of the work for the 2-week, 5-RM pilot. Every phase has tasks; every task has subtasks; every subtask has acceptance criteria so we know it's done. Reference this file before starting each phase. Refer to `PLANNING_PROMPT.md` for the original problem statement and to `~/.claude/plans/i-want-to-make-cozy-storm.md` for the locked decisions and architectural rationale.
 >
@@ -42,7 +42,7 @@
 **Exit criterion:** `python -c "from app.chatbot import ask; print(ask('What is the expense ratio of Canara Robeco Multi Cap?'))"` returns the correct number with `(scheme + as-of date)` citation.
 
 ### [x] 1.1 Project skeleton & config
-- [x] **1.1.1** Create directory structure under `RAG_project/bajaj-mf-bot/` matching the layout in `~/.claude/plans/i-want-to-make-cozy-storm.md` (db/, ingest/, retrieval/, app/, tests/, data/pdfs/2026-05/).
+- [x] **1.1.1** Create directory structure under `RAG_project/rm-assist/` matching the layout in `~/.claude/plans/i-want-to-make-cozy-storm.md` (db/, ingest/, retrieval/, app/, tests/, data/pdfs/2026-05/). (Originally `bajaj-mf-bot/`, renamed 2026-05-16.)
 - [x] **1.1.2** Write `requirements.txt` with pinned versions: `pdfplumber`, `pymupdf`, `python-dotenv`, `groq`, `streamlit`, `streamlit-authenticator`, `pytest`, `deepdiff`.
 - [x] **1.1.3** Write `.env.example` with `GROQ_API_KEY=`, `LLM_PROVIDER=groq`, `LLM_MODEL=llama-3.3-70b-versatile`. Real `.env` is gitignored.
 - [x] **1.1.4** Write `.gitignore` excluding `data/pdfs/`, `*.db`, `.env`, `.streamlit/secrets.toml`, `__pycache__`, `.pytest_cache`.

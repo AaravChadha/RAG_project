@@ -1,4 +1,4 @@
-# STATUS — Bajaj MF Chatbot Pilot
+# STATUS — RM Assist Pilot
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
@@ -19,7 +19,7 @@ Phases 1-6 and 4.3 of the original plan are done. **Phase 7.2 added** in respons
 From the repo root:
 
 ```bash
-cd bajaj-mf-bot
+cd rm-assist
 
 # 1. (One-time) Install deps and set Groq key
 python -m venv .venv && source .venv/bin/activate
@@ -80,7 +80,7 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 - **2× daily token budget**: 200K TPD vs 100K TPD on Groq free tier.
 - 27% faster average latency.
 - Costs ~12% more tokens per question (more markdown output). Worth it.
-- Default set in `bajaj-mf-bot/.env.example` and `bajaj-mf-bot/config.py`. The `LLMClient` abstraction means swapping providers later is a one-line config change.
+- Default set in `rm-assist/.env.example` and `rm-assist/config.py`. The `LLMClient` abstraction means swapping providers later is a one-line config change.
 
 ### Parser fix: drawdown section on page 2 vs page 3
 - 21 funds (mostly Nippon India, White Oak Capital, Bandhan, Parag Parikh, etc.) had `parse_drawdown` failing because their page-2 content runs long enough to push the Drawdown Analysis section onto page 3.
@@ -228,22 +228,22 @@ These are deliberately deferred — they're real but non-blocking, and Phase 8 i
 | `PLANNING_PROMPT.md` | The original problem statement (frozen reference) |
 | `STATUS.md` | This file (rolling state) |
 | `schemes_master.csv` | The 90-scheme seed (3 columns: category, scheme, url) |
-| `bajaj-mf-bot/.env.example` | Template — copy to `.env` and add `GROQ_API_KEY` |
-| `bajaj-mf-bot/db/schema.sql` | DB schema (8 tables: schemes, fund_snapshots, holdings, sector_weights, periodic_returns, query_log, schema_version, scheme_aliases) |
-| `bajaj-mf-bot/ingest/parse_finalyca.py` | Main parser (header + manager + returns) |
-| `bajaj-mf-bot/ingest/_section_parsers.py` | Section parsers split out: mkt_cap, investment_style, periodic_returns, full_holdings |
-| `bajaj-mf-bot/app/streamlit_app.py` | The UI |
-| `bajaj-mf-bot/app/prompts.py` | System prompt (identity, 6-tool workflow, operating mode, category norms, market-state rules, theory rules, refusal rules) + `VERIFICATION_FOOTER` + `MARKET_CONFIDENCE_NOTE` constants |
-| `bajaj-mf-bot/retrieval/tools.py` | **6** tool implementations + OpenAI-style TOOLS schema (query_db, lookup_scheme, get_schema, compare_schemes, get_market_state, get_education_content) |
-| `bajaj-mf-bot/retrieval/llm_client.py` | Provider-agnostic LLMClient (Groq + Gemini + Mock backends, tool-call normalization, Llama-pseudo-XML recovery, 429 retry-with-backoff on Gemini) |
-| `bajaj-mf-bot/retrieval/market_data.py` | yfinance wrapper for NIFTY 50 / Sensex / NIFTY 500. 15-min in-memory cache. Used by `get_market_state` tool. |
-| `bajaj-mf-bot/retrieval/theory.py` | Loads + fuzzy-matches `data/theory.json` for the `get_education_content` tool. |
-| `bajaj-mf-bot/data/theory.json` | 10 FAQ entries (1 Bajaj-verified, 7 generic-with-disclaimer, 2 pending) for theory / education / Bajaj-positioning questions. Update by editing JSON; no code change required. |
-| `bajaj-mf-bot/tests/golden_questions.json` | 40 Q+A specification |
-| `bajaj-mf-bot/tests/golden/*.json` | Hand-extracted ground-truth for 3 sample PDFs |
-| `bajaj-mf-bot/tests/snapshots/*.json` | Parser regression baselines (deepdiff target) |
-| `bajaj-mf-bot/data/ingest_report_2026-05.json` | Per-scheme parse outcomes (errors, invariant warnings) |
-| `bajaj-mf-bot/data/eval_sample_*.json` | Real-Groq eval transcripts |
+| `rm-assist/.env.example` | Template — copy to `.env` and add `GROQ_API_KEY` |
+| `rm-assist/db/schema.sql` | DB schema (8 tables: schemes, fund_snapshots, holdings, sector_weights, periodic_returns, query_log, schema_version, scheme_aliases) |
+| `rm-assist/ingest/parse_finalyca.py` | Main parser (header + manager + returns) |
+| `rm-assist/ingest/_section_parsers.py` | Section parsers split out: mkt_cap, investment_style, periodic_returns, full_holdings |
+| `rm-assist/app/streamlit_app.py` | The UI |
+| `rm-assist/app/prompts.py` | System prompt (identity, 6-tool workflow, operating mode, category norms, market-state rules, theory rules, refusal rules) + `VERIFICATION_FOOTER` + `MARKET_CONFIDENCE_NOTE` constants |
+| `rm-assist/retrieval/tools.py` | **6** tool implementations + OpenAI-style TOOLS schema (query_db, lookup_scheme, get_schema, compare_schemes, get_market_state, get_education_content) |
+| `rm-assist/retrieval/llm_client.py` | Provider-agnostic LLMClient (Groq + Gemini + Mock backends, tool-call normalization, Llama-pseudo-XML recovery, 429 retry-with-backoff on Gemini) |
+| `rm-assist/retrieval/market_data.py` | yfinance wrapper for NIFTY 50 / Sensex / NIFTY 500. 15-min in-memory cache. Used by `get_market_state` tool. |
+| `rm-assist/retrieval/theory.py` | Loads + fuzzy-matches `data/theory.json` for the `get_education_content` tool. |
+| `rm-assist/data/theory.json` | 10 FAQ entries (1 Bajaj-verified, 7 generic-with-disclaimer, 2 pending) for theory / education / Bajaj-positioning questions. Update by editing JSON; no code change required. |
+| `rm-assist/tests/golden_questions.json` | 40 Q+A specification |
+| `rm-assist/tests/golden/*.json` | Hand-extracted ground-truth for 3 sample PDFs |
+| `rm-assist/tests/snapshots/*.json` | Parser regression baselines (deepdiff target) |
+| `rm-assist/data/ingest_report_2026-05.json` | Per-scheme parse outcomes (errors, invariant warnings) |
+| `rm-assist/data/eval_sample_*.json` | Real-Groq eval transcripts |
 | `~/.claude/plans/i-want-to-make-cozy-storm.md` | Original architecture decisions plan |
 | `~/.claude/projects/.../memory/` | Persistent memory: user profile, hardware, stack, operating mode, etc. |
 

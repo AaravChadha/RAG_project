@@ -9,7 +9,7 @@ The dump is JSON-serializable: dates are ISO-stringified, JSON columns
 (`composition_json` etc.) are re-parsed back into dicts/lists so a
 trivial whitespace change in `json.dumps` doesn't produce false diffs.
 
-Usage (from `bajaj-mf-bot/`):
+Usage (from `rm-assist/`):
     python scripts/snapshot_parsed_outputs.py
 
 Re-run after intentional parser changes to refresh the baseline.
@@ -24,7 +24,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-# Make the bajaj-mf-bot package root importable when invoked as a script.
+# Make the rm-assist package root importable when invoked as a script.
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))

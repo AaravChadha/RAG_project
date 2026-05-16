@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-# Add the bajaj-mf-bot package root to sys.path so `import config` and
+# Add the rm-assist package root to sys.path so `import config` and
 # `from retrieval.llm_client import ...` resolve regardless of where pytest
 # is invoked from.
 ROOT = Path(__file__).resolve().parents[1]
