@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-16 (post-RM-input prompt grafts + latency optimization #1: retired get_schema tool, schema embedded in SYSTEM_PROMPT)
+> **Last update**: 2026-05-16 (latency optimization #2: `get_full_snapshot` tool + category-shaped-queries rule. Tool count 5 → 6.)
 
 ---
 
@@ -172,6 +172,24 @@ Validation:
 Two more optimizations on deck (from the same diagnosis, not yet built):
 - **#2** — `get_full_snapshot(scheme_hint)` tool that does fuzzy-match + returns the full per-fund picture (fund_snapshots + holdings + sector_weights + benchmark returns) in one tool call. Collapses lookup_scheme + 1-2 query_db calls into one. ~1-2 hours.
 - **#3** — Streaming the final answer via `st.write_stream` for perceived-latency win. Already on Phase 8 UX-polish list.
+
+### Latency optimization #2: `get_full_snapshot` tool + category-shaped-queries rule (2026-05-16)
+
+Post-#1, the tool-use loop on a typical single-fund recommendation still did 3-4 round-trips: lookup_scheme → query_db (snapshot) → maybe query_db (benchmark or holdings) → answer. The `lookup_scheme + query_db` sequence is the single most common workflow pattern in the bot's usage; collapsing it to one call is the highest-leverage remaining structural change.
+
+New tool `get_full_snapshot(scheme_hint, include?)` in `retrieval/tools.py`:
+- Fuzzy-matches the scheme name internally (collapses `lookup_scheme` into the same call).
+- Returns six sections in one JSON envelope: `snapshot` (curated ~30 metrics), `benchmark` (name + return_*_bm + computed alpha for 1Y/3Y/5Y), `top_holdings` (top 10 by weight), `sector_weights` (all sectors), `managers` (parsed from fund_managers_json), `drawdown` (pct + dates).
+- Optional `include` parameter lets the model trim sections (e.g. `["snapshot"]` for a pure return question) — keeps payload bounded on lighter questions.
+- On no-match returns `{"matched": False, "scheme_hint": ..., "message": ...}` envelope so the model routes to an `unknown_scheme` refusal cleanly.
+
+Tool count: **5 → 6**. SYSTEM_PROMPT workflow rewritten — Step 1 is now "if question is about ONE specific scheme, call get_full_snapshot." `lookup_scheme` demoted to disambiguation duty only (when the user's wording could match multiple schemes). `query_db` reframed as the cross-fund / category / filter / ranking path.
+
+Bundled with the same commit: new **"Category-shaped queries"** section in SYSTEM_PROMPT. Disambiguates strict-SEBI-category vs functional-large-cap-exposure interpretation. Default is strict category match (`WHERE category = 'Large Cap'`); client-conditional questions add a one-line note about adjacent categories (Multi Cap / Flexi Cap also carry significant large-cap exposure); portfolio-shaped questions ignore the category column and filter on `large_cap_pct` instead. Same logic generalises to mid/small cap and debt-vs-hybrid.
+
+Expected payoff: single-fund questions drop from 4 round-trips to 2 (one for get_full_snapshot, one for the final answer). On Q01-shape questions (already 71s post-#1), this should land in the ~40-50s range. Validation pending clean Groq run (still rate-limited from earlier today).
+
+Unit tests added: 4 new tests in `tests/test_tools.py` cover all-sections, include filter, no-match envelope, and bad-arguments path. Updated `test_tools_schema_well_formed` for `len(TOOLS) == 6` and the new name set. Full suite: **60 passed, 40 skipped** (was 56/40; +4 new tests, no regressions).
 
 ### Debt-template support (2026-05-12)
 Debt PDFs share ~80% of the equity Finalyca template. Most sections work without changes; only Portfolio Characteristics differs (debt: Avg Maturity Years + YTM + Modified Duration vs equity: P/E, P/B, Mkt Cap fields).

@@ -1,6 +1,6 @@
 """Tool definitions and dispatcher for the LLM tool-use loop.
 
-The chatbot LLM doesn't talk to SQLite directly. Instead, it picks from five
+The chatbot LLM doesn't talk to SQLite directly. Instead, it picks from six
 named tools and the dispatcher in this module runs them. Each tool returns a
 JSON-encoded string so the result can be embedded verbatim in the next
 ``tool`` message without further marshalling.
@@ -13,14 +13,18 @@ Public surface:
   a string; never raises (failures are encoded as ``{"error": ...}`` JSON so
   the model can read and react to them).
 
-The five tools:
+The six tools:
 
-* ``query_db`` — thin wrapper over the read-only ``db_query.query_db``.
-* ``lookup_scheme`` — fuzzy substring search over ``schemes`` so the LLM can
-  canonicalise names before constructing SQL.
-* ``compare_schemes`` — purpose-built side-by-side comparison so the model
-  doesn't have to hand-roll the same join + filter SQL each time it sees a
-  "compare X vs Y" question.
+* ``query_db`` — thin wrapper over the read-only ``db_query.query_db``;
+  used for cross-fund queries (rankings, filters, category lists,
+  holdings searches).
+* ``lookup_scheme`` — fuzzy substring search over ``schemes``; mainly
+  used for disambiguation when the user's wording matches multiple funds.
+* ``compare_schemes`` — purpose-built side-by-side comparison for
+  ``compare X vs Y`` questions.
+* ``get_full_snapshot`` — fuzzy-match plus the full per-fund picture
+  (snapshot row + benchmark + alpha + top holdings + sectors + managers +
+  drawdown) in one call; the preferred path for single-fund questions.
 * ``get_market_state`` — current Indian-index levels + recent moves; for
   market-timing questions.
 * ``get_education_content`` — FAQ-style theory/Bajaj-positioning content.
@@ -240,6 +244,187 @@ def _tool_compare_schemes(arguments: Dict[str, Any]) -> str:
     return json.dumps({"comparison": comparison}, default=str)
 
 
+# Sections that get_full_snapshot returns by default. Kept aligned with the
+# tool description in the TOOLS schema; if you add a section here, mention
+# it in the description so the model knows to ask for it.
+_FULL_SNAPSHOT_DEFAULT_SECTIONS: List[str] = [
+    "snapshot",
+    "benchmark",
+    "top_holdings",
+    "sector_weights",
+    "managers",
+    "drawdown",
+]
+
+# Curated metric subset returned in the "snapshot" section. We do NOT return
+# the full ~80-column fund_snapshots row because most columns are operational
+# metadata (parser_version, parse_errors_json, etc.) the model doesn't need.
+_FULL_SNAPSHOT_METRIC_COLUMNS: List[str] = [
+    "as_of_date", "report_month",
+    "expense_ratio", "fund_aum_cr", "inception_date", "fund_age",
+    "return_1y", "return_3y", "return_5y", "return_since_inception",
+    "sharpe_1y", "sharpe_3y", "std_dev_1y", "std_dev_3y",
+    "beta_1y", "beta_3y", "treynor_1y", "treynor_3y",
+    "info_ratio_1y", "info_ratio_3y",
+    "up_capture_1y", "down_capture_1y",
+    "large_cap_pct", "mid_cap_pct", "small_cap_pct",
+    "portfolio_pe", "portfolio_pb", "portfolio_div_yield",
+    "modified_duration", "avg_maturity_years", "yield_to_maturity",
+]
+
+
+def _tool_get_full_snapshot(arguments: Dict[str, Any]) -> str:
+    """Return the full per-fund picture in one call.
+
+    Collapses the canonicalize -> fetch snapshot -> maybe-fetch-holdings/sectors
+    sequence into a single tool call for single-fund questions. The model
+    receives every section it typically needs to answer "is X a buy?" /
+    "rationale for X" / "snapshot of X" without further round-trips.
+
+    Arguments:
+        scheme_hint: partial or full scheme name. Fuzzy-matched (first-hit
+            wins) against the ``schemes`` table.
+        include: optional list of section names to return. Defaults to all
+            six. Trim when you only need a subset (e.g. ['snapshot'] for a
+            pure return question).
+
+    Returns a JSON envelope with ``matched`` (bool) and, on a hit, the
+    requested sections plus ``scheme`` metadata. On a miss returns
+    ``{"matched": False, "scheme_hint": ..., "message": ...}`` so the model
+    can route to an unknown_scheme refusal.
+    """
+    scheme_hint = arguments.get("scheme_hint", "")
+    if not isinstance(scheme_hint, str) or not scheme_hint.strip():
+        return json.dumps({
+            "error": "bad_arguments",
+            "message": "'scheme_hint' must be a non-empty string",
+        })
+
+    include_raw = arguments.get("include")
+    if include_raw is not None and not isinstance(include_raw, list):
+        return json.dumps({
+            "error": "bad_arguments",
+            "message": "'include' must be a list of section names or omitted",
+        })
+    requested = set(include_raw) if include_raw else set(_FULL_SNAPSHOT_DEFAULT_SECTIONS)
+
+    try:
+        match = _fuzzy_lookup_scheme(scheme_hint)
+    except sqlite3.Error as exc:
+        return json.dumps({"error": "sql_error", "message": str(exc)})
+
+    if not match:
+        return json.dumps({
+            "matched": False,
+            "scheme_hint": scheme_hint,
+            "message": f"No scheme matched '{scheme_hint}'",
+        })
+
+    scheme_id = int(match["scheme_id"])
+
+    # Pull full scheme metadata (amc, category, sub_category) — the
+    # _fuzzy_lookup_scheme helper returns only scheme_id + scheme_name.
+    try:
+        scheme_rows = query_db(
+            "SELECT scheme_id, scheme_name, amc, category, sub_category, scheme_uid "
+            "FROM schemes WHERE scheme_id = ?",
+            (scheme_id,),
+        )
+    except sqlite3.Error as exc:
+        return json.dumps({"error": "sql_error", "message": str(exc)})
+
+    scheme_meta = scheme_rows[0] if scheme_rows else dict(match)
+
+    result: Dict[str, Any] = {
+        "matched": True,
+        "scheme": scheme_meta,
+    }
+
+    try:
+        snap = _fetch_latest_snapshot(scheme_id)
+    except sqlite3.Error as exc:
+        result["error"] = f"sql_error: {exc}"
+        return json.dumps(result, default=str)
+
+    if not snap:
+        # Scheme exists in the master list but has no snapshot loaded yet.
+        # Surface this clearly so the model can route to a no_data refusal.
+        result["snapshot"] = None
+        result["message"] = "scheme matched but no snapshot loaded"
+        return json.dumps(result, default=str)
+
+    snapshot_id = int(snap["snapshot_id"])
+
+    if "snapshot" in requested:
+        result["snapshot"] = {col: snap.get(col) for col in _FULL_SNAPSHOT_METRIC_COLUMNS}
+
+    if "benchmark" in requested:
+        alpha: Dict[str, Optional[float]] = {}
+        for period in ("1y", "3y", "5y"):
+            fund_r = snap.get(f"return_{period}")
+            bm_r = snap.get(f"return_{period}_bm")
+            if fund_r is not None and bm_r is not None:
+                try:
+                    alpha[period] = round(float(fund_r) - float(bm_r), 2)
+                except (TypeError, ValueError):
+                    alpha[period] = None
+            else:
+                alpha[period] = None
+        result["benchmark"] = {
+            "name": snap.get("benchmark"),
+            "return_1y_bm": snap.get("return_1y_bm"),
+            "return_3y_bm": snap.get("return_3y_bm"),
+            "return_5y_bm": snap.get("return_5y_bm"),
+            "alpha": alpha,
+        }
+
+    if "drawdown" in requested:
+        result["drawdown"] = {
+            "pct": snap.get("drawdown_pct"),
+            "duration_days": snap.get("drawdown_duration_days"),
+            "peak_date": snap.get("drawdown_peak_date"),
+            "valley_date": snap.get("drawdown_valley_date"),
+            "recovery_date": snap.get("drawdown_recovery_date"),
+        }
+
+    if "managers" in requested:
+        managers_raw = snap.get("fund_managers_json")
+        if managers_raw:
+            try:
+                parsed = json.loads(managers_raw) if isinstance(managers_raw, str) else managers_raw
+                result["managers"] = parsed if isinstance(parsed, list) else []
+            except (json.JSONDecodeError, TypeError):
+                result["managers"] = []
+        else:
+            result["managers"] = []
+
+    if "top_holdings" in requested:
+        try:
+            holdings_rows = query_db(
+                "SELECT security_name, weight_pct, sector, market_cap, instrument_type "
+                "FROM holdings "
+                "WHERE scheme_id = ? AND report_month = ? "
+                "ORDER BY weight_pct DESC LIMIT 10",
+                (scheme_id, snap.get("report_month")),
+            )
+            result["top_holdings"] = holdings_rows
+        except sqlite3.Error as exc:
+            result["top_holdings"] = {"error": f"sql_error: {exc}"}
+
+    if "sector_weights" in requested:
+        try:
+            sector_rows = query_db(
+                "SELECT sector, weight_pct FROM sector_weights "
+                "WHERE snapshot_id = ? ORDER BY weight_pct DESC",
+                (snapshot_id,),
+            )
+            result["sector_weights"] = sector_rows
+        except sqlite3.Error as exc:
+            result["sector_weights"] = {"error": f"sql_error: {exc}"}
+
+    return json.dumps(result, default=str)
+
+
 def _tool_get_education_content(arguments: Dict[str, Any]) -> str:
     """Wrapper around theory.get_education_content for the LLM tool surface.
 
@@ -301,6 +486,7 @@ _DISPATCH: Dict[str, Callable[[Dict[str, Any]], str]] = {
     "query_db": _tool_query_db,
     "lookup_scheme": _tool_lookup_scheme,
     "compare_schemes": _tool_compare_schemes,
+    "get_full_snapshot": _tool_get_full_snapshot,
     "get_market_state": _tool_get_market_state,
     "get_education_content": _tool_get_education_content,
 }
@@ -497,6 +683,55 @@ TOOLS: List[Dict[str, Any]] = [
                     },
                 },
                 "required": ["scheme_names"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_full_snapshot",
+            "description": (
+                "Return the FULL per-fund picture in ONE call: latest "
+                "snapshot row (returns, Sharpe, std_dev, expense, AUM, "
+                "beta, capture ratios, market-cap composition, portfolio "
+                "PE/PB, modified duration / YTM), benchmark name + "
+                "benchmark returns + alpha (fund minus benchmark) for "
+                "1Y/3Y/5Y, top 10 holdings, all sector weights, manager "
+                "bios, drawdown. The scheme name is fuzzy-matched "
+                "internally — no need to call lookup_scheme first. "
+                "PREFER this over lookup_scheme + query_db for ANY "
+                "question about ONE specific scheme: 'is X a buy?', "
+                "'rationale for X', 'snapshot of X', 'what sectors does "
+                "X hold?', 'who manages X?', 'how is X performing vs its "
+                "benchmark?'. Do NOT use for cross-fund queries "
+                "(rankings, filters, category lists, holdings searches "
+                "across funds) — those go to query_db. Do NOT use for "
+                "multi-fund comparisons — use compare_schemes."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "scheme_hint": {
+                        "type": "string",
+                        "description": (
+                            "Partial or full scheme name to fuzzy-match. "
+                            "Example: 'Canara Robeco Multi Cap'."
+                        ),
+                    },
+                    "include": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "Optional list of section names. Defaults to "
+                            "all six: ['snapshot', 'benchmark', "
+                            "'top_holdings', 'sector_weights', 'managers', "
+                            "'drawdown']. Trim when you only need a "
+                            "subset (e.g. ['snapshot'] for a pure return "
+                            "question)."
+                        ),
+                    },
+                },
+                "required": ["scheme_hint"],
             },
         },
     },

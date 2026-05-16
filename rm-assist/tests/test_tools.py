@@ -1,4 +1,4 @@
-"""Tests for ``retrieval.tools`` — the four LLM tools and the dispatcher.
+"""Tests for ``retrieval.tools`` — the six LLM tools and the dispatcher.
 
 Every test goes through ``execute_tool`` (the public surface) so we're
 exercising the same code path the chatbot will. We deliberately don't
@@ -112,10 +112,73 @@ def test_compare_schemes_default_metrics(seeded_db) -> None:
         assert expected in metrics, f"default metric missing: {expected}"
 
 
+def test_get_full_snapshot_returns_all_sections(seeded_db) -> None:
+    """The fat-snapshot tool returns every default section for a matched scheme."""
+    raw = execute_tool(
+        "get_full_snapshot",
+        {"scheme_hint": "Canara Robeco"},
+    )
+    payload = json.loads(raw)
+
+    assert payload.get("matched") is True
+    assert "Canara" in payload["scheme"]["scheme_name"]
+
+    # All six default sections must be present.
+    for section in ("snapshot", "benchmark", "top_holdings",
+                    "sector_weights", "managers", "drawdown"):
+        assert section in payload, f"missing default section '{section}'"
+
+    # Snapshot section carries the headline metrics.
+    snap = payload["snapshot"]
+    for metric in ("expense_ratio", "fund_aum_cr", "return_1y", "sharpe_1y",
+                   "std_dev_1y", "as_of_date"):
+        assert metric in snap, f"snapshot missing metric '{metric}'"
+
+    # Benchmark section computes alpha for each period (None if either side NULL).
+    assert "alpha" in payload["benchmark"]
+    assert set(payload["benchmark"]["alpha"].keys()) == {"1y", "3y", "5y"}
+
+
+def test_get_full_snapshot_include_filter(seeded_db) -> None:
+    """The `include` parameter trims to just the requested section(s)."""
+    raw = execute_tool(
+        "get_full_snapshot",
+        {"scheme_hint": "Canara Robeco", "include": ["snapshot"]},
+    )
+    payload = json.loads(raw)
+
+    assert payload.get("matched") is True
+    assert "snapshot" in payload
+    # Other default sections must NOT appear when include trims them.
+    for section in ("benchmark", "top_holdings", "sector_weights",
+                    "managers", "drawdown"):
+        assert section not in payload, f"unexpected section '{section}' with include=['snapshot']"
+
+
+def test_get_full_snapshot_no_match(seeded_db) -> None:
+    """An unknown scheme produces the structured matched=False envelope."""
+    raw = execute_tool(
+        "get_full_snapshot",
+        {"scheme_hint": "nonexistent-fund-xyzzy"},
+    )
+    payload = json.loads(raw)
+
+    assert payload.get("matched") is False
+    assert payload.get("scheme_hint") == "nonexistent-fund-xyzzy"
+    assert "No scheme matched" in payload.get("message", "")
+
+
+def test_get_full_snapshot_bad_arguments() -> None:
+    """Missing scheme_hint produces a bad_arguments error envelope."""
+    raw = execute_tool("get_full_snapshot", {})
+    payload = json.loads(raw)
+    assert payload.get("error") == "bad_arguments"
+
+
 def test_tools_schema_well_formed() -> None:
     """TOOLS is a list of OpenAI-style function-tool descriptors."""
     assert isinstance(TOOLS, list)
-    assert len(TOOLS) == 5
+    assert len(TOOLS) == 6
 
     names = set()
     for entry in TOOLS:
@@ -135,6 +198,7 @@ def test_tools_schema_well_formed() -> None:
         "query_db",
         "lookup_scheme",
         "compare_schemes",
+        "get_full_snapshot",
         "get_market_state",
         "get_education_content",
     }
