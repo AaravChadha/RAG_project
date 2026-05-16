@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-16 (Gemini RM-eval ran at 7/10; fixed RM08 grader brittleness + RM09 over-refusal via no-perfect-fit fallback rules in SYSTEM_PROMPT.)
+> **Last update**: 2026-05-16 (multi-turn conversation support: sliding window of last 3 Q+A pairs + heuristic compaction of older turns + Clear-conversation button.)
 
 ---
 
@@ -190,6 +190,25 @@ Bundled with the same commit: new **"Category-shaped queries"** section in SYSTE
 Expected payoff: single-fund questions drop from 4 round-trips to 2 (one for get_full_snapshot, one for the final answer). On Q01-shape questions (already 71s post-#1), this should land in the ~40-50s range. Validation pending clean Groq run (still rate-limited from earlier today).
 
 Unit tests added: 4 new tests in `tests/test_tools.py` cover all-sections, include filter, no-match envelope, and bad-arguments path. Updated `test_tools_schema_well_formed` for `len(TOOLS) == 6` and the new name set. Full suite: **60 passed, 40 skipped** (was 56/40; +4 new tests, no regressions).
+
+### Multi-turn conversation support (2026-05-16, evening)
+
+Before this change, every call to `ask()` started fresh — the Streamlit UI displayed prior turns but never threaded them back to the LLM. An RM asking "what's the expense ratio of Canara Robeco?" followed by "how does it compare to DSP?" got the second question treated as completely new — the "it" had no referent.
+
+Design: sliding window with heuristic compaction.
+
+- `ask(question, history=None, user_id=None)` — optional `history` parameter. Backwards compatible (defaults to `None`, single-shot mode for CLI / eval).
+- New helpers in `app/chatbot.py`: `_truncate_content`, `_compact_older_turns`, `_build_messages`.
+- Last **6 messages** (3 Q+A pairs) kept verbatim, each capped at **2000 chars** (defensive against very long table answers).
+- Older messages collapsed into a single system note: `Earlier user questions in this conversation (compacted):\n  - "..."\n  - "..."`. Only user questions carry forward — assistant answers are derivable from re-running tools and bloat context without signal.
+- Streamlit extracts prior `st.session_state["messages"]` (excluding the just-appended current user message) and passes as `history=...`. New "Clear conversation" button in the sidebar resets the thread.
+- New SYSTEM_PROMPT section "Multi-turn conversation handling" tells the model how to resolve pronouns, when to reuse vs re-fetch data, how to interpret the compact note, and to keep the verification footer on every follow-up.
+
+Why heuristic compaction over LLM-summarization: LLM summarization adds an extra inference call per compaction event — burns tokens AND latency on every Nth turn. The heuristic version is instant + deterministic. For RM workflows specifically, "which funds were discussed" + "what was the recent topic" is the load-bearing context, both directly extractable from user-question text.
+
+Cost impact: +1-3K input tokens per follow-up turn (mostly cached prefix). At 350-RM production scale (350 × 30 q/day × 30 days, ~30% follow-ups), this is the +$50-100/month delta in the earlier cost estimate.
+
+Validation: 14 new unit tests in `tests/test_multi_turn.py` exercise truncation, compaction, sliding-window threshold, role filtering, and the `ask(history=...)` integration via the mock LLM. Full pytest: **74 passed, 40 skipped** (was 60/40 before, +14 new, no regressions).
 
 ### Gemini RM-eval run + RM08 grader fix + RM09 over-refusal fallback (2026-05-16, late afternoon)
 

@@ -52,6 +52,106 @@ logger = logging.getLogger(__name__)
 MAX_ITERATIONS: int = 6
 
 
+# Multi-turn conversation handling
+# --------------------------------
+# The chat UI passes prior user/assistant turns via the `history` kwarg.
+# The implementation is a sliding-window with heuristic compaction:
+#   * The most recent _RECENT_WINDOW_MESSAGES messages are kept verbatim,
+#     each truncated to _PER_MESSAGE_CAP_CHARS to defend against very
+#     long table answers.
+#   * Messages older than that get compacted into a single system note
+#     listing the older user questions (the assistant's prior answers are
+#     derivable from re-running tools and bloat context without signal).
+# This avoids the "memory cliff" feel — instead of suddenly dropping all
+# context at turn N+1, the older turns gracefully degrade into a brief
+# continuity note.
+_RECENT_WINDOW_MESSAGES: int = 6     # last 3 user/assistant pairs kept verbatim
+_PER_MESSAGE_CAP_CHARS: int = 2000   # safety cap on each kept-verbatim message
+_COMPACT_USER_Q_CAP: int = 200       # cap on each older user question in the compact note
+
+
+def _truncate_content(content: str, cap: int) -> str:
+    """Clip ``content`` to ``cap`` characters, marking truncation explicitly."""
+    if not content or len(content) <= cap:
+        return content
+    return content[:cap] + "...[truncated]"
+
+
+def _compact_older_turns(older: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Heuristic compaction: extract user questions only, drop assistant answers.
+
+    The user's prior questions carry the topical thread (which funds were
+    discussed, what types of questions were asked). The assistant's prior
+    answers are derivable from re-running tools; including them in the
+    compact note bloats context without adding signal for follow-ups.
+
+    Returns a system-role message dict ready to insert into the prompt, or
+    None if ``older`` contains no user messages.
+    """
+    user_qs = [
+        _truncate_content(msg.get("content", ""), _COMPACT_USER_Q_CAP)
+        for msg in older
+        if msg.get("role") == "user" and msg.get("content")
+    ]
+    if not user_qs:
+        return None
+    body_lines = "\n".join(f'  - "{q}"' for q in user_qs)
+    return {
+        "role": "system",
+        "content": (
+            "Earlier user questions in this conversation (compacted):\n"
+            f"{body_lines}"
+        ),
+    }
+
+
+def _build_messages(
+    history: Optional[List[Dict[str, str]]],
+    current_question: str,
+) -> List[Dict[str, Any]]:
+    """Assemble the LLM message list with sliding-window history compaction.
+
+    Returns the ordered list: [system_prompt, (optional compact note),
+    *recent_window, current_user_question]. Always safe to call — empty/None
+    history just produces [system, user].
+    """
+    messages: List[Dict[str, Any]] = [
+        {"role": "system", "content": SYSTEM_PROMPT}
+    ]
+
+    if history:
+        if len(history) > _RECENT_WINDOW_MESSAGES:
+            older = history[:-_RECENT_WINDOW_MESSAGES]
+            recent = history[-_RECENT_WINDOW_MESSAGES:]
+            compact = _compact_older_turns(older)
+            if compact:
+                messages.append(compact)
+            for msg in recent:
+                role = msg.get("role")
+                if role not in ("user", "assistant"):
+                    continue
+                messages.append({
+                    "role": role,
+                    "content": _truncate_content(
+                        msg.get("content", ""), _PER_MESSAGE_CAP_CHARS,
+                    ),
+                })
+        else:
+            for msg in history:
+                role = msg.get("role")
+                if role not in ("user", "assistant"):
+                    continue
+                messages.append({
+                    "role": role,
+                    "content": _truncate_content(
+                        msg.get("content", ""), _PER_MESSAGE_CAP_CHARS,
+                    ),
+                })
+
+    messages.append({"role": "user", "content": current_question})
+    return messages
+
+
 # Refusal message emitted when the loop runs out of iterations. Returned
 # verbatim to the user; also stored as `final_answer` in `query_log`.
 _REFUSAL_LOOP_EXCEEDED: str = (
@@ -155,25 +255,33 @@ def _truncate(s: str, cap: int = _TOOL_RESULT_LOG_CAP) -> str:
     return s[:cap] + f"...[truncated, {len(s) - cap} more chars]"
 
 
-def ask(question: str, user_id: Optional[str] = None) -> Tuple[str, int]:
+def ask(
+    question: str,
+    history: Optional[List[Dict[str, str]]] = None,
+    user_id: Optional[str] = None,
+) -> Tuple[str, int]:
     """Answer ``question`` via an LLM tool-use loop.
 
-    Returns ``(answer, query_id)`` so callers (notably the Streamlit UI in
-    Phase 6) can hand the query_id to the feedback buttons without a
-    second DB round-trip. Always logs one row to ``query_log`` capturing
-    the question, tool trace, model, cumulative tokens/latency, and any
-    inferred refusal reason.
+    Args:
+        question: the current user question.
+        history: optional list of prior turn messages
+            ``[{"role": "user"|"assistant", "content": "..."}, ...]``.
+            When present, the assembled prompt prepends the most recent
+            ``_RECENT_WINDOW_MESSAGES`` verbatim and compacts older turns
+            into a single system note. Pass ``None`` (default) for a
+            fresh, single-shot conversation — back-compat with all CLI
+            and eval callers.
+        user_id: passed through to ``query_log`` for audit.
 
-    Note: the signature changed in Phase 6 from ``-> str`` to
-    ``-> (str, int)``. Callers that only want the string must unpack:
-    ``answer, _ = ask(...)``.
+    Returns ``(answer, query_id)`` so callers (notably the Streamlit UI)
+    can hand the query_id to feedback buttons without a second DB
+    round-trip. Always logs one row to ``query_log`` capturing the
+    question, tool trace, model, cumulative tokens/latency, and any
+    inferred refusal reason.
     """
     client = LLMClient()
 
-    messages: List[Dict[str, Any]] = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": question},
-    ]
+    messages: List[Dict[str, Any]] = _build_messages(history, question)
 
     # Cumulative telemetry across loop iterations. Each LLM hop adds to
     # these; tool execution time is rolled in via the wall clock around

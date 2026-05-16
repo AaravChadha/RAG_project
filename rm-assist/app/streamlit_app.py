@@ -146,7 +146,7 @@ display_name: str = st.session_state.get("name", user_id)
 # Sidebar.
 # ---------------------------------------------------------------------------
 def _render_sidebar(authenticator_obj, name: str) -> None:
-    """Sidebar with data status, identity, logout, and a problem-report link."""
+    """Sidebar with data status, identity, logout, conversation reset, and a problem-report link."""
     with st.sidebar:
         status = _load_data_status()
         st.markdown("### Data status")
@@ -157,6 +157,17 @@ def _render_sidebar(authenticator_obj, name: str) -> None:
         st.markdown("---")
         st.markdown(f"**Logged in as:** {name}")
         authenticator_obj.logout(location="sidebar")
+        st.markdown("---")
+        # Clear the chat thread (multi-turn conversation context resets too).
+        # Useful when the RM switches to a new client thread and doesn't want
+        # the prior session's questions leaking into the new conversation.
+        if st.button(
+            "Clear conversation",
+            help="Start a fresh chat thread (resets conversation history).",
+            use_container_width=True,
+        ):
+            st.session_state["messages"] = []
+            st.rerun()
         st.markdown("---")
         st.markdown(f"[Report a problem]({_FEEDBACK_MAILTO})")
 
@@ -260,6 +271,16 @@ for idx, msg in enumerate(st.session_state["messages"]):
 prompt = st.chat_input("Ask about a scheme, comparison, or shortlist...")
 
 if prompt:
+    # Build the conversation history BEFORE appending the current user message
+    # so the history passed to ask() contains only PRIOR turns. Strip out
+    # session-state metadata (query_id, feedback, etc.) — the bot only needs
+    # the role + content shape.
+    history: List[Dict[str, str]] = [
+        {"role": m["role"], "content": m["content"]}
+        for m in st.session_state["messages"]
+        if m.get("role") in ("user", "assistant") and m.get("content")
+    ]
+
     st.session_state["messages"].append(
         {
             "role": "user",
@@ -275,7 +296,7 @@ if prompt:
     with st.chat_message("assistant"):
         with st.spinner("Asking the model..."):
             try:
-                answer, query_id = ask(prompt, user_id=user_id)
+                answer, query_id = ask(prompt, history=history, user_id=user_id)
             except Exception as exc:  # noqa: BLE001
                 logger.exception("ask() failed for user=%s", user_id)
                 answer = (
