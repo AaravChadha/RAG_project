@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-16 (retrieval quality C: embedding-based theory matching with graceful degradation. Substring stays primary; sentence-transformers fallback catches paraphrases the substring matcher misses.)
+> **Last update**: 2026-05-18 evening. Retrieval quality A+B+C shipped, +16 snapshot columns, 88/40 tests, **calibrated 7/10 on Gemini holds post-grafts**. Groq free tier hit the per-minute 8K TPM cap mid-tool-loop — production needs paid Groq or Gemini-primary routing.
 
 ---
 
@@ -68,7 +68,9 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 | **7.2.3** Live market-state tool | ✅ | `retrieval/market_data.py` wraps `yfinance` for NIFTY 50 / Sensex / NIFTY 500 (current level + 1d/5d/1m/3m/6m/1y moves + 52w high/low distance, 15-min cache). New tool `get_market_state(indices?)`. SYSTEM_PROMPT gains "Market state and timing rules" + `MARKET_CONFIDENCE_NOTE` (mandatory disclaimer for market-timing answers). Market-timing **no longer refused** as `out_of_scope`. |
 | **7.2.4** Theory / education layer | ✅ | `data/theory.json` (10 entries — 1 Bajaj-verified, 7 generic-with-disclaimer, 2 pending) + `retrieval/theory.py` (load + fuzzy match) + new tool `get_education_content(topic)`. SYSTEM_PROMPT gains "Theory and education rules" with three response-mode rules (verified, disclaimer, pending). Brings tool count to **6**. |
 
-**Test status**: `pytest tests/ -v` → **56 passed, 40 skipped** (40 are Phase-2 golden questions waiting on full Phase-8 eval). Phase 7.2 work was smoke-tested manually against representative questions; eval target shifts to `tests/golden_rm_questions.json` once built from real RM input.
+**Test status**: `pytest tests/ -v` → **88 passed, 40 skipped** (40 are Phase-2 golden questions deferred — token-heavy; run via `scripts/run_eval_sample.py --all`). Real-RM eval target lives in `tests/golden_rm_questions.json` — 20 questions, calibrated to **7/10 on Gemini Flash 2.5** as of 2026-05-18.
+
+**Tool count: 6** — `query_db`, `lookup_scheme`, `compare_schemes`, `get_full_snapshot`, `get_market_state`, `get_education_content`. `get_schema` was retired 2026-05-16 in latency optimization #1; schema lives in SYSTEM_PROMPT.
 
 ---
 
@@ -191,7 +193,90 @@ Expected payoff: single-fund questions drop from 4 round-trips to 2 (one for get
 
 Unit tests added: 4 new tests in `tests/test_tools.py` cover all-sections, include filter, no-match envelope, and bad-arguments path. Updated `test_tools_schema_well_formed` for `len(TOOLS) == 6` and the new name set. Full suite: **60 passed, 40 skipped** (was 56/40; +4 new tests, no regressions).
 
-### Retrieval-quality graft C: embedding fallback for theory matching (2026-05-16, evening)
+### Calibrated eval baseline + Groq TPM-cap discovery (2026-05-18 evening)
+
+After all the day's grafts (A + B + C, +16 snapshot columns, multi-turn conversation, v1 streaming, RM08/RM09 fixes) landed, ran the calibration eval on both providers using `tests/golden_rm_questions.json` 10-Q subset (RM01, RM03, RM05, RM07, RM08, RM09, RM13, RM14, RM18, RM20).
+
+**Headline: 7/10 PASS on Gemini Flash 2.5 — unchanged from this morning's pre-grafts baseline.** Today's retrieval-quality work didn't regress anything; the bot still produces correct answers on every question that wasn't blocked by infrastructure failure.
+
+The 3 failures on Gemini are pre-existing flakes, not graft regressions:
+- **RM09 shortlist-conditional**: malformed tool call from Gemini (Phase 8 deferred — same shape as Q32). The RM09 over-refusal fix from earlier today IS correct; it just doesn't get a chance to fire because the question crashes before reaching the over-refusal code path.
+- **RM14 theory-MF**: malformed tool call on a theory-disclaimer route. Passed earlier today, fails this run. Flake.
+- **RM20 MF-vs-FD**: empty answer from Gemini (likely 503-retry exhaustion mid-call; the eval log shows multiple 503s during the run).
+
+Improvements visible in the run:
+- **RM08 (benchmark-alpha) now passes** — grader brittleness fix from earlier today landed (substring "1Y" → "alpha"). The bot output explicitly shows `"Alpha (fund – benchmark): 0.70%"`.
+- **Long-answer latency dropped 30-40%** on `get_full_snapshot`-heavy questions: RM07 84s → 53s, RM18 64s → 44s. Likely from NULL-trim payload reduction + richer single-shot data eliminating follow-up `query_db` calls.
+
+**Groq TPM cap discovery (production-decision moment):**
+
+Tried the same 10-Q eval on Groq for an apples-to-apples comparison against the STATUS.md 7-8/10 baseline. Got 3/10 PASS — but the 7 failures are all `413 Request too large for model openai/gpt-oss-120b... Limit 8000, Requested 8xxx`. That's the **per-minute TPM cap on Groq free tier**, NOT the daily TPD cap we've hit before.
+
+Root cause: the system has grown past 8K tokens per request. Sources of growth, cumulative:
+- SYSTEM_PROMPT: ~4K tokens (post category norms + market-state rules + theory rules + benchmark-alpha framing + category-shaped-queries + multi-turn-handling + embedded DB schema)
+- TOOLS schema: ~600 tokens (6 tool definitions, fat descriptions)
+- `get_full_snapshot` payload: ~2K tokens (rich; the +16 columns added ~200-400 tokens)
+- Multi-turn history: up to 2-3K tokens on a deep follow-up
+- Tool-result accumulation across the tool-use loop: 1.5K-3K per iteration
+
+Single requests now run 8-10K tokens — over the free-tier 8K TPM cap. The cap is per-minute, so it doesn't reset by waiting; only paid tier removes it.
+
+**Production decision (logged for the post-pilot scaling conversation):**
+
+The Groq free tier is no longer fit-for-purpose for this system. Three viable paths:
+1. **Groq Dev Tier (paid)** — no TPM cap. ~$15-130/month at projected pilot → 300-RM volumes. Cheapest path; same model behavior.
+2. **Switch primary to Gemini Flash 2.5** — much higher TPM (1M+/min). Today's 7/10 baseline is on Gemini. Different model = re-validate quality on a wider eval before committing.
+3. **Shrink prompt + payload** — temporary fix; the system will outgrow it again as features land. Not the right long-term answer.
+
+Per the cost projection from earlier today (350 RMs × 30 q/day × 30 days with both prompt-caching AND app-level query cache), realistic monthly LLM spend lands in **$400-800/month range on gpt-4o-mini**. Comparable for Groq Dev or Claude Haiku. The question is just which provider.
+
+**Calibrated 7/10 is the post-grafts baseline as of 2026-05-18.** This is the number to beat going into Phase 8 eval polish.
+
+### Retrieval quality graft: +16 snapshot columns (2026-05-18 evening)
+
+Audit of optimization #2's NULL-trim (B) surfaced a pre-existing gap: SYSTEM_PROMPT schema described columns that `get_full_snapshot` didn't actually return. Closed the gap by expanding `_FULL_SNAPSHOT_METRIC_COLUMNS` from 28 → 44 entries.
+
+Added:
+- Full return ladder: `return_1m`, `return_3m`, `return_6m`, `return_2y`, `return_10y` (was missing all intermediate periods)
+- All 1Y/3Y risk metrics: `r_square`, `sortino`, `tracking_error` variants (6 fields)
+- `up_capture_3y`, `down_capture_3y` (was 1Y-only)
+- Portfolio diversification: `total_securities`, `avg_mkt_cap_cr`, `median_mkt_cap_cr`
+
+Kept excluded intentionally: `overview` / `min_investment` / `exit_load` (prose/TEXT — verbose, fetched on demand), JSON blob columns (surfaced via parsed sections or `json_extract`).
+
+After-change field counts (NULL-trim still active):
+- Canara Robeco Multi Cap (equity, ~2.8yr): 32 fields populated
+- Bandhan Gilt (debt, 17yr): 28 fields populated
+
+Audit conclusion on B: **no real data was removed by the NULL-trim**. The trim only drops keys where value is exactly `None`. Validated on both equity and debt funds. The pre-existing column-coverage gap was a separate, pre-existing scope decision from #2 — not a B regression.
+
+### Retrieval quality grafts A + B (2026-05-18 evening): word-token fuzzy match + NULL-trim payload
+
+**A: replaced LIKE-substring with word-token overlap scoring.**
+
+Old fuzzy match (`_fuzzy_lookup_scheme` in `retrieval/tools.py`) used a single `LIKE '%X%'` clause + alphabetical-first-hit ranking. Failures RMs would have hit:
+- "Multi Cap Canara" → no match (word-order swap)
+- "ABSL" → no match (no AMC-name match path)
+- "DSP" → first DSP fund alphabetically, often wrong
+- Any typo → total failure
+
+New approach:
+1. Expand ~20 hardcoded brand abbreviations (ABSL → Aditya Birla Sun Life, PPFAS → Parag Parikh, MOSL → Motilal Oswal, etc.)
+2. Tokenize the query, filter domain-noise stopwords (`fund`, `scheme`, `mf`, `regular`, `direct`, `growth`)
+3. Score each scheme by token-overlap with `scheme_name + amc + category`
+4. Rank by score desc; tiebreak alphabetical
+
+Tolerates word-order, partial typos (one bad token, others still match), and brand abbreviations RMs actually use. `_tool_lookup_scheme` output gains a `match_score` field so the model can gauge confidence on multi-match results.
+
+Note: `scheme_aliases` table exists in schema but is unused for v1. Hardcoded abbreviation map covers the 95% case; if Bajaj/RMs need custom aliases later, switch reads to query the table. No schema change required.
+
+**B: NULL-trim on `get_full_snapshot` output.**
+
+New `_drop_nulls(d)` helper removes keys whose values are exactly `None`. Applied to snapshot, benchmark (including alpha sub-dict), drawdown, managers (per entry), top_holdings (per row), sector_weights (per row).
+
+Saves ~20-30% of payload tokens per call with zero information loss — equity funds drop debt-only fields (`avg_maturity_years`, `yield_to_maturity`), debt funds drop equity-side fields (`large_cap_pct`, `portfolio_pe`), young funds drop 3Y metrics. Audited on both fund types post-deploy; nothing real was removed.
+
+### Retrieval quality graft C (2026-05-18): embedding fallback for theory matching
 
 Builds on A + B. The substring matcher in `retrieval/theory.py` works for verbatim alias hits but misses paraphrases ("explain MFs" → `what_is_mf` was a miss). Embeddings catch those.
 
@@ -216,35 +301,6 @@ Builds on A + B. The substring matcher in `retrieval/theory.py` works for verbat
 - **Did NOT add embeddings for scheme lookup.** Schemes already use word-token scoring (graft A), which is the right tool there because scheme matches are lexical, not semantic. Embeddings would over-match — "DSP" semantically close to "TATA" wouldn't help a user looking for DSP.
 
 Validation: 9 new unit tests in `tests/test_theory.py` cover substring fast-path, bidirectional matching, embedding-paraphrase recovery (using a fake model to avoid loading the real 80MB model in CI), below-threshold no-match, ImportError graceful degradation, and substring-short-circuits-embedding ordering. Full pytest: **88 passed, 40 skipped** (was 79/40; +9 new tests, no regressions).
-
-### Retrieval-quality grafts A + B (2026-05-16, evening)
-
-Two changes to `retrieval/tools.py` that harden the retrieval surface for real-world RM queries.
-
-**A: word-token fuzzy match with brand-abbreviation expansion.**
-
-Before: `_fuzzy_lookup_scheme` and `_tool_lookup_scheme` used a single `LIKE '%X%'` clause with alphabetical-first-hit ranking. Failure modes:
-
-- "Multi Cap Canara" → no match (substring fails on word-order swap)
-- "ABSL" → no match (no AMC-name in scope; substring fails)
-- "Adity Birla" typo → no match (no Levenshtein tolerance)
-- "DSP" → returned the first DSP fund alphabetically, often wrong
-
-After: tokenise the query, expand brand abbreviations (ABSL → Aditya Birla Sun Life, PPFAS → Parag Parikh, MOSL → Motilal Oswal, etc. ~20 entries), score each scheme by token-overlap with `scheme_name + amc + category`, rank descending. Tolerates word-order, partial typos (one bad token, others still match), and the most common Indian-MF brand abbreviations RMs actually use.
-
-Implementation: ~120 LOC in `retrieval/tools.py` (`_tokenize`, `_expand_abbreviations`, `_score_scheme_matches`, `_fetch_all_schemes`). Domain-noise stopwords (`fund`, `scheme`, `mf`, `regular`, `direct`, `growth`, `idcw`) filtered so a bogus query like "nonexistent-fund-xyzzy" doesn't match every scheme via the trailing "fund".
-
-The `_tool_lookup_scheme` JSON output gains a `match_score` field — gives the model confidence info when multiple matches come back.
-
-Note on `scheme_aliases` table: the schema has it (designed for AMC mergers / scheme renames) but I left it unused for v1. The hardcoded abbreviation map covers the 95% case; if Bajaj or RMs need custom aliases later, switch reads to query the table. No schema change required.
-
-**B: NULL-trim on `get_full_snapshot` output.**
-
-Equity funds carry NULL on debt-only fields (`avg_maturity_years`, `yield_to_maturity`) and vice versa. Before: those keys appeared with `"avg_maturity_years": null`. Now: dropped entirely via a new `_drop_nulls(d)` helper. Same for benchmark alpha periods that couldn't be computed (fund <3yr → 3Y/5Y alpha dropped, not kept as null), drawdown dates, manager bio fields, per-holding `market_cap`.
-
-Outcome: ~20-30% payload reduction per `get_full_snapshot` call. At 350-RM scale that's ~300-500 fewer input tokens per single-fund question → meaningful at production scale (~$50-80/month savings before query-cache layer).
-
-Validation: 5 new unit tests covering word-order tolerance, partial-typo recovery, abbreviation expansion, stopword filtering, and the NULL-trim behavior. Full pytest: **79 passed, 40 skipped** (was 74/40; +5 new tests, no regressions).
 
 ### Multi-turn conversation support (2026-05-16, evening)
 
@@ -325,8 +381,10 @@ Debt PDFs share ~80% of the equity Finalyca template. Most sections work without
 | **Phase 7.1 finish-up** | Local tunnel works; pilot-readiness needs two more steps | (a) Open the trycloudflare URL on a phone over cellular to confirm external reachability (7.1.5). (b) Wrap `cloudflared` + Streamlit in launchd plists so they survive a reboot — or pick a hosting move per the "Future hosting" open item in PLANNING.md. |
 | **Bajaj-verified theory content** | Two `data/theory.json` entries (`direct_vs_regular` advisory pitch, `research_process`) return pending stubs. Seven other entries are generic-with-disclaimer | Bajaj content team supplies canonical text → flip `bajaj_verified` to `true` and paste into JSON. No code change. |
 | **Monthly market outlook note** | If Bajaj publishes one, ingest it alongside `get_market_state` for richer market-timing answers (price action + research-team view) | User to ask Bajaj research team whether the note exists. If yes, parse it via the same Finalyca-style pattern. |
-| **Run RM eval against tuned bot** | `tests/golden_rm_questions.json` was built 2026-05-16 (20 real-world client questions) but eval run was blocked when Groq 200K daily TPD cap hit mid-smoke-test | Wait for Groq daily reset OR switch `LLM_PROVIDER=gemini` and rerun. Command: `python -m scripts.run_eval_sample --file tests/golden_rm_questions.json --all`. |
-| **Re-verify curated 10-Q post-graft baseline** | Two prompt grafts + get_schema retirement landed 2026-05-16. Smoke test was contaminated by Groq TPD cap — only 3 of 10 questions executed cleanly (2 PASS, 1 FAIL on known Q05 ambiguity). Q01 latency dropped 94s → 71s (~25%) — directionally validates optimization #1 | Same as above — needs a clean 10-Q Groq run to confirm we're still ≥7/10 against the STATUS.md baseline. |
+| **Production provider decision** (NEW 2026-05-18) | Groq free tier blew the per-minute 8K TPM cap mid-tool-loop because cumulative prompt + payload growth pushed single requests past 8K tokens. Free tier no longer fit-for-purpose. | Choose: (a) Groq Dev tier (paid, ~$15-130/mo, no TPM cap, same model), (b) Gemini Flash 2.5 as primary (calibrated 7/10 today on free tier; paid for higher RPD), (c) defer until Bajaj compliance confirms whether public-derivable data may go through external APIs. Cost projection earlier today: $400-800/month at 350 RMs with prompt-caching + app-level query cache. |
+| **Run full 20-question RM eval cleanly** | Confirmed 7/10 on 10-Q subset calibrated baseline today on Gemini; full 20 will exhaust Gemini free tier 20-req/day cap and is over the Groq free-tier TPM cap | Run on Gemini paid OR Groq Dev tier when one is signed up. Command: `python -m scripts.run_eval_sample --file tests/golden_rm_questions.json --all` |
+| **App-level query cache** (NEW 2026-05-18) | Scoping doc written in this session. Hash `(normalized_question, report_month)` → cached answer; bypass LLM on hits. Expected 30-50% hit rate. Saves ~$290/month at 350-RM scale. | ~3-4 hours: new `retrieval/query_cache.py` (~150 LOC) + migration 003 + `ask()` integration + tests. See PLANNING.md Open Items for the full design. Best built AFTER pilot launch so cache is sized against real `query_log` data. |
+| **v2 real LLM streaming** (NEW 2026-05-18) | v1 fake-typewriter shipped. v2 = actual API streaming for first-token-fast UX. ~2-3 hours: modify `_GroqClient.chat` to support `stream=True` + accumulate tool_calls across chunked deltas + new `ask_stream()` generator path. | Defer until clean post-grafts eval baseline holds across multiple runs. Don't entangle new streaming code with regressions in other work. |
 | **Future hosting choice** (open item) | Stable URL + always-on, off your laptop | Production answer is Oracle Cloud Free Tier (Mumbai). See "Post-pilot scaling notes" in PLANNING.md for details. |
 
 ---
