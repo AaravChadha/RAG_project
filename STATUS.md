@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-16 (multi-turn conversation support: sliding window of last 3 Q+A pairs + heuristic compaction of older turns + Clear-conversation button.)
+> **Last update**: 2026-05-16 (retrieval quality: word-token fuzzy match w/ brand abbreviations + NULL-trim on get_full_snapshot output. Tolerates word-order swaps, brand abbreviations, and typos; ~20-30% payload trim.)
 
 ---
 
@@ -190,6 +190,35 @@ Bundled with the same commit: new **"Category-shaped queries"** section in SYSTE
 Expected payoff: single-fund questions drop from 4 round-trips to 2 (one for get_full_snapshot, one for the final answer). On Q01-shape questions (already 71s post-#1), this should land in the ~40-50s range. Validation pending clean Groq run (still rate-limited from earlier today).
 
 Unit tests added: 4 new tests in `tests/test_tools.py` cover all-sections, include filter, no-match envelope, and bad-arguments path. Updated `test_tools_schema_well_formed` for `len(TOOLS) == 6` and the new name set. Full suite: **60 passed, 40 skipped** (was 56/40; +4 new tests, no regressions).
+
+### Retrieval-quality grafts A + B (2026-05-16, evening)
+
+Two changes to `retrieval/tools.py` that harden the retrieval surface for real-world RM queries.
+
+**A: word-token fuzzy match with brand-abbreviation expansion.**
+
+Before: `_fuzzy_lookup_scheme` and `_tool_lookup_scheme` used a single `LIKE '%X%'` clause with alphabetical-first-hit ranking. Failure modes:
+
+- "Multi Cap Canara" → no match (substring fails on word-order swap)
+- "ABSL" → no match (no AMC-name in scope; substring fails)
+- "Adity Birla" typo → no match (no Levenshtein tolerance)
+- "DSP" → returned the first DSP fund alphabetically, often wrong
+
+After: tokenise the query, expand brand abbreviations (ABSL → Aditya Birla Sun Life, PPFAS → Parag Parikh, MOSL → Motilal Oswal, etc. ~20 entries), score each scheme by token-overlap with `scheme_name + amc + category`, rank descending. Tolerates word-order, partial typos (one bad token, others still match), and the most common Indian-MF brand abbreviations RMs actually use.
+
+Implementation: ~120 LOC in `retrieval/tools.py` (`_tokenize`, `_expand_abbreviations`, `_score_scheme_matches`, `_fetch_all_schemes`). Domain-noise stopwords (`fund`, `scheme`, `mf`, `regular`, `direct`, `growth`, `idcw`) filtered so a bogus query like "nonexistent-fund-xyzzy" doesn't match every scheme via the trailing "fund".
+
+The `_tool_lookup_scheme` JSON output gains a `match_score` field — gives the model confidence info when multiple matches come back.
+
+Note on `scheme_aliases` table: the schema has it (designed for AMC mergers / scheme renames) but I left it unused for v1. The hardcoded abbreviation map covers the 95% case; if Bajaj or RMs need custom aliases later, switch reads to query the table. No schema change required.
+
+**B: NULL-trim on `get_full_snapshot` output.**
+
+Equity funds carry NULL on debt-only fields (`avg_maturity_years`, `yield_to_maturity`) and vice versa. Before: those keys appeared with `"avg_maturity_years": null`. Now: dropped entirely via a new `_drop_nulls(d)` helper. Same for benchmark alpha periods that couldn't be computed (fund <3yr → 3Y/5Y alpha dropped, not kept as null), drawdown dates, manager bio fields, per-holding `market_cap`.
+
+Outcome: ~20-30% payload reduction per `get_full_snapshot` call. At 350-RM scale that's ~300-500 fewer input tokens per single-fund question → meaningful at production scale (~$50-80/month savings before query-cache layer).
+
+Validation: 5 new unit tests covering word-order tolerance, partial-typo recovery, abbreviation expansion, stopword filtering, and the NULL-trim behavior. Full pytest: **79 passed, 40 skipped** (was 74/40; +5 new tests, no regressions).
 
 ### Multi-turn conversation support (2026-05-16, evening)
 

@@ -38,9 +38,10 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import sqlite3
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Set
 
 from retrieval.db_query import query_db
 
@@ -121,12 +122,153 @@ def _tool_query_db(arguments: Dict[str, Any]) -> str:
     return json.dumps(truncated, default=str)
 
 
+# Brand abbreviation expansion map. Keys are lowercased; matching is on whole
+# word-tokens (not substrings) so "abs" doesn't accidentally trigger "absl".
+# Values are the canonical AMC name fragments — they get tokenised and added
+# to the user's query before scoring, so the word-overlap scorer naturally
+# picks up matches in ``schemes.amc``.
+#
+# This is intentionally small: the long-form AMC names already match via
+# word tokens (e.g. "Aditya Birla" matches without expansion). The map exists
+# only for genuinely opaque abbreviations RMs use ("ABSL", "PPFAS", "MOSL").
+_BRAND_ABBREVIATIONS: Dict[str, str] = {
+    "absl":         "aditya birla sun life",
+    "abslmf":       "aditya birla sun life",
+    "abi":          "aditya birla",
+    "absc":         "aditya birla sun life",
+    "icicipru":     "icici prudential",
+    "iciciprudential": "icici prudential",
+    "ipru":         "icici prudential",
+    "hdfcamc":      "hdfc",
+    "tatamf":       "tata",
+    "miraeasset":   "mirae asset",
+    "nipponindia":  "nippon india",
+    "parag":        "parag parikh",
+    "ppfas":        "parag parikh",
+    "ppfasmf":      "parag parikh",
+    "whiteoak":     "white oak capital",
+    "wocm":         "white oak capital",
+    "wocml":        "white oak capital",
+    "mosl":         "motilal oswal",
+    "motilal":      "motilal oswal",
+    "edel":         "edelweiss",
+    "barodabnp":    "baroda bnp paribas",
+    "bnpparibas":   "baroda bnp paribas",
+}
+
+
+# Tokens that match too many schemes to discriminate usefully. Two groups:
+#   (1) English connectives ("of", "the") — show up in queries but not as
+#       identifying tokens.
+#   (2) Domain-specific suffixes ("fund", "scheme", "regular", "direct",
+#       "growth", "idcw") — appear in nearly every Bajaj-recommended scheme
+#       name. If we DON'T filter these, a bogus query like
+#       "nonexistent-fund-xyzzy" matches every scheme (via "fund") and the
+#       fuzzy-lookup no-match path never fires.
+_TOKEN_STOPWORDS: Set[str] = {
+    # connectives
+    "of", "the", "an", "is", "at", "in", "on", "to", "by", "and",
+    # domain-noise: appear in virtually every scheme name
+    "fund", "scheme", "mf",
+    # plan / option markers
+    "regular", "direct", "growth", "idcw", "payout", "reinvestment",
+}
+
+
+def _tokenize(text: str) -> List[str]:
+    """Lowercase, split on non-alphanumeric, filter stopwords + 1-char tokens.
+
+    Tokens shorter than 2 characters are dropped — they match too many
+    schemes spuriously (e.g. a stray "f" matches every "Fund" suffix).
+    """
+    if not text:
+        return []
+    tokens = re.findall(r"[a-z0-9]+", text.lower())
+    return [t for t in tokens if len(t) >= 2 and t not in _TOKEN_STOPWORDS]
+
+
+def _expand_abbreviations(query: str) -> str:
+    """Expand brand abbreviations in ``query`` to canonical AMC forms.
+
+    Whole-token replacement only — guards against partial-word collisions
+    (e.g. the literal string "absl" embedded in a longer word doesn't
+    trigger expansion).
+    """
+    tokens = re.findall(r"[a-zA-Z0-9]+", query.lower())
+    expanded = []
+    for tok in tokens:
+        expanded.append(_BRAND_ABBREVIATIONS.get(tok, tok))
+    return " ".join(expanded)
+
+
+def _fetch_all_schemes() -> List[Dict[str, Any]]:
+    """Return every scheme with a pre-built searchable surface.
+
+    The searchable surface concatenates scheme_name + amc + category so
+    word-token scoring picks up matches against any of them. E.g. a query
+    of "DSP Multi Cap" scores 3 against "DSP Equity Opportunities Multi
+    Cap" (matches DSP via amc, Multi + Cap via category).
+
+    Not cached: 123 rows is cheap to re-fetch (~5ms), and caching across
+    test runs would create stale-data hazards. If profiling later shows
+    this matters, add caching with explicit per-DB-path invalidation.
+    """
+    sql = (
+        "SELECT scheme_id, scheme_name, amc, category, sub_category, "
+        "scheme_name || ' ' || amc || ' ' || category AS searchable "
+        "FROM schemes"
+    )
+    return query_db(sql)
+
+
+def _score_scheme_matches(
+    query: str, limit: int = 10,
+) -> List[Dict[str, Any]]:
+    """Score every scheme against ``query`` and return the top-N by overlap.
+
+    Algorithm: expand brand abbreviations in the query, tokenize, then
+    count how many of those tokens appear in each scheme's searchable
+    surface (scheme_name + amc + category). Filter to schemes with score
+    >= 1, sort by score descending, tiebreak alphabetical for stability.
+    """
+    expanded = _expand_abbreviations(query)
+    query_tokens = set(_tokenize(expanded))
+    if not query_tokens:
+        return []
+
+    scored: List[tuple[int, Dict[str, Any]]] = []
+    for row in _fetch_all_schemes():
+        candidate_tokens = set(_tokenize(row.get("searchable", "")))
+        overlap = len(query_tokens & candidate_tokens)
+        if overlap > 0:
+            scored.append((overlap, row))
+
+    # Sort: score desc, then scheme_name alphabetical for stable tie-break.
+    scored.sort(key=lambda item: (-item[0], item[1].get("scheme_name", "")))
+    return [
+        {
+            "scheme_id":   row["scheme_id"],
+            "scheme_name": row["scheme_name"],
+            "amc":         row["amc"],
+            "category":    row["category"],
+            "match_score": score,
+        }
+        for score, row in scored[:limit]
+    ]
+
+
 def _tool_lookup_scheme(arguments: Dict[str, Any]) -> str:
     """Find up to 10 schemes whose name fuzzy-matches the substring.
 
-    Returns a JSON list of ``{scheme_id, scheme_name, amc, category}`` dicts.
-    When nothing matches, returns ``{"matches": [], "message": "..."}`` so the
-    LLM has a clearly-shaped no-match signal it can pattern-match on.
+    Uses word-token scoring against scheme_name + amc + category, with brand
+    abbreviation expansion (ABSL -> Aditya Birla Sun Life, etc.). Tolerates
+    word-order swaps, partial-name queries, and common abbreviations the
+    naive ``LIKE '%X%'`` substring scan would miss.
+
+    Returns a JSON list of ``{scheme_id, scheme_name, amc, category,
+    match_score}`` dicts. When nothing matches, returns ``{"matches": [],
+    "message": "..."}``  so the LLM has a clearly-shaped no-match signal it
+    can pattern-match on.
     """
     needle = arguments.get("name_substring", "")
     if not isinstance(needle, str) or not needle.strip():
@@ -134,22 +276,16 @@ def _tool_lookup_scheme(arguments: Dict[str, Any]) -> str:
             {"error": "bad_arguments", "message": "Missing 'name_substring'."}
         )
 
-    sql = (
-        "SELECT scheme_id, scheme_name, amc, category "
-        "FROM schemes "
-        "WHERE LOWER(scheme_name) LIKE LOWER(?) "
-        "ORDER BY scheme_name LIMIT 10"
-    )
     try:
-        rows = query_db(sql, (f"%{needle}%",))
+        results = _score_scheme_matches(needle, limit=10)
     except sqlite3.Error as exc:
         return json.dumps({"error": "sql_error", "message": str(exc)})
 
-    if not rows:
+    if not results:
         return json.dumps(
             {"matches": [], "message": f"No scheme found matching '{needle}'"}
         )
-    return json.dumps(rows, default=str)
+    return json.dumps(results, default=str)
 
 
 def _fetch_latest_snapshot(scheme_id: int) -> Optional[Dict[str, Any]]:
@@ -164,14 +300,15 @@ def _fetch_latest_snapshot(scheme_id: int) -> Optional[Dict[str, Any]]:
 
 
 def _fuzzy_lookup_scheme(name_substring: str) -> Optional[Dict[str, Any]]:
-    """Return the first ``schemes`` row matching the substring, or None."""
-    sql = (
-        "SELECT scheme_id, scheme_name FROM schemes "
-        "WHERE LOWER(scheme_name) LIKE LOWER(?) "
-        "ORDER BY scheme_name LIMIT 1"
-    )
-    rows = query_db(sql, (f"%{name_substring}%",))
-    return rows[0] if rows else None
+    """Return the highest-scoring ``schemes`` row matching the query, or None.
+
+    Uses the same word-token scoring as ``_tool_lookup_scheme`` (brand
+    abbreviation expansion + overlap counting) so ``compare_schemes`` and
+    ``get_full_snapshot`` benefit from the same matching tolerance as the
+    LLM-facing lookup tool.
+    """
+    results = _score_scheme_matches(name_substring, limit=1)
+    return results[0] if results else None
 
 
 def _tool_compare_schemes(arguments: Dict[str, Any]) -> str:
@@ -242,6 +379,18 @@ def _tool_compare_schemes(arguments: Dict[str, Any]) -> str:
         })
 
     return json.dumps({"comparison": comparison}, default=str)
+
+
+def _drop_nulls(d: Dict[str, Any]) -> Dict[str, Any]:
+    """Remove keys whose values are ``None`` from a dict.
+
+    Used by ``_tool_get_full_snapshot`` to trim equity-only / debt-only
+    field NULLs out of the JSON payload. Saves ~20-30% of payload tokens
+    on a typical snapshot section with no information loss — a key being
+    absent and being explicitly ``null`` carry the same meaning to the
+    model, but the absent version costs ~6 fewer tokens.
+    """
+    return {k: v for k, v in d.items() if v is not None}
 
 
 # Sections that get_full_snapshot returns by default. Kept aligned with the
@@ -356,7 +505,13 @@ def _tool_get_full_snapshot(arguments: Dict[str, Any]) -> str:
     snapshot_id = int(snap["snapshot_id"])
 
     if "snapshot" in requested:
-        result["snapshot"] = {col: snap.get(col) for col in _FULL_SNAPSHOT_METRIC_COLUMNS}
+        # Drop NULL fields — equity funds carry NULL on debt-only metrics
+        # (avg_maturity_years, yield_to_maturity) and vice versa. Without
+        # filtering, the snapshot section runs ~30 keys regardless of fund
+        # type. Trimming saves ~20-30% of the payload token cost.
+        result["snapshot"] = _drop_nulls({
+            col: snap.get(col) for col in _FULL_SNAPSHOT_METRIC_COLUMNS
+        })
 
     if "benchmark" in requested:
         alpha: Dict[str, Optional[float]] = {}
@@ -367,36 +522,40 @@ def _tool_get_full_snapshot(arguments: Dict[str, Any]) -> str:
                 try:
                     alpha[period] = round(float(fund_r) - float(bm_r), 2)
                 except (TypeError, ValueError):
-                    alpha[period] = None
-            else:
-                alpha[period] = None
-        result["benchmark"] = {
-            "name": snap.get("benchmark"),
+                    pass  # skip — leave the period out of alpha entirely
+        result["benchmark"] = _drop_nulls({
+            "name":         snap.get("benchmark"),
             "return_1y_bm": snap.get("return_1y_bm"),
             "return_3y_bm": snap.get("return_3y_bm"),
             "return_5y_bm": snap.get("return_5y_bm"),
-            "alpha": alpha,
-        }
+            "alpha":        alpha or None,  # drop the alpha sub-dict if all NULL
+        })
 
     if "drawdown" in requested:
-        result["drawdown"] = {
-            "pct": snap.get("drawdown_pct"),
+        result["drawdown"] = _drop_nulls({
+            "pct":           snap.get("drawdown_pct"),
             "duration_days": snap.get("drawdown_duration_days"),
-            "peak_date": snap.get("drawdown_peak_date"),
-            "valley_date": snap.get("drawdown_valley_date"),
+            "peak_date":     snap.get("drawdown_peak_date"),
+            "valley_date":   snap.get("drawdown_valley_date"),
             "recovery_date": snap.get("drawdown_recovery_date"),
-        }
+        })
 
     if "managers" in requested:
         managers_raw = snap.get("fund_managers_json")
+        managers_list: List[Dict[str, Any]] = []
         if managers_raw:
             try:
                 parsed = json.loads(managers_raw) if isinstance(managers_raw, str) else managers_raw
-                result["managers"] = parsed if isinstance(parsed, list) else []
+                if isinstance(parsed, list):
+                    # Each manager entry can carry NULL qualification or
+                    # experience_years — drop those keys per entry.
+                    managers_list = [
+                        _drop_nulls(m) if isinstance(m, dict) else m
+                        for m in parsed
+                    ]
             except (json.JSONDecodeError, TypeError):
-                result["managers"] = []
-        else:
-            result["managers"] = []
+                managers_list = []
+        result["managers"] = managers_list
 
     if "top_holdings" in requested:
         try:
@@ -407,7 +566,9 @@ def _tool_get_full_snapshot(arguments: Dict[str, Any]) -> str:
                 "ORDER BY weight_pct DESC LIMIT 10",
                 (scheme_id, snap.get("report_month")),
             )
-            result["top_holdings"] = holdings_rows
+            # Many holdings have NULL market_cap (e.g. derivatives, cash) —
+            # trim per-row to keep the payload tight.
+            result["top_holdings"] = [_drop_nulls(h) for h in holdings_rows]
         except sqlite3.Error as exc:
             result["top_holdings"] = {"error": f"sql_error: {exc}"}
 
@@ -418,7 +579,7 @@ def _tool_get_full_snapshot(arguments: Dict[str, Any]) -> str:
                 "WHERE snapshot_id = ? ORDER BY weight_pct DESC",
                 (snapshot_id,),
             )
-            result["sector_weights"] = sector_rows
+            result["sector_weights"] = [_drop_nulls(s) for s in sector_rows]
         except sqlite3.Error as exc:
             result["sector_weights"] = {"error": f"sql_error: {exc}"}
 

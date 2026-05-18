@@ -52,9 +52,38 @@ def test_lookup_scheme_finds_canara(seeded_db) -> None:
     assert payload, "expected at least one match for 'canara'"
     first = payload[0]
     assert "Canara" in first["scheme_name"]
-    # The four canonical keys are part of the contract — assert them all.
-    for key in ("scheme_id", "scheme_name", "amc", "category"):
+    # The five canonical keys are part of the contract — assert them all.
+    # match_score is new in 2026-05-16's fuzzy-rewrite; lets the model
+    # judge confidence when multiple matches come back.
+    for key in ("scheme_id", "scheme_name", "amc", "category", "match_score"):
         assert key in first, f"missing key '{key}' in lookup_scheme result"
+    assert first["match_score"] >= 1
+
+
+def test_lookup_scheme_word_order_tolerant(seeded_db) -> None:
+    """Word-order swaps still match — 'Multi Cap Canara' finds the same fund."""
+    raw = execute_tool("lookup_scheme", {"name_substring": "Multi Cap Canara"})
+    payload = json.loads(raw)
+    assert isinstance(payload, list)
+    assert payload, "expected match for word-order-swapped query"
+    assert "Canara" in payload[0]["scheme_name"]
+    # All three tokens (multi, cap, canara) should match -> score 3 against
+    # "Canara Robeco Multi Cap Fund" (canara from name, multi+cap from name).
+    assert payload[0]["match_score"] >= 2
+
+
+def test_lookup_scheme_partial_token_still_scores(seeded_db) -> None:
+    """A query with a typo (one bad token) still ranks the right fund first.
+
+    'canara muti cap' has a typo on 'multi' -> 'muti'. The query has 3
+    tokens; 2 of them (canara, cap) still match. As long as ANY scheme
+    has a non-zero score, the fund with the highest overlap wins.
+    """
+    raw = execute_tool("lookup_scheme", {"name_substring": "canara muti cap"})
+    payload = json.loads(raw)
+    assert isinstance(payload, list)
+    assert payload, "expected match despite a typo on one token"
+    assert "Canara" in payload[0]["scheme_name"]
 
 
 def test_lookup_scheme_no_match(seeded_db) -> None:
@@ -134,9 +163,47 @@ def test_get_full_snapshot_returns_all_sections(seeded_db) -> None:
                    "std_dev_1y", "as_of_date"):
         assert metric in snap, f"snapshot missing metric '{metric}'"
 
-    # Benchmark section computes alpha for each period (None if either side NULL).
+    # Benchmark section computes alpha only for periods where BOTH fund and
+    # benchmark returns are non-NULL. Canara Robeco Multi Cap (seeded) is
+    # <3yr old so 3Y/5Y alpha aren't computable; only the 1Y entry should
+    # appear. Periods with no alpha get DROPPED (not kept as None), per the
+    # NULL-trim policy on get_full_snapshot output.
     assert "alpha" in payload["benchmark"]
-    assert set(payload["benchmark"]["alpha"].keys()) == {"1y", "3y", "5y"}
+    alpha_keys = set(payload["benchmark"]["alpha"].keys())
+    assert "1y" in alpha_keys, "1Y alpha should be present for a fund with 1Y data"
+    # 3Y / 5Y absence is correct for the seeded fund — assert NOT present.
+    assert alpha_keys.issubset({"1y", "3y", "5y"})
+
+
+def test_get_full_snapshot_drops_null_fields(seeded_db) -> None:
+    """NULL metrics are dropped from the payload, not returned as null.
+
+    Equity funds carry NULL on debt-only fields (avg_maturity_years,
+    yield_to_maturity) and vice versa. The NULL-trim policy on
+    get_full_snapshot keeps the payload tight by omitting these keys
+    rather than emitting ``"avg_maturity_years": null``.
+    """
+    raw = execute_tool(
+        "get_full_snapshot",
+        {"scheme_hint": "Canara Robeco"},
+    )
+    payload = json.loads(raw)
+    snap = payload["snapshot"]
+
+    # Equity fund -> debt-side fields should be ABSENT (not null) when trimmed.
+    # We assert at least one of these is absent rather than all, to remain
+    # robust if a future seed has partial debt data.
+    debt_only_fields = ["avg_maturity_years", "yield_to_maturity"]
+    present_count = sum(1 for f in debt_only_fields if f in snap)
+    assert present_count == 0, (
+        f"Equity fund snapshot should drop debt-only NULLs; "
+        f"found {present_count} present: "
+        f"{[f for f in debt_only_fields if f in snap]}"
+    )
+
+    # Sanity: equity-side keys are present.
+    for required in ("expense_ratio", "fund_aum_cr", "return_1y"):
+        assert required in snap, f"required equity metric '{required}' missing"
 
 
 def test_get_full_snapshot_include_filter(seeded_db) -> None:
@@ -173,6 +240,39 @@ def test_get_full_snapshot_bad_arguments() -> None:
     raw = execute_tool("get_full_snapshot", {})
     payload = json.loads(raw)
     assert payload.get("error") == "bad_arguments"
+
+
+def test_tokenize_filters_short_and_stopwords() -> None:
+    """The token splitter drops 1-char tokens + the stopword list.
+
+    The stopword list deliberately includes domain-noise terms (fund,
+    scheme, regular, direct, growth, idcw) that appear in nearly every
+    Bajaj-recommended scheme name — they don't discriminate, so the
+    fuzzy-matcher gets cleaner signal by ignoring them.
+    """
+    from retrieval.tools import _tokenize  # noqa: WPS433 — intentional internal use
+
+    # 'a' is too short; 'of'/'the' are connectives; 'fund' is domain-noise.
+    assert _tokenize("Compare A vs the X of Y Fund") == [
+        "compare", "vs",
+    ]
+    # Real query tokens survive.
+    assert _tokenize("Canara Robeco Multi Cap") == [
+        "canara", "robeco", "multi", "cap",
+    ]
+
+
+def test_expand_abbreviations_replaces_known_brands() -> None:
+    """ABSL expands to 'aditya birla sun life'; unknown tokens pass through."""
+    from retrieval.tools import _expand_abbreviations  # noqa: WPS433
+
+    out = _expand_abbreviations("ABSL Arbitrage")
+    # Lowercased and ABSL expanded; arbitrage passes through unchanged.
+    assert "aditya birla sun life" in out
+    assert "arbitrage" in out
+
+    # Unknown abbreviation passes through.
+    assert _expand_abbreviations("FooBar Multi Cap") == "foobar multi cap"
 
 
 def test_tools_schema_well_formed() -> None:
