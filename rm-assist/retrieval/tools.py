@@ -406,19 +406,45 @@ _FULL_SNAPSHOT_DEFAULT_SECTIONS: List[str] = [
 ]
 
 # Curated metric subset returned in the "snapshot" section. We do NOT return
-# the full ~80-column fund_snapshots row because most columns are operational
+# the full ~80-column fund_snapshots row because some columns are operational
 # metadata (parser_version, parse_errors_json, etc.) the model doesn't need.
+#
+# Coverage matches the SYSTEM_PROMPT schema description in app/prompts.py —
+# every column the model is told about should be retrievable from the snapshot
+# (with NULL-trim hiding the inapplicable ones per fund type).
+#
+# Deliberately excluded:
+#   - overview, min_investment, exit_load — TEXT/prose columns rarely needed
+#     and verbose; fetched on demand via query_db when asked.
+#   - composition_json, risk_rating_json, investment_style_json — JSON blob
+#     columns; surfaced as separate parsed sections OR via json_extract in
+#     query_db.
+#   - fund_managers_json — surfaced as the "managers" section.
 _FULL_SNAPSHOT_METRIC_COLUMNS: List[str] = [
+    # Identifiers
     "as_of_date", "report_month",
+    # Header
     "expense_ratio", "fund_aum_cr", "inception_date", "fund_age",
-    "return_1y", "return_3y", "return_5y", "return_since_inception",
-    "sharpe_1y", "sharpe_3y", "std_dev_1y", "std_dev_3y",
-    "beta_1y", "beta_3y", "treynor_1y", "treynor_3y",
-    "info_ratio_1y", "info_ratio_3y",
-    "up_capture_1y", "down_capture_1y",
+    # Fund trailing returns — full ladder (NULL-trimmed per fund age)
+    "return_1m", "return_3m", "return_6m",
+    "return_1y", "return_2y", "return_3y", "return_5y", "return_10y",
+    "return_since_inception",
+    # 1Y risk metrics
+    "sharpe_1y", "std_dev_1y", "beta_1y", "r_square_1y",
+    "treynor_1y", "info_ratio_1y", "sortino_1y",
+    "up_capture_1y", "down_capture_1y", "tracking_error_1y",
+    # 3Y risk metrics
+    "sharpe_3y", "std_dev_3y", "beta_3y", "r_square_3y",
+    "treynor_3y", "info_ratio_3y", "sortino_3y",
+    "up_capture_3y", "down_capture_3y", "tracking_error_3y",
+    # Market cap composition (equity-side)
     "large_cap_pct", "mid_cap_pct", "small_cap_pct",
+    # Portfolio characteristics
+    "total_securities", "avg_mkt_cap_cr", "median_mkt_cap_cr",
     "portfolio_pe", "portfolio_pb", "portfolio_div_yield",
-    "modified_duration", "avg_maturity_years", "yield_to_maturity",
+    "modified_duration",
+    # Debt-side characteristics (NULL-trimmed for equity funds)
+    "avg_maturity_years", "yield_to_maturity",
 ]
 
 
