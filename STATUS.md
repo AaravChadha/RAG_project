@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-16 (retrieval quality: word-token fuzzy match w/ brand abbreviations + NULL-trim on get_full_snapshot output. Tolerates word-order swaps, brand abbreviations, and typos; ~20-30% payload trim.)
+> **Last update**: 2026-05-16 (retrieval quality C: embedding-based theory matching with graceful degradation. Substring stays primary; sentence-transformers fallback catches paraphrases the substring matcher misses.)
 
 ---
 
@@ -190,6 +190,32 @@ Bundled with the same commit: new **"Category-shaped queries"** section in SYSTE
 Expected payoff: single-fund questions drop from 4 round-trips to 2 (one for get_full_snapshot, one for the final answer). On Q01-shape questions (already 71s post-#1), this should land in the ~40-50s range. Validation pending clean Groq run (still rate-limited from earlier today).
 
 Unit tests added: 4 new tests in `tests/test_tools.py` cover all-sections, include filter, no-match envelope, and bad-arguments path. Updated `test_tools_schema_well_formed` for `len(TOOLS) == 6` and the new name set. Full suite: **60 passed, 40 skipped** (was 56/40; +4 new tests, no regressions).
+
+### Retrieval-quality graft C: embedding fallback for theory matching (2026-05-16, evening)
+
+Builds on A + B. The substring matcher in `retrieval/theory.py` works for verbatim alias hits but misses paraphrases ("explain MFs" → `what_is_mf` was a miss). Embeddings catch those.
+
+**Design — fast substring path stays primary; embedding fallback only runs on substring miss:**
+
+1. Try substring match against title + aliases (existing logic, unchanged for hits).
+2. On miss: lazy-init `sentence-transformers/all-MiniLM-L6-v2`, embed the 10 theory entries' (title + aliases) once, cache.
+3. Embed the query, cosine-similarity against all topic vectors, return the best if score ≥ 0.50.
+4. If still no match → no-match envelope as before.
+
+**Graceful degradation by design**: `sentence-transformers` is in `requirements.txt` but the code handles `ImportError` cleanly. On 8GB dev machines or lean deployments where you skip the install, only substring matching runs and the system still works. Production deploy should install it (~80MB on-disk, ~80MB resident RAM) for the paraphrase tolerance.
+
+**Why all-MiniLM-L6-v2**: 80MB model, runs CPU on the Oracle Cloud Free Tier ARM VM, established quality on short-text semantic similarity. If we ever need higher quality, swap to `bge-small` (similar size, slightly better on retrieval benchmarks) — interface unchanged.
+
+**Why a 0.50 cosine threshold**: empirical pick for short surfaces (title + ~7 aliases concatenated). Legitimate semantic matches land in 0.55-0.85; unrelated topics drop below 0.40. The 0.50 cutoff catches paraphrases without false positives.
+
+**What the user/model sees**: identical contract — the same `{matched, topic_id, content, ...}` envelope as today. Embedding hits aren't flagged separately; they just look like more-tolerant matching.
+
+**Two things we DIDN'T do** (intentional):
+
+- **Did NOT switch to embeddings as primary.** Substring is faster, deterministic, and works perfectly for the bulk of variant phrasings. Embeddings are a fallback, not a replacement.
+- **Did NOT add embeddings for scheme lookup.** Schemes already use word-token scoring (graft A), which is the right tool there because scheme matches are lexical, not semantic. Embeddings would over-match — "DSP" semantically close to "TATA" wouldn't help a user looking for DSP.
+
+Validation: 9 new unit tests in `tests/test_theory.py` cover substring fast-path, bidirectional matching, embedding-paraphrase recovery (using a fake model to avoid loading the real 80MB model in CI), below-threshold no-match, ImportError graceful degradation, and substring-short-circuits-embedding ordering. Full pytest: **88 passed, 40 skipped** (was 79/40; +9 new tests, no regressions).
 
 ### Retrieval-quality grafts A + B (2026-05-16, evening)
 

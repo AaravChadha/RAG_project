@@ -8,3 +8,10 @@ streamlit==1.40.1
 streamlit-authenticator==0.4.1
 pytest==8.3.4
 deepdiff==8.0.1
+
+# Optional: enables the embedding-based fallback for theory-topic matching
+# in retrieval.theory.get_education_content (graceful degradation — if
+# this is not installed, only substring matching runs). ~80 MB on-disk and
+# ~80 MB resident RAM for the all-MiniLM-L6-v2 model. Skip on 8 GB dev
+# machines if you want; production deploy should keep it.
+sentence-transformers>=3.0.0; python_version >= "3.9"
