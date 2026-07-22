@@ -199,7 +199,7 @@ def _render_feedback_controls(msg_index: int, message: Dict[str, Any]) -> None:
         return  # Refusal / no-log paths still display, just without buttons.
 
     current = message.get("feedback")
-    col_up, col_down, col_status = st.columns([1, 1, 6])
+    col_up, col_down, col_status = st.columns([2, 2, 4])
 
     up_disabled = current == "thumbs_up"
     down_disabled = current == "thumbs_down"
