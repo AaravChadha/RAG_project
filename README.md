@@ -5,13 +5,19 @@ Chat with 123 mutual-fund research reports. RM Assist turns a monthly stack of P
 Built solo in ~2 weeks as a working pilot under hard constraints: **zero paid services** (free-tier LLM APIs, SQLite, Streamlit) and an **8 GB MacBook** as both dev machine and host.
 
 <p align="center">
-  <img src="docs/chat.png" alt="RM Assist chat UI — every answer carries a source citation and a verification footer" width="920">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/chat-dark.png">
+  <img src="docs/chat-light.png" alt="RM Assist chat UI — every answer carries a source citation and a verification footer" width="920">
+</picture>
 </p>
 
 <details>
 <summary><b>The login gate</b> — nothing renders before authentication</summary>
 <p align="center">
-  <img src="docs/login.png" alt="RM Assist login gate" width="920">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/login-dark.png">
+  <img src="docs/login-light.png" alt="RM Assist login gate" width="920">
+</picture>
 </p>
 </details>
 
