@@ -546,7 +546,7 @@ Two layers, both built before production launch.
   - Don't cache: market-state-using answers (stale), recommendations / "should I" (subjective), refusals, multi-turn follow-ups (history changes the answer)
   - Invalidation: 1-hour TTL per row + bulk invalidate on monthly re-ingest (report_month bumps)
   - Build AFTER pilot launch so cache is sized against real `query_log` data, not synthetic guesses.
-- [ ] **v2 real LLM streaming (NEW 2026-05-18).** v1 fake-typewriter via `st.write_stream` shipped 2026-05-18 (commit `80953f5`). v2 = actual API streaming for first-token-fast UX. ~2-3 hours: modify `_GroqClient.chat` (and `_GeminiClient`) to support `stream=True` + accumulate `tool_calls` deltas separately from `content` deltas across chunks + new `ask_stream()` generator path that yields content chunks AS they arrive. Wire `st.write_stream(ask_stream(...))` in Streamlit. Defer until clean post-grafts eval baseline holds across multiple runs — don't entangle streaming refactor with other regressions.
+- [ ] **v2 real LLM streaming (NEW 2026-05-18).** v1 fake-typewriter via `st.write_stream` shipped 2026-05-18 (commit `532678a`). v2 = actual API streaming for first-token-fast UX. ~2-3 hours: modify `_GroqClient.chat` (and `_GeminiClient`) to support `stream=True` + accumulate `tool_calls` deltas separately from `content` deltas across chunks + new `ask_stream()` generator path that yields content chunks AS they arrive. Wire `st.write_stream(ask_stream(...))` in Streamlit. Defer until clean post-grafts eval baseline holds across multiple runs — don't entangle streaming refactor with other regressions.
 
 ---
 
