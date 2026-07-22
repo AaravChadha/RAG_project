@@ -2,7 +2,7 @@
 
 > **What this file is.** A rolling snapshot of where the project actually is, so a fresh dev (or future-you) can open the repo and resume in 5 minutes. Read this first, then `PLANNING.md` for the full phase plan.
 >
-> **Last update**: 2026-05-18 evening. Retrieval quality A+B+C shipped, +16 snapshot columns, 88/40 tests, **calibrated 7/10 on Gemini holds post-grafts**. Groq free tier hit the per-minute 8K TPM cap mid-tool-loop — production needs paid Groq or Gemini-primary routing.
+> **Last update**: 2026-07-22. Repo made public as a portfolio piece and polished for viewers (root README, theme-aware architecture diagram + UI screenshots, social card; renamed `RAG_project` → `rm-research-assistant`, old URL redirects). App state unchanged since 2026-05-18: retrieval quality A+B+C shipped, +16 snapshot columns, 88/40 tests, **calibrated 7/10 on Gemini holds post-grafts**. Groq free tier hit the per-minute 8K TPM cap mid-tool-loop — production needs paid Groq or Gemini-primary routing.
 
 ---
 
@@ -75,6 +75,15 @@ python -m app.chatbot "What is the expense ratio of Canara Robeco Multi Cap Fund
 ---
 
 ## Key decisions and journey (so you don't relearn)
+
+### Public release & repo presentation (2026-07-22)
+
+- Repo made public and renamed `RAG_project` → `rm-research-assistant`; GitHub permanently redirects the old URL.
+- Root `README.md` added as the viewer-facing front page: architecture diagram, engineering highlights, repo map, honest quickstart. Internal source-host URLs are redacted throughout the repo (`research-host.example` placeholder), so `ingest.download_pdfs` needs access to the original host; parser tests skip gracefully when PDFs are absent.
+- Architecture diagram ships as pre-rendered light/dark PNGs switched via `<picture>` + `prefers-color-scheme` (source kept in `docs/architecture.mmd`). Reason: GitHub's live mermaid viewer overlays zoom/expand controls on the diagram's corners, covering nodes.
+- UI screenshots (light + dark, same `<picture>` switching) captured by driving the app headlessly with Playwright against the local DB, logged in via a temporary demo account that was removed after capture. One capture flaked on the known malformed-tool-call issue — the retry demonstrated the error UX instead of blocking.
+- Screenshotting surfaced a real UI bug: feedback-button labels wrapped mid-word in `st.columns([1, 1, 6])` — widened to `[2, 2, 4]`.
+- Social preview card at `docs/social-preview.png` (upload manually: repo Settings → Social preview — no API for it).
 
 ### LLM model: switched to `openai/gpt-oss-120b` from `llama-3.3-70b-versatile`
 - **Why**: Llama-3.3 on Groq emits Llama-pseudo-XML tool-call format `<function=name>{json}</function>` instead of OpenAI-spec JSON in ~30-50% of calls on long system prompts. Our recovery code handles SOME shapes but not all.
@@ -420,6 +429,7 @@ These are deliberately deferred — they're real but non-blocking, and Phase 8 i
 | `PLANNING.md` | The full phase plan with checkboxes |
 | `PLANNING_PROMPT.md` | The original problem statement (frozen reference) |
 | `STATUS.md` | This file (rolling state) |
+| `docs/` | README assets: architecture diagram (`.mmd` source + light/dark PNGs), UI screenshots, social preview card |
 | `schemes_master.csv` | The 90-scheme seed (3 columns: category, scheme, url) |
 | `rm-assist/.env.example` | Template — copy to `.env` and add `GROQ_API_KEY` |
 | `rm-assist/db/schema.sql` | DB schema (8 tables: schemes, fund_snapshots, holdings, sector_weights, periodic_returns, query_log, schema_version, scheme_aliases) |
