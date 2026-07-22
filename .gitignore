@@ -1,2 +1,3 @@
 # Local Claude Code session state (lock files, scheduled tasks, etc.)
 .claude/
+.DS_Store
