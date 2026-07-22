@@ -447,23 +447,23 @@ These are deliberately deferred — they're real but non-blocking, and Phase 8 i
 Run `git log --oneline` for the full picture. Key commits:
 
 ```
-9f45bff  Phase 6 - Streamlit UI: auth gate, chat + thumbs feedback, sidebar, create_auth_account CLI
-e3f16b8  5.4 - Q15 test-design fix; eval stable at 7-8/10
-c235e72  5.4 - Metric-completeness prompt rule + grader Unicode dash normalization; 10-Q eval 7/10
-3775af2  5.4 - Switch default LLM_MODEL to openai/gpt-oss-120b (2x daily token budget, better tool-use)
-ad92b73  5.3 - Tool-use loop in chatbot.py + Llama tool_use_failed recovery
-51d57a5  5.1, 5.2 - 4 tools + system prompt with operating-mode rules
-c2906d7  Fix parse_drawdown: section spills to page 3 for 21 funds
-4955011  4.1, 4.2 - Bulk download + ingest 90 PDFs
-f4751d9  3.3, 3.4, 3.5 - Invariants + golden samples + diff regression
-973d071  3.2.11-15 - Mkt cap, investment style, periodic returns, full holdings parsers
-f6deb15  3.2.7-10 - Portfolio chars, composition, drawdown, risk rating
-4764898  3.2.4-6 - Risk metrics, sector weights, top holdings
-e4d42f5  3.1, 3.2.1-3 - Dispatch refactor + header, fund managers, trailing returns
-d220172  1.6 - Normalized table writes with txn rollback safety
-709ea40  1.5 - db_query (read-only), chatbot spine, query_log, 8 tests
-c6cf892  1.4 - LLMClient with Groq + Mock backends, 6 unit tests
-ab0d796  1.3 - Stub parser (5 fields from Canara Robeco) + ingest_one CLI
-7fc7ab6  1.2 - DB schema with 7 fixes, init_db.py, migrations baseline
-d927be3  1.1 - Project skeleton, requirements, config, README
+709326b  Phase 6 - Streamlit UI: auth gate, chat + thumbs feedback, sidebar, create_auth_account CLI
+bd9aa51  5.4 - Q15 test-design fix; eval stable at 7-8/10
+a5a9317  5.4 - Metric-completeness prompt rule + grader Unicode dash normalization; 10-Q eval 7/10
+a060d0a  5.4 - Switch default LLM_MODEL to openai/gpt-oss-120b (2x daily token budget, better tool-use)
+2a16529  5.3 - Tool-use loop in chatbot.py + Llama tool_use_failed recovery
+c5123b4  5.1, 5.2 - 4 tools + system prompt with operating-mode rules
+6d0c6ae  Fix parse_drawdown: section spills to page 3 for 21 funds
+21afa78  4.1, 4.2 - Bulk download + ingest 90 PDFs
+7636039  3.3, 3.4, 3.5 - Invariants + golden samples + diff regression
+b4170dc  3.2.11-15 - Mkt cap, investment style, periodic returns, full holdings parsers
+91f8053  3.2.7-10 - Portfolio chars, composition, drawdown, risk rating
+d4eed9b  3.2.4-6 - Risk metrics, sector weights, top holdings
+86dc1de  3.1, 3.2.1-3 - Dispatch refactor + header, fund managers, trailing returns
+6de66a0  1.6 - Normalized table writes with txn rollback safety
+82e5fc5  1.5 - db_query (read-only), chatbot spine, query_log, 8 tests
+565928d  1.4 - LLMClient with Groq + Mock backends, 6 unit tests
+bba2119  1.3 - Stub parser (5 fields from Canara Robeco) + ingest_one CLI
+8d690ef  1.2 - DB schema with 7 fixes, init_db.py, migrations baseline
+3ce86db  1.1 - Project skeleton, requirements, config, README
 ```
