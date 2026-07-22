@@ -19,15 +19,12 @@ Built solo in ~2 weeks as a working pilot under hard constraints: **zero paid se
 
 Fund reports are overwhelmingly numeric tables. Retrieving table chunks into a prompt and hoping the model reads the right cell is fragile — and cross-fund questions ("top 5 multi-caps by 3Y Sharpe", "funds with expense ratio under 1%") are practically impossible that way. So instead of a vector store, every PDF is **parsed into a normalized SQLite database**, and the model gets **tools instead of chunks**:
 
-```mermaid
-flowchart LR
-    A["Monthly PDFs<br/>(123 schemes)"] --> B["Parser<br/>14 section parsers<br/>+ 7 invariant checks"]
-    B --> C[("SQLite<br/>8 tables")]
-    C --> D["Tool-use loop<br/>6 tools, max 6 iters"]
-    E["LLM<br/>Groq / Gemini via<br/>provider-agnostic client"] <--> D
-    D --> F["Streamlit UI<br/>auth gate + feedback"]
-    D --> G[("query_log<br/>full audit trail")]
-```
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/architecture-dark.png">
+  <img src="docs/architecture-light.png" alt="Architecture: monthly PDFs → 14-section parser → SQLite → 6-tool LLM loop → Streamlit UI and audit log" width="1000">
+</picture>
+</p>
 
 At answer time the model never reads numbers out of raw text — every figure comes from SQL over parsed, invariant-checked data. Every answer carries a citation (`Source: <scheme>, as on <date>`) and a standard verification footer, and every query is logged with its full tool trace, model, latency, and token counts.
 

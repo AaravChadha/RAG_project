@@ -1,0 +1,7 @@
+flowchart LR
+    A["Monthly PDFs<br/>(123 schemes)"] --> B["Parser<br/>14 section parsers<br/>+ 7 invariant checks"]
+    B --> C[("SQLite<br/>8 tables")]
+    C --> D["Tool-use loop<br/>6 tools, max 6 iters"]
+    E["LLM<br/>Groq / Gemini via<br/>provider-agnostic client"] <--> D
+    D --> F["Streamlit UI<br/>auth gate + feedback"]
+    D --> G[("query_log<br/>full audit trail")]
