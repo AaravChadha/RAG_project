@@ -4,6 +4,17 @@ Chat with 123 mutual-fund research reports. RM Assist turns a monthly stack of P
 
 Built solo in ~2 weeks as a working pilot under hard constraints: **zero paid services** (free-tier LLM APIs, SQLite, Streamlit) and an **8 GB MacBook** as both dev machine and host.
 
+<p align="center">
+  <img src="docs/chat.png" alt="RM Assist chat UI — every answer carries a source citation and a verification footer" width="920">
+</p>
+
+<details>
+<summary><b>The login gate</b> — nothing renders before authentication</summary>
+<p align="center">
+  <img src="docs/login.png" alt="RM Assist login gate" width="920">
+</p>
+</details>
+
 ## Why not "just RAG"?
 
 Fund reports are overwhelmingly numeric tables. Retrieving table chunks into a prompt and hoping the model reads the right cell is fragile — and cross-fund questions ("top 5 multi-caps by 3Y Sharpe", "funds with expense ratio under 1%") are practically impossible that way. So instead of a vector store, every PDF is **parsed into a normalized SQLite database**, and the model gets **tools instead of chunks**:
